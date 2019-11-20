@@ -5,18 +5,20 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.model.repository.EstadoRepository;
 
+@Component
 public class EstadoRepositoryImpl implements EstadoRepository {
 
 	@PersistenceContext
 	private EntityManager manager;
 
 	@Override
-	public List<Estado> todas() {
+	public List<Estado> todos() {
 		return manager.createQuery("from Estado", Estado.class)
 				.getResultList();
 	}
