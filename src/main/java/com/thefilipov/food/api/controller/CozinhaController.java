@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.thefilipov.food.api.model.CozinhasXmlWrapper;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.repository.CozinhaRepository;
 
@@ -22,6 +23,11 @@ public class CozinhaController {
 	@GetMapping
 	public List<Cozinha> listar() {
 		return cozinhaRepository.todas();
+	}
+	
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	public CozinhasXmlWrapper listarXml() {
+		return new CozinhasXmlWrapper(cozinhaRepository.todas());
 	}
 	
 	@GetMapping("/{cozinhaId}")
