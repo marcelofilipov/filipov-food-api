@@ -1,5 +1,6 @@
 package com.thefilipov.food.domain.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,20 @@ public class CadastroRestauranteService {
 		restaurante.setCozinha(cozinha);
 		
 		return restauranteRepository.salvar(restaurante);
+	}
+	
+	public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
+		Restaurante restauranteAtual = restauranteRepository.porId(restauranteId);
+
+		if (restauranteAtual == null) {
+			throw new EntidadeNaoEncontradaException(
+				String.format("Não existe cadastro de restaurante com código %d", restauranteId));
+		}
+		
+		BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+		restauranteAtual = salvar(restauranteAtual);
+
+		return restauranteAtual;
 	}
 
 }
