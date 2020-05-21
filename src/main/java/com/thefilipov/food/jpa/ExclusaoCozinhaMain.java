@@ -5,8 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.thefilipov.food.FilipovFoodApiApplication;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.domain.service.CadastroCozinhaService;
 
 public class ExclusaoCozinhaMain {
 
@@ -15,12 +14,9 @@ public class ExclusaoCozinhaMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 
-		CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class);
+		CadastroCozinhaService cozinhas = applicationContext.getBean(CadastroCozinhaService.class);
 
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(1L);
-		
-		cozinhas.remover(cozinha);
+		cozinhas.excluir(3L);
 	}
 
 }
