@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.model.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 
 @Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {

@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thefilipov.food.domain.model.Cidade;
-import com.thefilipov.food.domain.model.repository.CidadeRepository;
+import com.thefilipov.food.domain.repository.CidadeRepository;
 
 public class CidadeRepositoryImpl implements CidadeRepository {
 
