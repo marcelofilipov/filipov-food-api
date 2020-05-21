@@ -20,7 +20,7 @@
 	<description>Elaborar um breve descritivo</description>
 
 	<properties>
-		<java.version>12</java.version>
+		<java.version>13</java.version>
 	</properties>
 
 	<dependencies>
