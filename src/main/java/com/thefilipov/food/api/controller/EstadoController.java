@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.domain.model.Estado;
-import com.thefilipov.food.domain.model.repository.EstadoRepository;
+import com.thefilipov.food.domain.repository.EstadoRepository;
 
 @RestController
 @RequestMapping("/estados")

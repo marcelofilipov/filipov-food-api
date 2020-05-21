@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.thefilipov.food.FilipovFoodApiApplication;
 import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.model.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 
 public class ExclusaoCozinhaMain {
 

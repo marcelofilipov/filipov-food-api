@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.api.model.CozinhasXmlWrapper;
 import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.model.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 import com.thefilipov.food.domain.service.CadastroCozinhaService;
 
 @RestController

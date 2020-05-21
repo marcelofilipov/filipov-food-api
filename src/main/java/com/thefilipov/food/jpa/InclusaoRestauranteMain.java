@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.thefilipov.food.FilipovFoodApiApplication;
 import com.thefilipov.food.domain.model.Restaurante;
-import com.thefilipov.food.domain.model.repository.RestauranteRepository;
+import com.thefilipov.food.domain.repository.RestauranteRepository;
 
 public class InclusaoRestauranteMain {
 

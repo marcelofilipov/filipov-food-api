@@ -1,4 +1,4 @@
-package com.thefilipov.food.domain.model.repository;
+package com.thefilipov.food.domain.repository;
 
 import java.util.List;
 
