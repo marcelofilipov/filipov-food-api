@@ -1,4 +1,4 @@
-package com.thefilipov.food.api.controller;
+package com.thefilipov.food.controller;
 
 import java.util.List;
 

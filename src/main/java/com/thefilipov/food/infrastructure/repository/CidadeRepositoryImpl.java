@@ -5,11 +5,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 
+@Component
 public class CidadeRepositoryImpl implements CidadeRepository {
 
 	@PersistenceContext
@@ -34,8 +37,12 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
 	@Transactional
 	@Override
-	public void remover(Cidade cidade) {
-		cidade = porId(cidade.getId());
+	public void remover(Long id) {
+		Cidade cidade = porId(id);
+		
+		if (cidade == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
 		manager.remove(cidade);
 	}
 
