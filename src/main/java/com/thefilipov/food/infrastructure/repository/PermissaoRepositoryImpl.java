@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thefilipov.food.domain.model.Permissao;
 import com.thefilipov.food.domain.repository.PermissaoRepository;
 
+@Repository
 public class PermissaoRepositoryImpl implements PermissaoRepository {
 
 	@PersistenceContext
