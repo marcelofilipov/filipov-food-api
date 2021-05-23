@@ -1,15 +1,14 @@
 package com.thefilipov.food.domain.repository;
 
+import com.thefilipov.food.domain.model.Cozinha;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
-import com.thefilipov.food.domain.model.Cozinha;
+@Repository
+public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
-public interface CozinhaRepository {
+//	List<Cozinha> consultarPorNome(String nome);
 
-	List<Cozinha> todas();
-	List<Cozinha> consultarPorNome(String nome);
-	Cozinha porId(Long id);
-	Cozinha salvar(Cozinha cozinha);
-	void remover(Long id);
-	
 }
