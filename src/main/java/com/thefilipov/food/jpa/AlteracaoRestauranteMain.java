@@ -24,7 +24,7 @@ public class AlteracaoRestauranteMain {
 		restaurante.setNome("Restaurante Árabe");
 		restaurante.setTaxaFrete(BigDecimal.valueOf(7.97));
 		
-		restaurante = restauranteRepository.salvar(restaurante);
+		restaurante = restauranteRepository.save(restaurante);
 		
 		System.out.printf("%d - %s - %f\n", restaurante.getId(), restaurante.getNome(), restaurante.getTaxaFrete());
 	}
