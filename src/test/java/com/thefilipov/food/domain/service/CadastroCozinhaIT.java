@@ -39,7 +39,7 @@ public class CadastroCozinhaIT {
     }
 
     @Test
-    @DisplayName("Retornar Status 200 - Quando Consultar Cozinhas")
+    @DisplayName("Retornar Status 200 - Quando consultar cozinhas")
     public void shouldRetornarStatus200_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
@@ -50,15 +50,28 @@ public class CadastroCozinhaIT {
     }
 
     @Test
-    @DisplayName("Deve conter 4 Cozinhas - Quando Consultar Cozinhas")
-    public void shouldConter4Cozinhas_whenConsultarCozinhas() {
+    @DisplayName("Deve conter 5 Cozinhas - Quando Consultar Cozinhas")
+    public void shouldConter5Cozinhas_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(4))
+            .body("", hasSize(5))
             .body("nome", hasItems("Indiana", "Brasileira"));
+    }
+
+    @Test
+    @DisplayName("Retornar Status 201 - Quando cadastrar uma cozinha")
+    public void shouldRetornarStatus201_whenCadastrarCozinha() {
+        given()
+            .body("{ \"nome\": \"Colombiana\" }")
+            .contentType(ContentType.JSON)
+            .accept(ContentType.JSON)
+        .when()
+            .post()
+        .then()
+            .statusCode(HttpStatus.CREATED.value());
     }
 
     /**
