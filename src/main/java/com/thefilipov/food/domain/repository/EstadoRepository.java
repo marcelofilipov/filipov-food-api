@@ -1,14 +1,10 @@
 package com.thefilipov.food.domain.repository;
 
-import java.util.List;
-
 import com.thefilipov.food.domain.model.Estado;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface EstadoRepository {
+@Repository
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
-	List<Estado> todos();
-	Estado porId(Long id);
-	Estado salvar(Estado estado);
-	void remover(Long id);
-	
 }
