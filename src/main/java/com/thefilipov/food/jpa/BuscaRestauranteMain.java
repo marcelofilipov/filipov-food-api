@@ -8,6 +8,8 @@ import com.thefilipov.food.FilipovFoodApiApplication;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 
+import java.util.Optional;
+
 public class BuscaRestauranteMain {
 
 	public static void main(String[] args) {
@@ -17,9 +19,9 @@ public class BuscaRestauranteMain {
 
 		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 
-		Restaurante restaurante = restauranteRepository.porId(1L);
+		Optional<Restaurante> restaurante = restauranteRepository.findById(1L);
 
-		System.out.println(restaurante.getNome() + " - " + restaurante.getTaxaFrete());
+		System.out.println(restaurante.get().getNome() + " - " + restaurante.get().getTaxaFrete());
 
 	}
 

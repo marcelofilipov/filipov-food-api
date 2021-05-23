@@ -8,6 +8,8 @@ import com.thefilipov.food.FilipovFoodApiApplication;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
 
+import java.util.Optional;
+
 public class BuscaCozinhaMain {
 
 	public static void main(String[] args) {
@@ -17,9 +19,9 @@ public class BuscaCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		Cozinha cozinha = cozinhaRepository.porId(1L);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(1L);
 
-		System.out.println(cozinha.getNome());
+		System.out.println(cozinha.get().getNome());
 
 	}
 
