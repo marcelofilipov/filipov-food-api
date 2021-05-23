@@ -45,7 +45,7 @@ public class CidadeController {
 			return ResponseEntity.ok(cidade);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
@@ -73,7 +73,7 @@ public class CidadeController {
 				return ResponseEntity.ok(cidadeAtual);
 			}
 			
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.noContent().build();
 			
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

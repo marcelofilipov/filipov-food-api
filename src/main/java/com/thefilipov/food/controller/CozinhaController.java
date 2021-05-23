@@ -45,7 +45,7 @@ public class CozinhaController {
 			return ResponseEntity.ok(cozinha);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
@@ -65,7 +65,7 @@ public class CozinhaController {
 			return ResponseEntity.ok(cozinhaAtual);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{cozinhaId}")

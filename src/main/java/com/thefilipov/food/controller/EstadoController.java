@@ -45,7 +45,7 @@ public class EstadoController {
 			return ResponseEntity.ok(estado);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
@@ -65,7 +65,7 @@ public class EstadoController {
 			return ResponseEntity.ok(estadoAtual);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{estadoId}")
