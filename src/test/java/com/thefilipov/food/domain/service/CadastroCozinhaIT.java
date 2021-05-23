@@ -3,25 +3,55 @@ package com.thefilipov.food.domain.service;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.service.CadastroCozinhaService;
-import org.assertj.core.api.Assertions;
-import org.hibernate.exception.ConstraintViolationException;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIT {
 
     @Autowired
     private CadastroCozinhaService cozinhaService;
 
+    @LocalServerPort
+    private int port;
+
+    /**
+     * RestAssured - API Test
+     */
     @Test
+    @DisplayName("Retornar Status 200 - Quando Consultar Cozinhas")
+    public void shouldRetornarStatus200_QuandoConsultarCozinhas() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+        given()
+            .basePath("/foodapi/cozinhas")
+            .port(port)
+            .accept(ContentType.JSON)
+        .when()
+            .get()
+        .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+
+
+    /**
+     * Teste Integrado
+     */
+    @Test
+    @DisplayName("Quando Cadastrar Cozinha com dados corretos - Deve ser atribuído um Id")
     public void whenCadastroCozinhaComDadosCorretos_ThenDeveAtribuirId() {
         // cenário
         Cozinha novaCozinha = new Cozinha();
@@ -31,8 +61,8 @@ public class CadastroCozinhaIT {
         novaCozinha = cozinhaService.salvar(novaCozinha);
 
         // validação
-        Assertions.assertThat(novaCozinha).isNotNull();
-        Assertions.assertThat(novaCozinha.getId()).isNotNull();
+        assertThat(novaCozinha).isNotNull();
+        assertThat(novaCozinha.getId()).isNotNull();
     }
 
     /*
