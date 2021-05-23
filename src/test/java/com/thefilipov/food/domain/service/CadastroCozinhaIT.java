@@ -74,6 +74,7 @@ public class CadastroCozinhaIT {
             .statusCode(HttpStatus.CREATED.value());
     }
 
+
     /**
      * Teste Integrado
      */
