@@ -20,11 +20,11 @@ public class AlteracaoRestauranteMain {
 		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
 
 		Restaurante restaurante = new Restaurante();
-		restaurante.setId(1L);
+		restaurante.setId(10L);
 		restaurante.setNome("Restaurante Árabe");
 		restaurante.setTaxaFrete(BigDecimal.valueOf(7.97));
 		
-		restaurante = restauranteRepository.salvar(restaurante);
+		restaurante = restauranteRepository.save(restaurante);
 		
 		System.out.printf("%d - %s - %f\n", restaurante.getId(), restaurante.getNome(), restaurante.getTaxaFrete());
 	}

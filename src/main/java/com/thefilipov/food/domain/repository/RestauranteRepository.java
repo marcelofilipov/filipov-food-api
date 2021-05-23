@@ -3,12 +3,10 @@ package com.thefilipov.food.domain.repository;
 import java.util.List;
 
 import com.thefilipov.food.domain.model.Restaurante;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RestauranteRepository {
+@Repository
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
-	List<Restaurante> todas();
-	Restaurante porId(Long id);
-	Restaurante salvar(Restaurante restaurante);
-	void remover(Restaurante restaurante);
-	
 }

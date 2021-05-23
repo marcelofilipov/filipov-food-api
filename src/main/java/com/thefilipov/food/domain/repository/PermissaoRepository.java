@@ -1,14 +1,10 @@
 package com.thefilipov.food.domain.repository;
 
-import java.util.List;
-
 import com.thefilipov.food.domain.model.Permissao;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PermissaoRepository {
+@Repository
+public interface PermissaoRepository extends JpaRepository<Permissao, Long> {
 
-	List<Permissao> todas();
-	Permissao porId(Long id);
-	Permissao salvar(Permissao permissao);
-	void remover(Permissao permissao);
-	
 }
