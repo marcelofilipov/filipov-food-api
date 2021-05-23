@@ -46,7 +46,7 @@ public class RestauranteController {
 			return ResponseEntity.ok(restaurante);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping

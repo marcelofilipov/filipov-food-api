@@ -1,7 +1,7 @@
 insert into cozinha (id, nome) values (1, 'Tailandesa');
 insert into cozinha (id, nome) values (2, 'Indiana');
-insert into cozinha (id, nome) values (3, 'Japonesa');
-
+insert into cozinha (id, nome) values (3, 'Argentina');
+insert into cozinha (id, nome) values (4, 'Brasileira');
 
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Bangkok Gourmet', 11.90, 1);
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Nova Delhi Delivery', 24.75, 2);
@@ -13,7 +13,9 @@ insert into forma_pagamento (id, descricao) values (3, 'Dinheiro');
 
 insert into estado (id, nome) values (1, 'Minas Gerais');
 insert into estado (id, nome) values (2, 'São Paulo');
-insert into estado (id, nome) values (3, 'Ceará');
+insert into estado (id, nome) values (3, 'Mato Grosso');
+insert into estado (id, nome) values (4, 'Paraná');
+insert into estado (id, nome) values (5, 'Amazonas');
 
 insert into cidade (id, nome, estado_id) values (1, 'Uberlândia', 1);
 insert into cidade (id, nome, estado_id) values (2, 'Belo Horizonte', 1);
