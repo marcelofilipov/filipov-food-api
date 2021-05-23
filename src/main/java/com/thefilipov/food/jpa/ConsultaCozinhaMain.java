@@ -1,6 +1,7 @@
 package com.thefilipov.food.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,10 +22,11 @@ public class ConsultaCozinhaMain {
 
 		List<Cozinha> todasCozinhas = cozinhas.todas();
 
-		for (Cozinha cozinha : todasCozinhas) {
-			System.out.println(cozinha.getNome());
-		}
+		todasCozinhas.stream()
+				.forEach(System.out::println);
 
+		todasCozinhas.stream()
+				.forEach(c -> System.out.println(c.getNome()));
 	}
 
 }
