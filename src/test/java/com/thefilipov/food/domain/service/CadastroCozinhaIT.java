@@ -5,7 +5,7 @@ import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,31 +17,31 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIT {
 
-    @Autowired
-    private CadastroCozinhaService cozinhaService;
-
-    @LocalServerPort
-    private int port;
-
     /**
      * RestAssured - API Test
      */
+    @LocalServerPort
+    private int port;
+
+    @BeforeEach
+    public void setUp() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.port = port;
+        RestAssured.basePath = "/foodapi/cozinhas";
+    }
+
     @Test
     @DisplayName("Retornar Status 200 - Quando Consultar Cozinhas")
     public void shouldRetornarStatus200_whenConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
         given()
-            .basePath("/foodapi/cozinhas")
-            .port(port)
             .accept(ContentType.JSON)
         .when()
             .get()
@@ -50,27 +50,26 @@ public class CadastroCozinhaIT {
     }
 
     @Test
-    @DisplayName("Deve conter 5 Cozinhas - Quando Consultar Cozinhas")
+    @DisplayName("Deve conter 4 Cozinhas - Quando Consultar Cozinhas")
     public void shouldConter4Cozinhas_whenConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
         given()
-            .basePath("/foodapi/cozinhas")
-            .port(port)
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(5))
+            .body("", hasSize(4))
             .body("nome", hasItems("Indiana", "Brasileira"));
     }
 
     /**
      * Teste Integrado
      */
+    @Autowired
+    private CadastroCozinhaService cozinhaService;
+
     @Test
     @DisplayName("Quando Cadastrar Cozinha com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroCozinhaComDadosCorretos_ThenDeveAtribuirId() {
+    public void whenCadastroCozinhaComDadosCorretos_thenDeveAtribuirId() {
         // cenário
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome("Chinesa");
@@ -95,6 +94,7 @@ public class CadastroCozinhaIT {
     */
 
     @Test
+    @DisplayName("Falhar quando tentar Excluir um Cozinha em uso")
     public void shouldFalhar_whenExcluirCozinhaEmUso() {
         assertThrows(EntidadeEmUsoException.class, () -> {
             cozinhaService.excluir(1L);
@@ -102,6 +102,7 @@ public class CadastroCozinhaIT {
     }
 
     @Test
+    @DisplayName("Falhar quando tentar excluir um Cozinha Inexistente")
     public void shouldFalhar_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
             cozinhaService.excluir(100L);
