@@ -9,6 +9,7 @@ import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroRestauranteService {
@@ -18,7 +19,8 @@ public class CadastroRestauranteService {
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
-	
+
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
@@ -29,7 +31,8 @@ public class CadastroRestauranteService {
 		
 		return restauranteRepository.save(restaurante);
 	}
-	
+
+	@Transactional
 	public Restaurante atualizar(Long restauranteId, Restaurante restaurante) {
 		Restaurante restauranteAtual = restauranteRepository.findById(restauranteId)
 			.orElseThrow(() -> new EntidadeNaoEncontradaException(

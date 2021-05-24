@@ -11,6 +11,7 @@ import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.repository.EstadoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroCidadeService {
@@ -21,6 +22,7 @@ public class CadastroCidadeService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 
+	@Transactional
 	public Cidade salvar(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
 		Estado estado = estadoRepository.findById(estadoId)
@@ -31,7 +33,8 @@ public class CadastroCidadeService {
 		
 		return cidadeRepository.save(cidade);
 	}
-	
+
+	@Transactional
 	public void excluir(Long cidadeId) {
 		try {
 			cidadeRepository.deleteById(cidadeId);

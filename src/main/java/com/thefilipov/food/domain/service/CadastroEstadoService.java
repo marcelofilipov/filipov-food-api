@@ -9,17 +9,20 @@ import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroEstadoService {
 
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
+
+	@Transactional
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}
-	
+
+	@Transactional
 	public void excluir(Long estadoId) {
 		try {
 			estadoRepository.deleteById(estadoId);
