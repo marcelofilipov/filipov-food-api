@@ -9,17 +9,20 @@ import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroCozinhaService {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
-	
+
+	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-	
+
+	@Transactional
 	public void excluir(Long cozinhaId) {
 		try {
 			cozinhaRepository.deleteById(cozinhaId);
