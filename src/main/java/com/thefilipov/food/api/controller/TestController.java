@@ -1,11 +1,12 @@
 package com.thefilipov.food.api.controller;
 
+import static com.thefilipov.food.infrastructure.repository.spec.RestauranteSpecs.*;
+
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
-import com.thefilipov.food.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.thefilipov.food.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
+import com.thefilipov.food.infrastructure.repository.spec.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,10 +89,8 @@ public class TestController {
     // Padrão Specifications (DDD)
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome) {
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+        return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 
     }
 
