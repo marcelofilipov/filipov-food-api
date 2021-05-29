@@ -3,6 +3,8 @@ package com.thefilipov.food.infrastructure.repository.spec;
 import com.thefilipov.food.domain.model.Restaurante;
 import org.springframework.data.jpa.domain.Specification;
 
+import static com.thefilipov.food.utils.FoodUtils.*;
+
 import java.math.BigDecimal;
 
 public class RestauranteSpecs {
@@ -14,6 +16,6 @@ public class RestauranteSpecs {
 
     public static Specification<Restaurante> comNomeSemelhante(String nome) {
         return (root, query, builder) ->
-            builder.like(root.get("nome"), "%" + nome + "%" );
+            builder.like(root.get("nome"), contains(nome));
     }
 }

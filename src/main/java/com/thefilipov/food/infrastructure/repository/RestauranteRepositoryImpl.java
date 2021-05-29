@@ -16,10 +16,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.thefilipov.food.infrastructure.repository.spec.RestauranteSpecs.*;
+import static com.thefilipov.food.utils.FoodUtils.*;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomized {
@@ -41,7 +43,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomize
         var predicates = new ArrayList<Predicate>();
 
         if (StringUtils.hasText(nome)) {
-            predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
+            predicates.add(builder.like(root.get("nome"), contains(nome)));
         }
 
         if (taxaFreteInicial != null) {
@@ -62,4 +64,5 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomize
     public List<Restaurante> findComFreteGratis(String nome) {
         return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
     }
+
 }
