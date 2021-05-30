@@ -38,7 +38,8 @@ public class CadastroRestauranteService {
 			.orElseThrow(() -> new EntidadeNaoEncontradaException(
 					String.format("Não existe cadastro de restaurante com código %d", restauranteId)));
 
-		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco");
+		BeanUtils.copyProperties(restaurante, restauranteAtual,
+				"id", "formasPagamento", "endereco", "dataCadastro");
 		restauranteAtual = salvar(restauranteAtual);
 
 		return restauranteAtual;
