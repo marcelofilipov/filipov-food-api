@@ -8,6 +8,6 @@ $migration="V" + $timestamp + "__" + $name + ".sql"
 
 New-Item "./src/main/resources/db/migration/$migration"
 
-Set-Content "./src/main/resources/db/migration/$migration" "-- Script da Iteração $iteracao"
+Set-Content "./src/main/resources/db/migration/$migration" "-- Script ..."
 
 echo "Migration $migration criada com sucesso em /src/main/resources/db/migration/"
