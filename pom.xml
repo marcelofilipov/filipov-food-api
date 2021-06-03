@@ -76,6 +76,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
@@ -100,5 +105,43 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>migration</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>generateSources</id>
+								<phase>generate-sources</phase>
+								<configuration>
+									<tasks>
+										<exec executable="/bin/bash" osfamily="unix">
+											<arg value="./src/main/resources/util/create_migration.sh" />
+											<arg value="${name}" />
+										</exec>
+										<exec executable="powershell.exe" osfamily="windows">
+											<arg value="./src/main/resources/util/create_migration.ps1" />
+											<arg value="${name}" />
+										</exec>
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
