@@ -1,6 +1,8 @@
 package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
@@ -37,7 +39,11 @@ public class RestauranteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
-		return cadastroRestaurante.salvar(restaurante);
+		try {
+			return cadastroRestaurante.salvar(restaurante);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{restauranteId}")
@@ -46,7 +52,11 @@ public class RestauranteController {
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
 				"endereco", "dataCadastro", "produtos");
 
-		return cadastroRestaurante.salvar(restauranteAtual);
+		try {
+			return cadastroRestaurante.salvar(restauranteAtual);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 	
 	@PatchMapping("/{restauranteId}")
