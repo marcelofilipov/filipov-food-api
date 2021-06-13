@@ -1,5 +1,7 @@
 package com.thefilipov.food.api.controller;
 
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.service.CadastroCidadeService;
@@ -33,7 +35,11 @@ public class CidadeController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cidade adicionar(@RequestBody Cidade cidade) {
-		return cadastroCidade.salvar(cidade);
+		try {
+			return cadastroCidade.salvar(cidade);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{cidadeId}")
@@ -41,7 +47,11 @@ public class CidadeController {
 		Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-		return cadastroCidade.salvar(cidadeAtual);
+		try {
+			return cadastroCidade.salvar(cidadeAtual);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{cidadeId}")
