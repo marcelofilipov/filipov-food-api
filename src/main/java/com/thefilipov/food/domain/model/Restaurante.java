@@ -38,7 +38,7 @@ public class Restaurante {
 	private BigDecimal taxaFrete;
 
 	@Valid
-	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+	@ConvertGroup(to = Groups.CozinhaId.class)
 	@NotNull
 	@JsonIgnoreProperties("hibernateLazyInitializer")
 	@ManyToOne // (fetch = FetchType.LAZY)
