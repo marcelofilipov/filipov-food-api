@@ -1,4 +1,4 @@
-package com.thefilipov.food;
+package com.thefilipov.food.core.validation;
 
 public interface Groups {
 
