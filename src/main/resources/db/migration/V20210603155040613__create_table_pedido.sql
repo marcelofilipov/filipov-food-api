@@ -10,7 +10,7 @@ create table pedido (
     usuario_cliente_id bigint not null,
     forma_pagamento_id bigint not null,
 
-    endereco_cidade_id bigint(20) not null,
+    endereco_cidade_id bigint not null,
     endereco_cep varchar(9) not null,
     endereco_logradouro varchar(100) not null,
     endereco_numero varchar(20) not null,
