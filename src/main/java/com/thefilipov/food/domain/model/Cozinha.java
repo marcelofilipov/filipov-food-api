@@ -1,6 +1,7 @@
 package com.thefilipov.food.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 public class Cozinha {
 
+	@NotNull
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
