@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.thefilipov.food.core.validation.Groups;
 import com.thefilipov.food.core.validation.Multiple;
+import com.thefilipov.food.core.validation.TaxaFrete;
+import com.thefilipov.food.core.validation.ValueZeroIncludeDescription;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValueZeroIncludeDescription(valueField = "taxaFrete", descriptionField = "nome", descriptionMandatory = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -35,7 +38,7 @@ public class Restaurante {
 	private String nome;
 
 	@NotNull
-	@Multiple(number = 5)
+	@TaxaFrete
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
