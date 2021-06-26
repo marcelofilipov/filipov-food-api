@@ -2,7 +2,6 @@ package com.thefilipov.food.domain.service;
 
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Estado;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

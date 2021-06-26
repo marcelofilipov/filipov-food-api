@@ -1,15 +1,13 @@
 package com.thefilipov.food.domain.service;
 
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
