@@ -15,6 +15,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.validation.ConstraintViolationException;
+
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
@@ -86,7 +88,7 @@ public class CadastroCozinhaIT {
     public void whenCadastroCozinhaComDadosCorretos_thenDeveAtribuirId() {
         // cenário
         Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome("Chinesa");
+        novaCozinha.setNome("Romena");
 
         // ação
         novaCozinha = cozinhaService.salvar(novaCozinha);
@@ -96,16 +98,15 @@ public class CadastroCozinhaIT {
         assertThat(novaCozinha.getId()).isNotNull();
     }
 
-    /*
     @Test
-    public void shouldFalhar_whenCadastrarCozinhaSemNome() {
+    @DisplayName("Deve Falhar - Quando tentar Cadastrar Cozinha sem nome (NULL)")
+    public void shouldFail_whenCadastrarCozinhaSemNome() {
         assertThrows(ConstraintViolationException.class, () -> {
             Cozinha novaCozinha = new Cozinha();
             novaCozinha.setNome(null);
             novaCozinha = cozinhaService.salvar(novaCozinha);
         });
     }
-    */
 
     @Test
     @DisplayName("Falhar quando tentar Excluir um Cozinha em uso")
