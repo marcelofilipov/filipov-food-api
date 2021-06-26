@@ -1,6 +1,5 @@
 package com.thefilipov.food.domain.service;
 
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
@@ -22,8 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.validation.ConstraintViolationException;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
@@ -65,14 +63,39 @@ public class CadastroEstadoIT {
     }
 
     @Test
-    @DisplayName("Deve conter 5 Estados - Quando Consultar Estados")
+    @DisplayName("Retornar uma resposta e Status 200 - Quando consultar um estado existente")
+    public void shouldRetornarUmaRespostaEStatus200_whenConsultarEstadoExistente() {
+        given()
+            .pathParam("estadoId", 3)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{estadoId}")
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .body("nome", equalTo("Paraná"));
+    }
+
+    @Test
+    @DisplayName("Retornar Status 404 - Quando consultar um estado inexistente")
+    public void shouldRetornarStatus404_whenConsultarEstadoInexistente() {
+        given()
+            .pathParam("estadoId", 100)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{estadoId}")
+        .then()
+            .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    @DisplayName("Deve conter 4 Estados - Quando Consultar Estados")
     public void shouldConter5Estados_whenConsultarEstados() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(5))
+            .body("", hasSize(4))
             .body("nome", hasItems("São Paulo", "Amazonas"));
     }
 
@@ -120,8 +143,8 @@ public class CadastroEstadoIT {
 
     /*
     @Test
-    @DisplayName("Falhar quando tentar Excluir um Estado em uso")
-    public void shouldFalhar_whenExcluirCozinhaEmUso() {
+    @DisplayName("Falhar quando tentar Excluir um Estado Em Uso")
+    public void shouldFail_whenExcluirCozinhaEmUso() {
         assertThrows(EntidadeEmUsoException.class, () -> {
             estadoService.excluir(1L);
         });
@@ -129,8 +152,8 @@ public class CadastroEstadoIT {
     */
 
     @Test
-    @DisplayName("Falhar quando tentar excluir um Estado Inexistente")
-    public void shouldFalhar_whenExcluirCozinhaInexistente() {
+    @DisplayName("Falhar quando tentar Excluir um Estado Inexistente")
+    public void shouldFail_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
             estadoService.excluir(100L);
         });
@@ -150,11 +173,7 @@ public class CadastroEstadoIT {
         estadoRepository.save(estado3);
 
         Estado estado4 = new Estado();
-        estado4.setNome("Rio Grande do Sul");
+        estado4.setNome("Amazonas");
         estadoRepository.save(estado4);
-
-        Estado estado5 = new Estado();
-        estado5.setNome("Amazonas");
-        estadoRepository.save(estado5);
     }
 }

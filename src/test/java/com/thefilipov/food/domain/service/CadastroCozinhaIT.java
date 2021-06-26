@@ -21,8 +21,7 @@ import javax.validation.ConstraintViolationException;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
@@ -61,6 +60,31 @@ public class CadastroCozinhaIT {
             .get()
         .then()
             .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("Retornar uma resposta e Status 200 - Quando consultar uma cozinha existente")
+    public void shouldRetornarUmaRespostaEStatus200_whenConsultarCozinhaExistente() {
+        given()
+            .pathParam("cozinhaId", 3)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{cozinhaId}")
+        .then()
+            .statusCode(HttpStatus.OK.value())
+            .body("nome", equalTo("Brasileira"));
+    }
+
+    @Test
+    @DisplayName("Retornar Status 404 - Quando consultar uma cozinha inexistente")
+    public void shouldRetornarStatus404_whenConsultarCozinhaInexistente() {
+        given()
+            .pathParam("cozinhaId", 100)
+            .accept(ContentType.JSON)
+        .when()
+            .get("/{cozinhaId}")
+        .then()
+            .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
