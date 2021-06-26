@@ -1,11 +1,11 @@
 package com.thefilipov.food.domain.service;
 
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.util.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,10 @@ public class CadastroCozinhaIT {
     private int port;
 
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
 
     @BeforeEach
     public void setUp() {
@@ -45,7 +48,8 @@ public class CadastroCozinhaIT {
         RestAssured.port = port;
         RestAssured.basePath = "/foodapi/cozinhas";
 
-        flyway.migrate();
+        databaseCleaner.clearTables();
+        preparingData();
     }
 
     @Test
@@ -60,15 +64,15 @@ public class CadastroCozinhaIT {
     }
 
     @Test
-    @DisplayName("Deve conter 5 Cozinhas - Quando Consultar Cozinhas")
-    public void shouldConter5Cozinhas_whenConsultarCozinhas() {
+    @DisplayName("Deve conter 3 Cozinhas - Quando Consultar Cozinhas")
+    public void shouldConter3Cozinhas_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(4))
-            .body("nome", hasItems("Indiana", "Brasileira"));
+            .body("", hasSize(3))
+            .body("nome", hasItems("Americana", "Brasileira"));
     }
 
     @Test
@@ -116,20 +120,35 @@ public class CadastroCozinhaIT {
         });
     }
 
+    /*
     @Test
-    @DisplayName("Falhar quando tentar Excluir um Cozinha em uso")
-    public void shouldFalhar_whenExcluirCozinhaEmUso() {
+    @DisplayName("Falhar quando tentar Excluir uma Cozinha Em Uso")
+    public void shouldFail_whenExcluirCozinhaEmUso() {
         assertThrows(EntidadeEmUsoException.class, () -> {
             cozinhaService.excluir(1L);
         });
     }
+    */
 
     @Test
-    @DisplayName("Falhar quando tentar excluir um Cozinha Inexistente")
-    public void shouldFalhar_whenExcluirCozinhaInexistente() {
+    @DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
+    public void shouldFail_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
             cozinhaService.excluir(100L);
         });
     }
 
+    private void preparingData() {
+        Cozinha cozinha1 = new Cozinha();
+        cozinha1.setNome("Tailandesa");
+        cozinhaRepository.save(cozinha1);
+
+        Cozinha cozinha2 = new Cozinha();
+        cozinha2.setNome("Americana");
+        cozinhaRepository.save(cozinha2);
+
+        Cozinha cozinha3 = new Cozinha();
+        cozinha3.setNome("Brasileira");
+        cozinhaRepository.save(cozinha3);
+    }
 }
