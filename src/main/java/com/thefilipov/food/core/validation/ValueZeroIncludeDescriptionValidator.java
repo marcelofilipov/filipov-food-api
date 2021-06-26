@@ -1,12 +1,12 @@
 package com.thefilipov.food.core.validation;
 
-import org.springframework.beans.BeanUtils;
+import java.math.BigDecimal;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ValidationException;
-import java.math.BigDecimal;
-import java.util.Locale;
+
+import org.springframework.beans.BeanUtils;
 
 public class ValueZeroIncludeDescriptionValidator implements ConstraintValidator<ValueZeroIncludeDescription, Object> {
 
