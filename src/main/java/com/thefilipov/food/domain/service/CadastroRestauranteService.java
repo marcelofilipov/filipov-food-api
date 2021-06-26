@@ -1,6 +1,5 @@
 package com.thefilipov.food.domain.service;
 
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;

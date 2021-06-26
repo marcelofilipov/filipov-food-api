@@ -95,7 +95,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .userMessage(detail)
                 .build();
 
-        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), status, request);
+        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler({ ValidacaoException.class })
