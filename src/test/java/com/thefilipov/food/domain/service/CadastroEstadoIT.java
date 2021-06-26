@@ -6,6 +6,7 @@ import com.thefilipov.food.domain.model.Estado;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import javax.validation.ConstraintViolationException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
@@ -31,11 +34,16 @@ public class CadastroEstadoIT {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private Flyway flyway;
+
     @BeforeEach
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/foodapi/estados";
+
+        flyway.migrate();
     }
 
     @Test
@@ -93,16 +101,15 @@ public class CadastroEstadoIT {
         Assertions.assertThat(novoEstado.getId()).isNotNull();
     }
 
-    /*
     @Test
-    public void shouldFalhar_whenCadastrarCozinhaSemNome() {
+    @DisplayName("Deve Falhar - Quando tentar Cadastrar Estado sem nome (NULL)")
+    public void shouldFail_whenCadastrarEstadoSemNome() {
         assertThrows(ConstraintViolationException.class, () -> {
-            Cozinha novaCozinha = new Cozinha();
-            novaCozinha.setNome(null);
-            novaCozinha = cozinhaService.salvar(novaCozinha);
+            Estado novoEstado = new Estado();
+            novoEstado.setNome(null);
+            novoEstado = estadoService.salvar(novoEstado);
         });
     }
-    */
 
     @Test
     @DisplayName("Falhar quando tentar Excluir um Estado em uso")
