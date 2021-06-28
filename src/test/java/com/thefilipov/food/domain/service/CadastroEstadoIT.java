@@ -58,7 +58,7 @@ public class CadastroEstadoIT {
         databaseCleaner.clearTables();
         preparingData();
 
-        jsonCorretoEstadoRioDeJaneiro = ResourceUtils.getContentFromResource("/json/estado-riodejaneiro.json");
+        jsonCorretoEstadoRioDeJaneiro = ResourceUtils.getContentFromResource("/json/ok/estado-riodejaneiro.json");
     }
 
     @Test

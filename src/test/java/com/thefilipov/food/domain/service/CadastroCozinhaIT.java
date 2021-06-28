@@ -7,7 +7,6 @@ import com.thefilipov.food.util.DatabaseCleaner;
 import com.thefilipov.food.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,7 +58,7 @@ public class CadastroCozinhaIT {
         databaseCleaner.clearTables();
         preparingData();
 
-        jsonCorretoCozinhaRussa = ResourceUtils.getContentFromResource("/json/cozinha-russa.json");
+        jsonCorretoCozinhaRussa = ResourceUtils.getContentFromResource("/json/ok/cozinha-russa.json");
     }
 
     @Test
@@ -154,16 +153,6 @@ public class CadastroCozinhaIT {
             novaCozinha = cozinhaService.salvar(novaCozinha);
         });
     }
-
-    /*
-    @Test
-    @DisplayName("Falhar quando tentar Excluir uma Cozinha Em Uso")
-    public void shouldFail_whenExcluirCozinhaEmUso() {
-        assertThrows(EntidadeEmUsoException.class, () -> {
-            cozinhaService.excluir(1L);
-        });
-    }
-    */
 
     @Test
     @DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
