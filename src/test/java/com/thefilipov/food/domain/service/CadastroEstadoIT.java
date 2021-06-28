@@ -4,6 +4,7 @@ import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
 import com.thefilipov.food.util.DatabaseCleaner;
+import com.thefilipov.food.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -32,6 +33,13 @@ public class CadastroEstadoIT {
     /**
      * RestAssured - API Test
      */
+
+    private static final long ESTADO_ID_INEXISTENTE = 100L;
+
+    private Estado estadoAM;
+    private int quantidadeEstadosCadastrados;
+    private String jsonCorretoEstadoRioDeJaneiro;
+
     @LocalServerPort
     private int port;
 
@@ -49,6 +57,8 @@ public class CadastroEstadoIT {
 
         databaseCleaner.clearTables();
         preparingData();
+
+        jsonCorretoEstadoRioDeJaneiro = ResourceUtils.getContentFromResource("/json/estado-riodejaneiro.json");
     }
 
     @Test
@@ -66,20 +76,20 @@ public class CadastroEstadoIT {
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar um estado existente")
     public void shouldRetornarUmaRespostaEStatus200_whenConsultarEstadoExistente() {
         given()
-            .pathParam("estadoId", 3)
+            .pathParam("estadoId", estadoAM.getId())
             .accept(ContentType.JSON)
         .when()
             .get("/{estadoId}")
         .then()
             .statusCode(HttpStatus.OK.value())
-            .body("nome", equalTo("Paraná"));
+            .body("nome", equalTo(estadoAM.getNome()));
     }
 
     @Test
     @DisplayName("Retornar Status 404 - Quando consultar um estado inexistente")
     public void shouldRetornarStatus404_whenConsultarEstadoInexistente() {
         given()
-            .pathParam("estadoId", 100)
+            .pathParam("estadoId", ESTADO_ID_INEXISTENTE)
             .accept(ContentType.JSON)
         .when()
             .get("/{estadoId}")
@@ -88,22 +98,22 @@ public class CadastroEstadoIT {
     }
 
     @Test
-    @DisplayName("Deve conter 4 Estados - Quando Consultar Estados")
-    public void shouldConter5Estados_whenConsultarEstados() {
+    @DisplayName("Deve retornar quantidade correta de Estados - Quando Consultar Estados")
+    public void shouldRetornarQuantidadeCorretaDeEstados_whenConsultarEstados() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("", hasSize(4))
+            .body("", hasSize(quantidadeEstadosCadastrados))
             .body("nome", hasItems("São Paulo", "Amazonas"));
     }
 
     @Test
     @DisplayName("Retornar Status 201 - Quando cadastrar um estado")
-    public void shouldRetornarStatus201_whenCadastrarCozinha() {
+    public void shouldRetornarStatus201_whenCadastrarEstado() {
         given()
-            .body("{ \"nome\": \"Acre\" }")
+            .body(jsonCorretoEstadoRioDeJaneiro)
             .contentType(ContentType.JSON)
             .accept(ContentType.JSON)
         .when()
@@ -155,25 +165,27 @@ public class CadastroEstadoIT {
     @DisplayName("Falhar quando tentar Excluir um Estado Inexistente")
     public void shouldFail_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
-            estadoService.excluir(100L);
+            estadoService.excluir(ESTADO_ID_INEXISTENTE);
         });
     }
 
     private void preparingData() {
-        Estado estado1 = new Estado();
-        estado1.setNome("São Paulo");
-        estadoRepository.save(estado1);
+        Estado estadoSP = new Estado();
+        estadoSP.setNome("São Paulo");
+        estadoRepository.save(estadoSP);
 
-        Estado estado2 = new Estado();
-        estado2.setNome("Minas Gerais");
-        estadoRepository.save(estado2);
+        Estado estadoMG = new Estado();
+        estadoMG.setNome("Minas Gerais");
+        estadoRepository.save(estadoMG);
 
-        Estado estado3 = new Estado();
-        estado3.setNome("Paraná");
-        estadoRepository.save(estado3);
+        Estado estadoPR = new Estado();
+        estadoPR.setNome("Paraná");
+        estadoRepository.save(estadoPR);
 
-        Estado estado4 = new Estado();
-        estado4.setNome("Amazonas");
-        estadoRepository.save(estado4);
+        estadoAM = new Estado();
+        estadoAM.setNome("Amazonas");
+        estadoRepository.save(estadoAM);
+
+        this.quantidadeEstadosCadastrados = (int) estadoRepository.count();
     }
 }
