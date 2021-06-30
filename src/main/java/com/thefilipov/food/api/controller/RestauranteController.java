@@ -2,6 +2,7 @@ package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.api.model.RestauranteDTO;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
@@ -44,8 +45,12 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return cadastroRestaurante.buscarOuFalhar(restauranteId);
+	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
+		Restaurante restaurante cadastroRestaurante.buscarOuFalhar(restauranteId);
+
+		RestauranteDTO restauranteDTO = null;
+
+		return restauranteDTO;
 	}
 	
 	@PostMapping
