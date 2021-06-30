@@ -1,7 +1,6 @@
 package com.thefilipov.food.domain.service;
 
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
@@ -26,7 +25,7 @@ import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
