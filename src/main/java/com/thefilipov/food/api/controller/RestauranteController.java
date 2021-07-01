@@ -2,7 +2,7 @@ package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thefilipov.food.api.model.CozinhaDTO;
+import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteDTO;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.core.validation.ValidacaoException;
@@ -28,7 +28,6 @@ import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -41,18 +40,21 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 
 	@Autowired
+	private RestauranteModelAssembler restauranteModelAssembler;
+
+	@Autowired
 	private SmartValidator smartValidator;
 
 	@GetMapping
 	public List<RestauranteDTO> listar() {
-		return toCollectionDTO(restauranteRepository.findAll());
+		return restauranteModelAssembler.toCollectionDTO(restauranteRepository.findAll());
 	}
 	
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		return toDTO(restaurante);
+		return restauranteModelAssembler.toDTO(restaurante);
 	}
 
 	@PostMapping
@@ -61,7 +63,7 @@ public class RestauranteController {
 		try {
 			Restaurante restaurante = toDomainObject(restauranteInput);
 
-			return toDTO(cadastroRestaurante.salvar(restaurante));
+			return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
@@ -78,7 +80,7 @@ public class RestauranteController {
 			BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
 					"endereco", "dataCadastro", "produtos");
 
-			return toDTO(cadastroRestaurante.salvar(restauranteAtual));
+			return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
@@ -130,25 +132,6 @@ public class RestauranteController {
 
 		}
 
-	}
-
-	private RestauranteDTO toDTO(Restaurante restaurante) {
-		CozinhaDTO cozinhaDTO = new CozinhaDTO();
-		cozinhaDTO.setId(restaurante.getCozinha().getId());
-		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-
-		RestauranteDTO restauranteDTO = new RestauranteDTO();
-		restauranteDTO.setId(restaurante.getId());
-		restauranteDTO.setNome(restaurante.getNome());
-		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-		restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO;
-	}
-
-	private List<RestauranteDTO> toCollectionDTO(List<Restaurante> restaurantes) {
-		return restaurantes.stream()
-				.map(r -> toDTO(r))
-				.collect(Collectors.toList());
 	}
 
 	private Restaurante toDomainObject(RestauranteInput restauranteInput) {
