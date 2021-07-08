@@ -26,7 +26,7 @@ public class RestauranteModelAssembler {
 
     public List<RestauranteDTO> toCollectionDTO(List<Restaurante> restaurantes) {
         return restaurantes.stream()
-                .map(r -> toDTO(r))
+                .map(restaurante -> toDTO(restaurante))
                 .collect(Collectors.toList());
     }
 

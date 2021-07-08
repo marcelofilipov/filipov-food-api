@@ -2,13 +2,13 @@ package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.api.assembler.RestauranteInputDisassembler;
 import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteDTO;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
-import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
@@ -43,13 +43,16 @@ public class RestauranteController {
 	private RestauranteModelAssembler restauranteModelAssembler;
 
 	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
+
+	@Autowired
 	private SmartValidator smartValidator;
 
 	@GetMapping
 	public List<RestauranteDTO> listar() {
 		return restauranteModelAssembler.toCollectionDTO(restauranteRepository.findAll());
 	}
-	
+
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -61,7 +64,7 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = toDomainObject(restauranteInput);
+			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
 			return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
 		} catch (EntidadeNaoEncontradaException e) {
@@ -73,7 +76,7 @@ public class RestauranteController {
 	public RestauranteDTO atualizar(@PathVariable Long restauranteId,
 									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = toDomainObject(restauranteInput);
+			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
 			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -132,19 +135,6 @@ public class RestauranteController {
 
 		}
 
-	}
-
-	private Restaurante toDomainObject(RestauranteInput restauranteInput) {
-		Restaurante restaurante = new Restaurante();
-		restaurante.setNome(restauranteInput.getNome());
-		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(restauranteInput.getCozinha().getId());
-
-		restaurante.setCozinha(cozinha);
-
-		return restaurante;
 	}
 
 }

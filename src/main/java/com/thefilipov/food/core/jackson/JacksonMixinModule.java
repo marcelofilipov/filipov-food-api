@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JacksonMixinModule extends SimpleModule {
 
-    private static final long serialVersionUID = -2221627815410527280L;
+    private static final long serialVersionUID = 1L;
 
     public JacksonMixinModule() {
         setMixInAnnotation(Cidade.class, CidadeMixin.class);
