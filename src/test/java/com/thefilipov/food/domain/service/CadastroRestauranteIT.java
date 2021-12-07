@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -215,7 +216,7 @@ public class CadastroRestauranteIT {
     @Test
     @DisplayName("Deve Falhar - Quando tentar Cadastrar Restaurante sem nome (NULL)")
     public void shouldFail_whenCadastrarCozinhaSemNome() {
-        assertThrows(ConstraintViolationException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             Cozinha cozinhaBrasileira = new Cozinha();
             cozinhaBrasileira.setId(1L);
             cozinhaBrasileira.setNome("Brasileira");

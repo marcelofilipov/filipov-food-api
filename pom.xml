@@ -135,11 +135,11 @@
 									<tasks>
 										<exec executable="/bin/bash" osfamily="unix">
 											<arg value="./src/main/resources/util/create_migration.sh" />
-											<arg value="${name}" />
+											<arg value="${project.name}" />
 										</exec>
 										<exec executable="powershell.exe" osfamily="windows">
 											<arg value="./src/main/resources/util/create_migration.ps1" />
-											<arg value="${name}" />
+											<arg value="${project.name}" />
 										</exec>
 									</tasks>
 								</configuration>

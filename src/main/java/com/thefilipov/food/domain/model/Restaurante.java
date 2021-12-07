@@ -29,18 +29,15 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 
-	@NotNull
-	@TaxaFrete
+//	@TaxaFrete
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	@Valid
-	@ConvertGroup(to = Groups.CozinhaId.class)
-	@NotNull
+//	@Valid
+//	@ConvertGroup(to = Groups.CozinhaId.class)
 	@ManyToOne // (fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
