@@ -1,7 +1,6 @@
 package com.thefilipov.food.jpa;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
