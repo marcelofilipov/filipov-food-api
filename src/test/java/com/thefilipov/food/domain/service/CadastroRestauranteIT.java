@@ -1,14 +1,12 @@
 package com.thefilipov.food.domain.service;
 
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.model.Restaurante;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
-import com.thefilipov.food.domain.repository.RestauranteRepository;
-import com.thefilipov.food.util.DatabaseCleaner;
-import com.thefilipov.food.util.ResourceUtils;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +19,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.model.Restaurante;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.RestauranteRepository;
+import com.thefilipov.food.util.DatabaseCleaner;
+import com.thefilipov.food.util.ResourceUtils;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -176,8 +177,9 @@ public class CadastroRestauranteIT {
 
 
     /**
-     * Teste Integrado
+     * Testes Integrados
      */
+    
     @Autowired
     private CadastroCozinhaService cozinhaService;
 
