@@ -1,11 +1,10 @@
 package com.thefilipov.food.core.jackson;
 
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.thefilipov.food.api.model.mixin.CidadeMixin;
-import com.thefilipov.food.api.model.mixin.CozinhaMixin;
 import com.thefilipov.food.domain.model.Cidade;
-import com.thefilipov.food.domain.model.Cozinha;
-import org.springframework.stereotype.Component;
 
 @Component
 public class JacksonMixinModule extends SimpleModule {
@@ -14,6 +13,5 @@ public class JacksonMixinModule extends SimpleModule {
 
     public JacksonMixinModule() {
         setMixInAnnotation(Cidade.class, CidadeMixin.class);
-        setMixInAnnotation(Cozinha.class, CozinhaMixin.class);
     }
 }
