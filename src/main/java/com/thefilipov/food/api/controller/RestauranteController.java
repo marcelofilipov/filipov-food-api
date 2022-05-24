@@ -1,15 +1,13 @@
 package com.thefilipov.food.api.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thefilipov.food.core.validation.ValidacaoException;
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.exception.NegocioException;
-import com.thefilipov.food.domain.model.Restaurante;
-import com.thefilipov.food.domain.repository.RestauranteRepository;
-import com.thefilipov.food.domain.service.CadastroRestauranteService;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,13 +15,27 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.api.assembler.RestauranteInputDisassembler;
+import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
+import com.thefilipov.food.api.model.RestauranteDTO;
+import com.thefilipov.food.api.model.input.RestauranteInput;
+import com.thefilipov.food.core.validation.ValidacaoException;
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.exception.NegocioException;
+import com.thefilipov.food.domain.model.Restaurante;
+import com.thefilipov.food.domain.repository.RestauranteRepository;
+import com.thefilipov.food.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -36,41 +48,52 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 
 	@Autowired
+	private RestauranteModelAssembler restauranteModelAssembler;
+
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
+
+	@Autowired
 	private SmartValidator smartValidator;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteDTO> listar() {
+		return restauranteModelAssembler.toCollectionDTO(restauranteRepository.findAll());
 	}
-	
+
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return cadastroRestaurante.buscarOuFalhar(restauranteId);
+	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
+		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+
+		return restauranteModelAssembler.toDTO(restaurante);
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			return cadastroRestaurante.salvar(restaurante);
+			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+
+			return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
-		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
-				"endereco", "dataCadastro", "produtos");
-
+	public RestauranteDTO atualizar(@PathVariable Long restauranteId,
+									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			return cadastroRestaurante.salvar(restauranteAtual);
+			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
+			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+
+			return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
+
+	/*
 	@PatchMapping("/{restauranteId}")
 	public Restaurante atualizarParcial(@PathVariable Long restauranteId,
 										@RequestBody Map<String, Object> campos, HttpServletRequest request) {
@@ -81,6 +104,7 @@ public class RestauranteController {
 		
 		return atualizar(restauranteId, restauranteAtual);
 	}
+	*/
 
 	private void validate(Restaurante restaurante, String objectName) {
 		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
