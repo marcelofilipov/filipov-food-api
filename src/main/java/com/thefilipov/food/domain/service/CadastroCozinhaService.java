@@ -23,10 +23,11 @@ public class CadastroCozinhaService {
 		return cozinhaRepository.save(cozinha);
 	}
 
-	//@Transactional
+	@Transactional
 	public void excluir(Long cozinhaId) {
 		try {
 			cozinhaRepository.deleteById(cozinhaId);
+			cozinhaRepository.flush();
 		
 		} catch (EmptyResultDataAccessException e) {
 			throw new CozinhaNaoEncontradaException(cozinhaId);
