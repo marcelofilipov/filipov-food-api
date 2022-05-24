@@ -23,10 +23,11 @@ public class CadastroEstadoService {
 		return estadoRepository.save(estado);
 	}
 
-	//@Transactional
+	@Transactional
 	public void excluir(Long estadoId) {
 		try {
 			estadoRepository.deleteById(estadoId);
+			estadoRepository.flush();
 		
 		} catch (EmptyResultDataAccessException e) {
 			throw new EstadoNaoEncontradoException(estadoId);
