@@ -12,8 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
@@ -43,7 +43,7 @@ public class CadastroCozinhaIT {
     private int quantidadeCozinhasCadastradas;
     private String jsonCorretoCozinhaRussa;
 
-    @LocalServerPort
+    @Value("${local.server.port}")
     private int port;
 
     @Autowired
