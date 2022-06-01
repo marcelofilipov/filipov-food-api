@@ -174,6 +174,30 @@ public class CadastroRestauranteIT {
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
     }
+    
+    @Test
+    @DisplayName("Retornar Status 204 - Quando ativar um restaurante existente")
+    public void shouldRetornarStatus204_whenAtivarRestauranteExistente() {
+        given()
+            .pathParam("restauranteId", burgerTopRestaurante.getId())
+            .accept(ContentType.JSON)
+        .when()
+            .put("/{restauranteId}/ativo")
+        .then()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("Retornar Status 204 - Quando inativar um restaurante existente")
+    public void shouldRetornarStatus204_whenInativarRestauranteExistente() {
+        given()
+            .pathParam("restauranteId", burgerTopRestaurante.getId())
+            .accept(ContentType.JSON)
+        .when()
+            .delete("/{restauranteId}/ativo")
+        .then()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 
 
     /**

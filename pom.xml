@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.0</version> <!-- Testar posteriormente com a versão 2.4.5 -->
+		<version>2.7.0</version> <!-- Testar posteriormente com a versão 2.7.0 -->
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -85,6 +85,10 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -133,7 +137,7 @@
 								<id>generateSources</id>
 								<phase>generate-sources</phase>
 								<configuration>
-									<tasks>
+									<target>
 										<exec executable="/bin/bash" osfamily="unix">
 											<arg value="./src/main/resources/util/create_migration.sh" />
 											<arg value="${project.name}" />
@@ -142,7 +146,7 @@
 											<arg value="./src/main/resources/util/create_migration.ps1" />
 											<arg value="${project.name}" />
 										</exec>
-									</tasks>
+									</target>
 								</configuration>
 								<goals>
 									<goal>run</goal>
