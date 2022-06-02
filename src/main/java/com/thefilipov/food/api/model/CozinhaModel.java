@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FormaPagamentoDTO {
+public class CozinhaModel {
 
-	private Long id;
-	private String descricao;
-	
+    private Long id;
+    private String nome;
+
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.api.assembler.EstadoInputDisassembler;
 import com.thefilipov.food.api.assembler.EstadoModelAssembler;
-import com.thefilipov.food.api.model.EstadoDTO;
+import com.thefilipov.food.api.model.EstadoModel;
 import com.thefilipov.food.api.model.input.EstadoInput;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
@@ -41,14 +41,14 @@ public class EstadoController {
 	private EstadoInputDisassembler estadoInputDisassembler;
 	
 	@GetMapping
-	public List<EstadoDTO> listar() {
+	public List<EstadoModel> listar() {
 		List<Estado> todosEstados = estadoRepository.findAll();
 		
 		return estadoModelAssembler.toCollectionModel(todosEstados);
 	}
 
 	@GetMapping("/{estadoId}")
-	public EstadoDTO buscar(@PathVariable Long estadoId) {
+	public EstadoModel buscar(@PathVariable Long estadoId) {
 		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
 		
 		return estadoModelAssembler.toModel(estado);
@@ -56,7 +56,7 @@ public class EstadoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public EstadoDTO adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
 		Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
 		estado = cadastroEstado.salvar(estado);
 		
@@ -64,7 +64,7 @@ public class EstadoController {
 	}
 
 	@PutMapping("/{estadoId}")
-	public EstadoDTO atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
+	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 		estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
 		estadoAtual = cadastroEstado.salvar(estadoAtual);

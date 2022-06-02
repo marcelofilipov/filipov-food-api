@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.api.assembler.FormaPagamentoInputDisassembler;
 import com.thefilipov.food.api.assembler.FormaPagamentoModelAssembler;
-import com.thefilipov.food.api.model.FormaPagamentoDTO;
+import com.thefilipov.food.api.model.FormaPagamentoModel;
 import com.thefilipov.food.api.model.input.FormaPagamentoInput;
 import com.thefilipov.food.domain.model.FormaPagamento;
 import com.thefilipov.food.domain.repository.FormaPagamentoRepository;
@@ -41,14 +41,14 @@ public class FormaPagamentoController {
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
     @GetMapping
-    public List<FormaPagamentoDTO> listar() {
+    public List<FormaPagamentoModel> listar() {
         List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 
         return formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
     }
     
     @GetMapping("/{formaPagamentoId}")
-    public FormaPagamentoDTO buscar(@PathVariable Long formaPagamentoId) {
+    public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId) {
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
 
         return formaPagamentoModelAssembler.toModel(formaPagamento);
@@ -56,7 +56,7 @@ public class FormaPagamentoController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
+    public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
         formaPagamento = cadastroFormaPagamento.salvar(formaPagamento);
 
@@ -64,7 +64,7 @@ public class FormaPagamentoController {
     }
     
     @PutMapping("/{formaPagamentoId}")
-    public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
+    public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
             @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);
