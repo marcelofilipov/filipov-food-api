@@ -1,7 +1,7 @@
 -- Script ... 
 create table item_pedido (
     id bigint not null auto_increment,
-    quantidade smallint(6) not null,
+    quantidade smallint not null,
     preco_unitario decimal(10,2) not null,
     preco_total decimal(10,2) not null,
     observacao varchar(255) null,
@@ -13,4 +13,4 @@ create table item_pedido (
 
     constraint fk_item_pedido_pedido foreign key (pedido_id) references pedido (id),
     constraint fk_item_pedido_produto foreign key (produto_id) references produto (id)
-) engine=InnoDB default charset=utf8;
+) engine=InnoDB default charset=utf8mb4;

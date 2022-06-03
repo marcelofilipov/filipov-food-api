@@ -16,12 +16,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.thefilipov.food.infrastructure.repository.spec.RestauranteSpecs.*;
-import static com.thefilipov.food.utils.FoodUtils.*;
+import static com.thefilipov.food.utils.FoodUtils.contains;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomized {
