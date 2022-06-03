@@ -7,22 +7,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thefilipov.food.api.model.RestauranteDTO;
+import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.domain.model.Restaurante;
 
 @Component
-public class RestauranteModelAssembler {
+public class toCollectionModel {
 	
 	@Autowired
 	private ModelMapper modelMapper;
 
-    public RestauranteDTO toDTO(Restaurante restaurante) {
-    	return modelMapper.map(restaurante, RestauranteDTO.class);
+    public RestauranteModel toModel(Restaurante restaurante) {
+    	return modelMapper.map(restaurante, RestauranteModel.class);
     }
 
-    public List<RestauranteDTO> toCollectionDTO(List<Restaurante> restaurantes) {
+    public List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes) {
         return restaurantes.stream()
-                .map(restaurante -> toDTO(restaurante))
+                .map(restaurante -> toModel(restaurante))
                 .collect(Collectors.toList());
     }
 

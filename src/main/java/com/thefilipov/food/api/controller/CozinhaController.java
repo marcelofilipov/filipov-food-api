@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.api.assembler.CozinhaInputDisassembler;
 import com.thefilipov.food.api.assembler.CozinhaModelAssembler;
-import com.thefilipov.food.api.model.CozinhaDTO;
+import com.thefilipov.food.api.model.CozinhaModel;
 import com.thefilipov.food.api.model.input.CozinhaInput;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
@@ -41,14 +41,14 @@ public class CozinhaController {
 	private CozinhaInputDisassembler cozinhaInputDisassembler;
 
 	@GetMapping
-	public List<CozinhaDTO> listar() {
+	public List<CozinhaModel> listar() {
 		List<Cozinha> todasCozinhas = cozinhaRepository.findAll();
 		
 		return cozinhaModelAssembler.toCollectionModel(todasCozinhas);
 	}
 
 	@GetMapping("/{cozinhaId}")
-	public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
+	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		
 		return cozinhaModelAssembler.toModel(cozinha);
@@ -56,7 +56,7 @@ public class CozinhaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
+	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
 		Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
 		cozinha = cadastroCozinha.salvar(cozinha);
 		
@@ -64,7 +64,7 @@ public class CozinhaController {
 	}
 	
 	@PutMapping("/{cozinhaId}")
-	public CozinhaDTO atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
+	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
 		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
 		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
