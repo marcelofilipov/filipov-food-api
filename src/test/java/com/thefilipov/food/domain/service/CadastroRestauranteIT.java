@@ -12,8 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
@@ -50,7 +50,7 @@ public class CadastroRestauranteIT {
     private String jsonRestauranteSemCozinha;
     private String jsonRestauranteComCozinhaInexistente;
 
-    @LocalServerPort
+    @Value("${local.server.port}")
     private int port;
 
     @Autowired
@@ -173,6 +173,30 @@ public class CadastroRestauranteIT {
             .get("/{restauranteId}")
         .then()
             .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+    
+    @Test
+    @DisplayName("Retornar Status 204 - Quando ativar um restaurante existente")
+    public void shouldRetornarStatus204_whenAtivarRestauranteExistente() {
+        given()
+            .pathParam("restauranteId", burgerTopRestaurante.getId())
+            .accept(ContentType.JSON)
+        .when()
+            .put("/{restauranteId}/ativo")
+        .then()
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("Retornar Status 204 - Quando inativar um restaurante existente")
+    public void shouldRetornarStatus204_whenInativarRestauranteExistente() {
+        given()
+            .pathParam("restauranteId", burgerTopRestaurante.getId())
+            .accept(ContentType.JSON)
+        .when()
+            .delete("/{restauranteId}/ativo")
+        .then()
+            .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
 

@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thefilipov.food.api.model.EstadoDTO;
+import com.thefilipov.food.api.model.EstadoModel;
 import com.thefilipov.food.domain.model.Estado;
 
 @Component
@@ -16,11 +16,11 @@ public class EstadoModelAssembler {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public EstadoDTO toModel(Estado estado) {
-        return modelMapper.map(estado, EstadoDTO.class);
+	public EstadoModel toModel(Estado estado) {
+        return modelMapper.map(estado, EstadoModel.class);
     }
     
-    public List<EstadoDTO> toCollectionModel(List<Estado> estados) {
+    public List<EstadoModel> toCollectionModel(List<Estado> estados) {
         return estados.stream()
                 .map(estado -> toModel(estado))
                 .collect(Collectors.toList());

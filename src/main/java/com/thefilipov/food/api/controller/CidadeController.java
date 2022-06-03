@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thefilipov.food.api.assembler.CidadeInputDisassembler;
 import com.thefilipov.food.api.assembler.CidadeModelAssembler;
-import com.thefilipov.food.api.model.CidadeDTO;
+import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.api.model.input.CidadeInput;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.exception.NegocioException;
@@ -43,14 +43,14 @@ public class CidadeController {
 	private CidadeInputDisassembler cidadeInputDisassembler; 
 
 	@GetMapping
-	public List<CidadeDTO> listar() {
+	public List<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
 		
 		return cidadeModelAssembler.toCollectionModel(todasCidades);
 	}
 
 	@GetMapping("/{cidadeId}")
-	public CidadeDTO buscar(@PathVariable Long cidadeId) {
+	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
 		return cidadeModelAssembler.toModel(cidade);
@@ -58,7 +58,7 @@ public class CidadeController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeDTO adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
 			Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 			cidade = cadastroCidade.salvar(cidade);
@@ -70,7 +70,7 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public CidadeDTO atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
+	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 			cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
