@@ -28,11 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thefilipov.food.api.assembler.RestauranteInputDisassembler;
-import com.thefilipov.food.api.assembler.toCollectionModel;
+import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.core.validation.ValidacaoException;
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
+import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
@@ -49,7 +50,7 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 
 	@Autowired
-	private toCollectionModel restauranteModelAssembler;
+	private RestauranteModelAssembler restauranteModelAssembler;
 
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
@@ -76,7 +77,7 @@ public class RestauranteController {
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
-		} catch (EntidadeNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
@@ -89,7 +90,7 @@ public class RestauranteController {
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
-		} catch (EntidadeNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}

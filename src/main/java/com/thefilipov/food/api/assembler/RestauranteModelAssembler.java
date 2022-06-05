@@ -11,7 +11,7 @@ import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.domain.model.Restaurante;
 
 @Component
-public class toCollectionModel {
+public class RestauranteModelAssembler {
 	
 	@Autowired
 	private ModelMapper modelMapper;

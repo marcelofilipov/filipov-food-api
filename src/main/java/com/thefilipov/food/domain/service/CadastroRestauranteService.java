@@ -1,6 +1,7 @@
 package com.thefilipov.food.domain.service;
 
 import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
+import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
@@ -16,13 +17,21 @@ public class CadastroRestauranteService {
 	
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
+	
+	@Autowired
+	private CadastroCidadeService cadastroCidade;
+
 
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
+		Long cidadeId = restaurante.getEndereco().getCidade().getId();
+		
 		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
 		restaurante.setCozinha(cozinha);
+		restaurante.getEndereco().setCidade(cidade);
 		
 		return restauranteRepository.save(restaurante);
 	}
