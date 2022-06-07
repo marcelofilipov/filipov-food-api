@@ -4,7 +4,7 @@ public class CozinhaNaoEncontradaException extends EntidadeNaoEncontradaExceptio
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um cadastro de Cozinha com o código %d";
+	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe uma Cozinha cadastrada com o código %d";
 
 	public CozinhaNaoEncontradaException(String mensagem) {
 		super(mensagem);
