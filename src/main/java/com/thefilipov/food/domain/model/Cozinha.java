@@ -14,12 +14,19 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @JsonRootName("cozinha")
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Cozinha {
+	
+	public Cozinha(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
 
 	@EqualsAndHashCode.Include
 	@Id
