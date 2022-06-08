@@ -73,3 +73,10 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+
+insert into usuario (id, nome, email, senha, data_cadastro) values
+(1, 'João da Silva', 'joao.ger@filfood.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'maria.vnd@filfood.com', '123', utc_timestamp),
+(3, 'José Souza', 'jose.aux@filfood.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'sebastiao.cad@filfood.com', '123', utc_timestamp),
+(5, 'Luan Gustavo A Filipov', 'luan.gustavo@filfood.com', '123', utc_timestamp); 
