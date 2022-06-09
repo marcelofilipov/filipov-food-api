@@ -24,17 +24,18 @@
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		
-        <jacoco.version>0.8.4</jacoco.version>
+        <jacoco.version>0.8.7</jacoco.version>
 		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
-		<jacoco.count.class>44</jacoco.count.class>
+		<jacoco.count.class>47</jacoco.count.class>
 		
 		<sonar.exclusions>
-			**/food/domain/model/**,
+			**/food/jpa/**,
         	**/food/utils/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/food/api/model/**,
 			**/food/domain/model/**,
+			**/food/jpa/**,
         	**/food/utils/**
 		</sonar.coverage.exclusions>
 		<sonar.test.exclusions>
