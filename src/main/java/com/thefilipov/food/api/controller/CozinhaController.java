@@ -25,9 +25,11 @@ import com.thefilipov.food.domain.repository.CozinhaRepository;
 import com.thefilipov.food.domain.service.CadastroCozinhaService;
 
 @RestController
-@RequestMapping("/cozinhas")
+@RequestMapping(CozinhaController.URI)
 public class CozinhaController {
 
+	public static final String URI = "/cozinhas";
+	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
