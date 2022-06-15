@@ -1,15 +1,11 @@
 package com.thefilipov.food.domain.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
+import com.thefilipov.food.ApplicationConfigTest;
+import com.thefilipov.food.api.model.CozinhaModel;
+import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,14 +15,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import com.thefilipov.food.ApplicationConfigTest;
-import com.thefilipov.food.api.model.CozinhaModel;
-import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
+import java.util.Optional;
 
-@DisplayName("CadastroCozinhaServiceTest")
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+@DisplayName("Teste Unitário da class CadastroCozinhaService")
 public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
@@ -35,10 +31,10 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	private static final String COZINHA_NAO_ENCONTRADA = "Não existe uma Cozinha cadastrada com o código 1";
 	
 	@InjectMocks
-	private CadastroCozinhaService cozinhaService;
+	private CadastroCozinhaService service;
 
 	@Mock
-	private CozinhaRepository cozinhaRepository;
+	private CozinhaRepository repository;
 
 	private Cozinha cozinha;
 	private CozinhaModel cozinhaModel;
@@ -53,9 +49,9 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Buscar uma Cozinha")
 	void whenFindByIdThenReturnCozinhaInstance() {
-		when(cozinhaRepository.findById(anyLong())).thenReturn(optionalCozinha);
+		when(repository.findById(anyLong())).thenReturn(optionalCozinha);
 		
-		Cozinha response = cozinhaService.buscarOuFalhar(ID);
+		Cozinha response = service.buscarOuFalhar(ID);
 		
 		assertNotNull(response);
 		assertEquals(Cozinha.class, response.getClass());
@@ -66,10 +62,10 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Retorna uma exceção quando não encontrar Cozinha")
 	void whenFindByIdThenReturnCozinhaNaoEncontradaException() {
-		when(cozinhaRepository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
+		when(repository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
 		
 		try {
-			cozinhaService.buscarOuFalhar(ID);
+			service.buscarOuFalhar(ID);
 		} catch (Exception ex) {
 			assertEquals(CozinhaNaoEncontradaException.class, ex.getClass());
 			assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage());
@@ -79,9 +75,9 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Insere uma Cozinha")
 	void whenCreateThenReturnSucess() {
-		when(cozinhaRepository.save(Mockito.any())).thenReturn(cozinha);
+		when(repository.save(Mockito.any())).thenReturn(cozinha);
 		
-		Cozinha response = cozinhaService.salvar(cozinha);
+		Cozinha response = service.salvar(cozinha);
 		
 		assertNotNull(response);
 		assertEquals(Cozinha.class, response.getClass());
@@ -92,20 +88,20 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Exclui uma Cozinha com sucesso")
 	void deleteWithSucess() {
-		when(cozinhaRepository.findById(anyLong())).thenReturn(optionalCozinha);
-		doNothing().when(cozinhaRepository).deleteById(anyLong());
+		when(repository.findById(anyLong())).thenReturn(optionalCozinha);
+		doNothing().when(repository).deleteById(anyLong());
 		
-		cozinhaService.excluir(ID);
+		service.excluir(ID);
 		
-		verify(cozinhaRepository, times(1)).deleteById(anyLong());
+		verify(repository, times(1)).deleteById(anyLong());
 	}
 	
 	@Test
 	void deleteWithCozinhaNaoEncontradaException() {
-		when(cozinhaRepository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
+		when(repository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
 		
 		try {
-			cozinhaService.excluir(ID);
+			service.excluir(ID);
 		} catch (Exception ex) {
 			assertEquals(CozinhaNaoEncontradaException.class, ex.getClass());
 			assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage());
@@ -114,10 +110,10 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 	@Test
 	void deleteWithEmptyResultDataAccessException() {
-		when(cozinhaRepository.findById(anyLong())).thenThrow(new EmptyResultDataAccessException(1));
+		when(repository.findById(anyLong())).thenThrow(new EmptyResultDataAccessException(1));
 		
 		try {
-			cozinhaService.excluir(ID);
+			service.excluir(ID);
 		} catch (EmptyResultDataAccessException ex) {
 			assertEquals(CozinhaNaoEncontradaException.class, ex.getClass());
 			assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage());
@@ -126,14 +122,14 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 	@Test
 	void deleteWithCozinhaEmUsoException() {
-		when(cozinhaRepository.findById(anyLong()))
-			.thenThrow(new EntidadeEmUsoException(String.format(cozinhaService.MSG_COZINHA_EM_USO, ID)));
+		when(repository.findById(anyLong()))
+			.thenThrow(new EntidadeEmUsoException(String.format(CadastroCozinhaService.MSG_COZINHA_EM_USO, ID)));
 		
 		try {
-			cozinhaService.excluir(ID);
+			service.excluir(ID);
 		} catch (Exception ex) {
 			assertEquals(EntidadeEmUsoException.class, ex.getClass());
-			assertEquals(String.format(cozinhaService.MSG_COZINHA_EM_USO, ID), ex.getMessage());
+			assertEquals(String.format(CadastroCozinhaService.MSG_COZINHA_EM_USO, ID), ex.getMessage());
 		}
 	}
 	
