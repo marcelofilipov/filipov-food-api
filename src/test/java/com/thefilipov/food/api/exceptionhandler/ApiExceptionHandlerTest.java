@@ -1,14 +1,19 @@
 package com.thefilipov.food.api.exceptionhandler;
 
+import com.thefilipov.food.ApplicationConfigTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+class ApiExceptionHandlerTest extends ApplicationConfigTest {
 
-class ApiExceptionHandlerTest {
+    @InjectMocks
+    private ApiExceptionHandler apiExceptionHandler;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -16,7 +21,7 @@ class ApiExceptionHandlerTest {
     }
 
     @Test
-    void handleEntidadeNaoEncontradoException() {
+    void whenHandleEntidadeNaoEncontradoExceptionThenReturnAResponseEntity() {
     }
 
     @Test
