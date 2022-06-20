@@ -1,18 +1,19 @@
 package com.thefilipov.food.domain.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.model.Cozinha;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.TestPropertySource;
 
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.model.Cozinha;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 public class CadastroCozinhaServiceIT {
 
     private static final long COZINHA_ID_INEXISTENTE = 100L;
@@ -45,16 +46,14 @@ public class CadastroCozinhaServiceIT {
         assertThrows(DataIntegrityViolationException.class, () -> {
             Cozinha novaCozinha = new Cozinha();
             novaCozinha.setNome(null);
-            novaCozinha = cozinhaService.salvar(novaCozinha);
+            cozinhaService.salvar(novaCozinha);
         });
     }
 
     @Test
     @DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
     public void shouldFail_whenExcluirCozinhaInexistente() {
-        assertThrows(EntidadeNaoEncontradaException.class, () -> {
-            cozinhaService.excluir(COZINHA_ID_INEXISTENTE);
-        });
+        assertThrows(EntidadeNaoEncontradaException.class, () -> cozinhaService.excluir(COZINHA_ID_INEXISTENTE));
     }
 
 }
