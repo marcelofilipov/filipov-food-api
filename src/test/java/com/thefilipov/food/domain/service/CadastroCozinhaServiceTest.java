@@ -1,24 +1,25 @@
 package com.thefilipov.food.domain.service;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.thefilipov.food.ApplicationConfigTest;
-import com.thefilipov.food.api.model.CozinhaModel;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.templates.CozinhaTemplates;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
 public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
+	private static final long NONEXISTENT = 100L;
 	private static final String NAME = "Brasileira";
 
 	private static final String COZINHA_NAO_ENCONTRADA = "Não existe uma Cozinha cadastrada com o código 1";
@@ -36,48 +38,52 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	@Mock
 	private CozinhaRepository repository;
 
-	private Cozinha cozinha;
-	private CozinhaModel cozinhaModel;
-	private Optional<Cozinha> optionalCozinha;
+	private Cozinha saveCozinha;
+
+	private Optional<Cozinha> oneCozinha;
 
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
+		FixtureFactoryLoader.loadTemplates(CozinhaTemplates.class.getPackage().getName());
 		startCozinha();
 	}
 	
 	@Test
 	@DisplayName("Buscar uma Cozinha")
 	void whenFindByIdThenReturnCozinhaInstance() {
-		when(repository.findById(anyLong())).thenReturn(optionalCozinha);
+		when(repository.findById(anyLong())).thenReturn(oneCozinha);
 		
 		Cozinha response = service.buscarOuFalhar(ID);
-		
-		assertNotNull(response);
-		assertEquals(Cozinha.class, response.getClass());
-		assertEquals(ID, response.getId());
-		assertEquals(NAME, response.getNome());
+
+		assertAll(() -> assertNotNull(response),
+			() -> assertEquals(Cozinha.class, response.getClass()),
+			() -> assertEquals(ID, response.getId()),
+			() -> assertEquals(NAME, response.getNome())
+		);
 	}
 
 	@Test
 	@DisplayName("Retorna uma exceção quando não encontrar Cozinha")
 	void whenFindByIdThenReturnCozinhaNaoEncontradaException() {
 		when(repository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
-		
+
 		try {
 			service.buscarOuFalhar(ID);
 		} catch (Exception ex) {
-			assertEquals(CozinhaNaoEncontradaException.class, ex.getClass());
-			assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage());
+			assertAll(
+				() -> assertEquals(CozinhaNaoEncontradaException.class, ex.getClass()),
+				() -> assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage())
+			);
 		}
 	}
-	
-	@Test
+
+	@RepeatedTest(value = 3)
 	@DisplayName("Insere uma Cozinha")
-	void whenCreateThenReturnSucess() {
-		when(repository.save(Mockito.any())).thenReturn(cozinha);
+	void whenCreateThenReturnSuccess() {
+		when(repository.save(any())).thenReturn(saveCozinha);
 		
-		Cozinha response = service.salvar(cozinha);
+		Cozinha response = service.salvar(saveCozinha);
 		
 		assertNotNull(response);
 		assertEquals(Cozinha.class, response.getClass());
@@ -87,8 +93,8 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	
 	@Test
 	@DisplayName("Exclui uma Cozinha com sucesso")
-	void deleteWithSucess() {
-		when(repository.findById(anyLong())).thenReturn(optionalCozinha);
+	void deleteWithSuccess() {
+		when(repository.findById(anyLong())).thenReturn(oneCozinha);
 		doNothing().when(repository).deleteById(anyLong());
 		
 		service.excluir(ID);
@@ -97,9 +103,10 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 	}
 	
 	@Test
-	void deleteWithCozinhaNaoEncontradaException() {
+	@DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
+	void shouldFail_whenExcluirCozinhaInexistente() {
 		when(repository.findById(anyLong())).thenThrow(new CozinhaNaoEncontradaException(ID));
-		
+
 		try {
 			service.excluir(ID);
 		} catch (Exception ex) {
@@ -113,9 +120,9 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 		when(repository.findById(anyLong())).thenThrow(new EmptyResultDataAccessException(1));
 		
 		try {
-			service.excluir(ID);
+			service.excluir(NONEXISTENT);
 		} catch (EmptyResultDataAccessException ex) {
-			assertEquals(CozinhaNaoEncontradaException.class, ex.getClass());
+			assertEquals(EmptyResultDataAccessException.class, ex.getClass());
 			assertEquals(COZINHA_NAO_ENCONTRADA, ex.getMessage());
 		}
 	}
@@ -132,11 +139,10 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 			assertEquals(String.format(CadastroCozinhaService.MSG_COZINHA_EM_USO, ID), ex.getMessage());
 		}
 	}
-	
+
 	private void startCozinha() {
-		cozinha = new Cozinha(ID, NAME);
-		cozinhaModel = new CozinhaModel(ID, NAME);
-		optionalCozinha = Optional.of(new Cozinha(ID, NAME));
+		saveCozinha = Fixture.from(Cozinha.class).gimme("oneCozinha");
+		oneCozinha = Optional.of(Fixture.from(Cozinha.class).gimme("oneCozinha"));
 	}
 
 }

@@ -23,10 +23,11 @@
 		<java.version>13</java.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
+		<six2six-fixture-factore.version>3.1.0</six2six-fixture-factore.version>
 		
         <jacoco.version>0.8.7</jacoco.version>
 		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
-		<jacoco.count.class>47</jacoco.count.class>
+		<jacoco.count.class>50</jacoco.count.class>
 		
 		<sonar.exclusions>
 			**/food/jpa/**,
@@ -36,7 +37,7 @@
 			**/food/api/model/**,
 			**/food/domain/model/**,
 			**/food/jpa/**,
-        	**/food/utils/**
+			**/food/utils/**
 		</sonar.coverage.exclusions>
 		<sonar.test.exclusions>
 			**/test/*
@@ -165,6 +166,12 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.six2six</groupId>
+			<artifactId>fixture-factory</artifactId>
+			<version>${six2six-fixture-factore.version}</version>
 		</dependency>
 		
 	</dependencies>
