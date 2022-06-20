@@ -1,25 +1,26 @@
 package com.thefilipov.food.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.thefilipov.food.core.validation.Groups;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 
-import com.thefilipov.food.core.validation.Groups;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Cidade {
+
+	public Cidade(Long id, @NotBlank String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
 
 	@EqualsAndHashCode.Include
 	@Id

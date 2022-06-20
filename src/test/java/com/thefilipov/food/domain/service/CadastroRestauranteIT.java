@@ -20,9 +20,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.model.Endereco;
+import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.model.Restaurante;
+import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.EstadoRepository;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.util.DatabaseCleaner;
 import com.thefilipov.food.util.ResourceUtils;
@@ -59,6 +64,12 @@ public class CadastroRestauranteIT {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Autowired
+    private CidadeRepository cidadeRepository;
+    
+    @Autowired
+    private EstadoRepository estadoRepository;
+    
     @Autowired
     private RestauranteRepository restauranteRepository;
 
@@ -218,10 +229,27 @@ public class CadastroRestauranteIT {
         cozinhaBrasileira.setId(1L);
         cozinhaBrasileira.setNome("Brasileira");
 
+		Estado estadoSaoPaulo = new Estado();
+		estadoSaoPaulo.setId(1L);
+		estadoSaoPaulo.setNome("São Paulo");
+		          
+		Cidade cidadeSantoAndre = new Cidade();
+		cidadeSantoAndre.setId(1L);
+		cidadeSantoAndre.setNome("Santo André");
+		cidadeSantoAndre.setEstado(estadoSaoPaulo);
+		
+		Endereco enderecoRestaurante = new Endereco();
+		enderecoRestaurante.setLogradouro("Rua Giovanni Battista Pirelli");
+		enderecoRestaurante.setNumero("1468");
+		enderecoRestaurante.setBairro("Vila Homero Thon");
+		enderecoRestaurante.setCidade(cidadeSantoAndre);
+		enderecoRestaurante.setCep("09111-340");
+        
         Restaurante novoRestaurante = new Restaurante();
         novoRestaurante.setNome("Restaurante Paulista");
         novoRestaurante.setTaxaFrete(BigDecimal.valueOf(10.0));
         novoRestaurante.setCozinha(cozinhaBrasileira);
+        novoRestaurante.setEndereco(enderecoRestaurante);
 
         // ação
         novoRestaurante = restauranteService.salvar(novoRestaurante);
@@ -247,10 +275,27 @@ public class CadastroRestauranteIT {
             cozinhaBrasileira.setId(1L);
             cozinhaBrasileira.setNome("Brasileira");
 
+			Estado estadoSaoPaulo = new Estado();
+			estadoSaoPaulo.setId(1L);
+			estadoSaoPaulo.setNome("São Paulo");
+			          
+			Cidade cidadeSantoAndre = new Cidade();
+			cidadeSantoAndre.setId(1L);
+			cidadeSantoAndre.setNome("Santo André");
+			cidadeSantoAndre.setEstado(estadoSaoPaulo);
+			
+			Endereco enderecoRestaurante = new Endereco();
+			enderecoRestaurante.setLogradouro("Rua Giovanni Battista Pirelli");
+			enderecoRestaurante.setNumero("1468");
+			enderecoRestaurante.setBairro("Vila Homero Thon");
+			enderecoRestaurante.setCidade(cidadeSantoAndre);
+			enderecoRestaurante.setCep("09111-340");
+
             Restaurante novoRestaurante = new Restaurante();
             novoRestaurante.setNome(null);
-            novoRestaurante.setTaxaFrete(BigDecimal.valueOf(10.0));
+            novoRestaurante.setTaxaFrete(BigDecimal.valueOf(9.99));
             novoRestaurante.setCozinha(cozinhaBrasileira);
+            novoRestaurante.setEndereco(enderecoRestaurante);
 
             novoRestaurante = restauranteService.salvar(novoRestaurante);
         });
@@ -266,10 +311,27 @@ public class CadastroRestauranteIT {
         cozinhaAmericana.setNome("Americana");
         cozinhaRepository.save(cozinhaAmericana);
 
+        Estado estadoSaoPaulo = new Estado();
+        estadoSaoPaulo.setNome("São Paulo");
+        estadoRepository.save(estadoSaoPaulo);
+
+        Cidade cidadeSantoAndre = new Cidade();
+        cidadeSantoAndre.setNome("Santo André");
+        cidadeSantoAndre.setEstado(estadoSaoPaulo);
+        cidadeRepository.save(cidadeSantoAndre);
+
+//        Endereco enderecoBurgerKing = new Endereco();
+//        enderecoBurgerKing.setLogradouro("Rua Giovanni Battista Pirelli");
+//        enderecoBurgerKing.setNumero("1468");
+//        enderecoBurgerKing.setBairro("Vila Homero Thon");
+//        enderecoBurgerKing.setCidade(cidadeSantoAndre);
+//        enderecoBurgerKing.setCep("09111-340");
+        
         burgerTopRestaurante = new Restaurante();
-        burgerTopRestaurante.setNome("Burger Top");
+        burgerTopRestaurante.setNome("Burger King");
         burgerTopRestaurante.setTaxaFrete(new BigDecimal(10));
         burgerTopRestaurante.setCozinha(cozinhaAmericana);
+        //burgerTopRestaurante.setEndereco(enderecoBurgerKing);
         restauranteRepository.save(burgerTopRestaurante);
 
         Restaurante comidaMineiraRestaurante = new Restaurante();

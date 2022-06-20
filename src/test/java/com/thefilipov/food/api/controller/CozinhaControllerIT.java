@@ -1,37 +1,26 @@
-package com.thefilipov.food.domain.service;
+package com.thefilipov.food.api.controller;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.Cozinha;
 import com.thefilipov.food.domain.repository.CozinhaRepository;
 import com.thefilipov.food.util.DatabaseCleaner;
 import com.thefilipov.food.util.ResourceUtils;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 
-@ExtendWith(SpringExtension.class)
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CadastroCozinhaIT {
+public class CozinhaControllerIT {
 
     /**
      * RestAssured - API Test
@@ -63,7 +52,7 @@ public class CadastroCozinhaIT {
 
         jsonCorretoCozinhaRussa = ResourceUtils.getContentFromResource("/json/ok/cozinha-russa.json");
     }
-
+    
     @Test
     @DisplayName("Retornar Status 200 - Quando consultar cozinhas")
     public void shouldRetornarStatus200_whenConsultarCozinhas() {
@@ -74,7 +63,7 @@ public class CadastroCozinhaIT {
         .then()
             .statusCode(HttpStatus.OK.value());
     }
-
+    
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar uma cozinha existente")
     public void shouldRetornarUmaRespostaEStatus200_whenConsultarCozinhaExistente() {
@@ -125,46 +114,6 @@ public class CadastroCozinhaIT {
             .statusCode(HttpStatus.CREATED.value());
     }
 
-
-    /**
-     * Teste Integrado
-     */
-    @Autowired
-    private CadastroCozinhaService cozinhaService;
-
-    @Test
-    @DisplayName("Quando Cadastrar Cozinha com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroCozinhaComDadosCorretos_thenDeveAtribuirId() {
-        // cenário
-        Cozinha novaCozinha = new Cozinha();
-        novaCozinha.setNome("Romena");
-
-        // ação
-        novaCozinha = cozinhaService.salvar(novaCozinha);
-
-        // validação
-        assertThat(novaCozinha).isNotNull();
-        assertThat(novaCozinha.getId()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("Deve Falhar - Quando tentar Cadastrar Cozinha sem nome (NULL)")
-    public void shouldFail_whenCadastrarCozinhaSemNome() {
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            Cozinha novaCozinha = new Cozinha();
-            novaCozinha.setNome(null);
-            novaCozinha = cozinhaService.salvar(novaCozinha);
-        });
-    }
-
-    @Test
-    @DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
-    public void shouldFail_whenExcluirCozinhaInexistente() {
-        assertThrows(EntidadeNaoEncontradaException.class, () -> {
-            cozinhaService.excluir(COZINHA_ID_INEXISTENTE);
-        });
-    }
-
     private void preparingData() {
         Cozinha cozinhaTailandesa = new Cozinha();
         cozinhaTailandesa.setNome("Tailandesa");
@@ -180,4 +129,5 @@ public class CadastroCozinhaIT {
 
         this.quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
     }
+
 }

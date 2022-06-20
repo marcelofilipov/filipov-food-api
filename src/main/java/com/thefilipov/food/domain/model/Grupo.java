@@ -15,13 +15,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Grupo {
 
-    @EqualsAndHashCode.Include
+    public Grupo(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
+	@EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
