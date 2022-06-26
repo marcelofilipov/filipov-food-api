@@ -21,7 +21,7 @@
 
 	<properties>
 		<java.version>13</java.version>
-		<modelmapper.version>3.0.0</modelmapper.version>
+		<modelmapper.version>3.1.0</modelmapper.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<six2six-fixture-factore.version>3.1.0</six2six-fixture-factore.version>
 		
