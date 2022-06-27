@@ -1,22 +1,25 @@
 package com.thefilipov.food.domain.service;
 
-import java.util.Optional;
-
+import com.thefilipov.food.domain.exception.NegocioException;
+import com.thefilipov.food.domain.exception.UsuarioNaoEncontradoException;
+import com.thefilipov.food.domain.model.Grupo;
+import com.thefilipov.food.domain.model.Usuario;
+import com.thefilipov.food.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thefilipov.food.domain.exception.NegocioException;
-import com.thefilipov.food.domain.exception.UsuarioNaoEncontradoException;
-import com.thefilipov.food.domain.model.Usuario;
-import com.thefilipov.food.domain.repository.UsuarioRepository;
+import java.util.Optional;
 
 @Service
 public class CadastroUsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
+	@Autowired
+	private CadastroGrupoService cadastroGrupo;
+
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		usuarioRepository.detach(usuario);
@@ -41,6 +44,22 @@ public class CadastroUsuarioService {
 		
 		usuario.setSenha(novaSenha);
     }
+
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+
+		usuario.removerGrupo(grupo);
+	}
+
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+
+		usuario.adicionarGrupo(grupo);
+	}
 
 	public Usuario buscarOuFalhar(Long usuarioId) {
 		return usuarioRepository.findById(usuarioId)
