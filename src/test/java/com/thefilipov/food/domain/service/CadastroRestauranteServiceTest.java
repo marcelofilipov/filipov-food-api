@@ -1,20 +1,23 @@
 package com.thefilipov.food.domain.service;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.thefilipov.food.ApplicationConfigTest;
+import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.thefilipov.food.templates.RestauranteTemplates;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @DisplayName("Teste Unitário da class CadastroRestauranteService")
 class CadastroRestauranteServiceTest extends ApplicationConfigTest {
@@ -22,37 +25,74 @@ class CadastroRestauranteServiceTest extends ApplicationConfigTest {
     private static final long ID = 1L;
     private static final String NAME = "Restaurante Sabor do Brasil";
 
+    private static final String RESTAURANTE_NAO_ENCONTRADA = "Não existe um Restaurante cadastrado com o código 1";
+
     @InjectMocks
     private CadastroRestauranteService service;
 
     @Mock
+    private CadastroCozinhaService cozinhaService;
+
+    @Mock
+    private CadastroCidadeService cidadeService;
+
+    @Mock
     private RestauranteRepository repository;
 
-    private Restaurante restaurante;
-    private Optional<Restaurante> optionalRestaurante;
+    private Restaurante saveRestaurante;
+    private Optional<Restaurante> oneRestaurante;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        FixtureFactoryLoader.loadTemplates(RestauranteTemplates.class.getPackage().getName());
         startRestaurante();
     }
 
     @Test
     @DisplayName("Buscar um Restaurante")
     void whenFindByIdThenReturnRestauranteInstance() {
-        Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(optionalRestaurante);
+        when(repository.findById(anyLong())).thenReturn(oneRestaurante);
 
         Restaurante response = service.buscarOuFalhar(ID);
 
-        Assertions.assertAll(() -> Assertions.assertNotNull(response),
-                () -> Assertions.assertEquals(Restaurante.class, response.getClass()),
-                () -> Assertions.assertEquals(ID, response.getId()),
-                () -> Assertions.assertEquals(NAME, response.getNome()));
+        assertAll(() -> assertNotNull(response),
+            () -> assertEquals(Restaurante.class, response.getClass()),
+            () -> assertEquals(ID, response.getId()),
+            () -> assertEquals(NAME, response.getNome()));
+    }
+
+    @Test
+    @DisplayName("Retorna uma exceção quando não encontrar Restaurante")
+    void whenFindByIdThenReturnRestauranteNaoEncontradaException() {
+        when(repository.findById(anyLong())).thenThrow(new RestauranteNaoEncontradoException(ID));
+
+        try {
+            service.buscarOuFalhar(ID);
+        } catch (Exception ex) {
+            assertAll(
+                () -> assertEquals(RestauranteNaoEncontradoException.class, ex.getClass()),
+                () -> assertEquals(RESTAURANTE_NAO_ENCONTRADA, ex.getMessage())
+            );
+        }
+    }
+
+    @RepeatedTest(value = 3)
+    @DisplayName("Insere um Restaurante")
+    void whenCreateThenReturnSuccess() {
+        when(repository.save(any())).thenReturn(saveRestaurante);
+
+        Restaurante response = service.salvar(saveRestaurante);
+
+        assertNotNull(response);
+        assertEquals(Restaurante.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getNome());
     }
 
     private void startRestaurante() {
-        restaurante = new Restaurante(ID, NAME, new BigDecimal(9.99), OffsetDateTime.now(), OffsetDateTime.now(), true);
-        optionalRestaurante = Optional.of(new Restaurante(ID, NAME, new BigDecimal(9.99), OffsetDateTime.now(), OffsetDateTime.now(), true));
+        saveRestaurante = Fixture.from(Restaurante.class).gimme("oneRestaurante");
+        oneRestaurante = Optional.of(Fixture.from(Restaurante.class).gimme("oneRestaurante"));
     }
 
 }

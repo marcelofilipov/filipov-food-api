@@ -3,7 +3,6 @@ package com.thefilipov.food.domain.model;
 import com.thefilipov.food.core.validation.ValueZeroIncludeDescription;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,19 +16,9 @@ import java.util.Set;
 
 @ValueZeroIncludeDescription(valueField = "taxaFrete", descriptionField = "nome", descriptionMandatory = "Frete Grátis")
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
-
-	public Restaurante(Long id, String nome, BigDecimal taxaFrete, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, Boolean ativo) {
-		this.id = id;
-		this.nome = nome;
-		this.taxaFrete = taxaFrete;
-		this.dataCadastro = dataCadastro;
-		this.dataAtualizacao = dataAtualizacao;
-		this.ativo = ativo;
-	}
 
 	@EqualsAndHashCode.Include
 	@Id

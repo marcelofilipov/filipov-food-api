@@ -1,11 +1,11 @@
 package com.thefilipov.food.api.model.input;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -16,8 +16,6 @@ public class EnderecoInput {
 
 	@NotBlank
     private String logradouro;
-
-	@NotBlank
 
 	@NotBlank
     private String numero;
