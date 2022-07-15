@@ -1,14 +1,14 @@
 package com.thefilipov.food.api.assembler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.thefilipov.food.api.model.UsuarioModel;
+import com.thefilipov.food.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.thefilipov.food.api.model.UsuarioModel;
-import com.thefilipov.food.domain.model.Usuario;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UsuarioModelAssembler {
@@ -20,7 +20,7 @@ public class UsuarioModelAssembler {
 		return modelMapper.map(usuario, UsuarioModel.class);
 	}
     
-	public List<UsuarioModel> toCollectionModel(List<Usuario> usuarios) {
+	public List<UsuarioModel> toCollectionModel(Collection<Usuario> usuarios) {
 		return usuarios.stream()
 			.map(usuario -> toModel(usuario))
 			.collect(Collectors.toList());

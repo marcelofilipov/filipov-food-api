@@ -10,6 +10,7 @@ truncate permissao;
 truncate produto;
 truncate restaurante;
 truncate restaurante_forma_pagamento;
+truncate restaurante_usuario_responsavel;
 truncate usuario;
 truncate usuario_grupo;
 
@@ -81,6 +82,9 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (2, 'Maria Joaquina', 'maria.vnd@filfood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@filfood.com', '123', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@filfood.com', '123', utc_timestamp),
-(5, 'Luan Gustavo A Filipov', 'luan.gustavo@filfood.com', '123', utc_timestamp);
+(5, 'Luan Gustavo A Filipov', 'luan.gustavo@filfood.com', '123', utc_timestamp),
+(6, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
