@@ -10,6 +10,7 @@ import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
+import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
@@ -95,6 +96,26 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
+	}
+
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+		try {
+			cadastroRestaurante.ativar(restaurantesIds);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+		try {
+			cadastroRestaurante.inativar(restaurantesIds);
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 
 	@PutMapping("/{restauranteId}/abertura")
