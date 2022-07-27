@@ -50,13 +50,13 @@ public class Restaurante {
 	@Embedded
 	private Endereco endereco;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany //(fetch = FetchType.EAGER)
 	@JoinTable(name = "restaurante_forma_pagamento",
 		joinColumns = @JoinColumn(name = "restaurante_id"),
 		inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany //(fetch = FetchType.EAGER)
 	@JoinTable(name = "restaurante_usuario_responsavel",
 		joinColumns = @JoinColumn(name = "restaurante_id"),
 		inverseJoinColumns = @JoinColumn(name = "usuario_id"))
