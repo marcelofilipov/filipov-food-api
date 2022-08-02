@@ -15,7 +15,7 @@ public class GrupoTemplates implements TemplateLoader {
             add("nome", "Gerente");
         }});
 
-        Fixture.of(GrupoModel.class).addTemplate("oneCozinhaModel", new Rule() {{
+        Fixture.of(GrupoModel.class).addTemplate("oneUsuarioModel", new Rule() {{
             add("id", 1L);
             add("nome", "Gerente");
         }});
