@@ -1,24 +1,15 @@
 package com.thefilipov.food.domain.model;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
+import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -49,7 +40,7 @@ public class Usuario {
     @JoinTable(name = "usuario_grupo",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-    private List<Grupo> grupos = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
 
 	public boolean senhaCoincideCom(String senha) {
 		return getSenha().equals(senha);
@@ -58,5 +49,12 @@ public class Usuario {
 	public boolean senhaNaoCoincideCom(String senha) {
 		return !senhaCoincideCom(senha);
 	}
-	
+
+    public boolean removerGrupo(Grupo grupo) {
+        return getGrupos().remove(grupo);
+    }
+
+    public boolean adicionarGrupo(Grupo grupo) {
+        return getGrupos().add(grupo);
+    }
 }
