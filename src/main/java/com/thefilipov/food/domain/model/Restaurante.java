@@ -3,7 +3,6 @@ package com.thefilipov.food.domain.model;
 import com.thefilipov.food.core.validation.ValueZeroIncludeDescription;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,19 +16,9 @@ import java.util.Set;
 
 @ValueZeroIncludeDescription(valueField = "taxaFrete", descriptionField = "nome", descriptionMandatory = "Frete Grátis")
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
-
-	public Restaurante(Long id, String nome, BigDecimal taxaFrete, OffsetDateTime dataCadastro, OffsetDateTime dataAtualizacao, Boolean ativo) {
-		this.id = id;
-		this.nome = nome;
-		this.taxaFrete = taxaFrete;
-		this.dataCadastro = dataCadastro;
-		this.dataAtualizacao = dataAtualizacao;
-		this.ativo = ativo;
-	}
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -55,15 +44,23 @@ public class Restaurante {
 	private OffsetDateTime dataAtualizacao;
 
 	private Boolean ativo = Boolean.TRUE;
+
+	private Boolean aberto = Boolean.FALSE;
 	
 	@Embedded
 	private Endereco endereco;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany //(fetch = FetchType.EAGER)
 	@JoinTable(name = "restaurante_forma_pagamento",
 		joinColumns = @JoinColumn(name = "restaurante_id"),
 		inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
+
+	@ManyToMany //(fetch = FetchType.EAGER)
+	@JoinTable(name = "restaurante_usuario_responsavel",
+		joinColumns = @JoinColumn(name = "restaurante_id"),
+		inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> responsaveis = new HashSet<>();
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
@@ -76,6 +73,14 @@ public class Restaurante {
 		setAtivo(false);
 	}
 
+	public void abrir() {
+		setAberto(true);
+	}
+
+	public void fechar() {
+		setAberto(false);
+	}
+
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().remove(formaPagamento);
 	}
@@ -83,4 +88,21 @@ public class Restaurante {
 	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().add(formaPagamento);
 	}
+
+	public boolean removerResponsavel(Usuario usuario) {
+		return getResponsaveis().remove(usuario);
+	}
+
+	public boolean adicionarResponsavel(Usuario usuario) {
+		return getResponsaveis().add(usuario);
+	}
+
+	public boolean aceitaFormaPagto(FormaPagamento formaPagamento) {
+		return getFormasPagamento().contains(formaPagamento);
+	}
+
+	public boolean naoAceitaFormaPagto(FormaPagamento formaPagamento) {
+		return !aceitaFormaPagto(formaPagamento);
+	}
+
 }

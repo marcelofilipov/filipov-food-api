@@ -1,15 +1,15 @@
 package com.thefilipov.food.domain.service;
 
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.exception.GrupoNaoEncontradoException;
+import com.thefilipov.food.domain.model.Grupo;
+import com.thefilipov.food.domain.model.Permissao;
+import com.thefilipov.food.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.exception.GrupoNaoEncontradoException;
-import com.thefilipov.food.domain.model.Grupo;
-import com.thefilipov.food.domain.repository.GrupoRepository;
 
 @Service
 public class CadastroGrupoService {
@@ -18,6 +18,9 @@ public class CadastroGrupoService {
 
 	@Autowired
 	private GrupoRepository grupoRepository;
+
+	@Autowired
+	private CadastroPermissaoService cadastroPermissao;
 
 	@Transactional
 	public Grupo salvar(Grupo grupo) {
@@ -37,6 +40,22 @@ public class CadastroGrupoService {
 			throw new EntidadeEmUsoException(
 				String.format(MSG_GRUPO_EM_USO, grupoId));
 		}
+	}
+
+	@Transactional
+	public void desassociarPermissao(Long grupoId, Long permissaoId) {
+		Grupo grupo = buscarOuFalhar(grupoId);
+		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+		grupo.removerPermissao(permissao);
+	}
+
+	@Transactional
+	public void associarPermissao(Long grupoId, Long permissaoId) {
+		Grupo grupo = buscarOuFalhar(grupoId);
+		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+		grupo.adicionarPermissao(permissao);
 	}
 
 	public Grupo buscarOuFalhar(Long grupoId) {

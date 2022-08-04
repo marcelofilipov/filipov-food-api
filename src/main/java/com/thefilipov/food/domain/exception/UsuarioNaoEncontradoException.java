@@ -4,7 +4,7 @@ public class UsuarioNaoEncontradoException extends EntidadeNaoEncontradaExceptio
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String MSG_USUARIO_NAO_ENCONTRADO = "Não existe um cadastro de Usuário com o código %d";
+	private static final String MSG_USUARIO_NAO_ENCONTRADO = "Não existe um Usuário cadastrado com o código %d";
 
 	public UsuarioNaoEncontradoException(String mensagem) {
 		super(mensagem);
