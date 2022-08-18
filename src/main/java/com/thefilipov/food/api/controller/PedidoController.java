@@ -1,7 +1,5 @@
 package com.thefilipov.food.api.controller;
 
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.thefilipov.food.api.assembler.PedidoInput;
 import com.thefilipov.food.api.assembler.PedidoInputDisassembler;
 import com.thefilipov.food.api.assembler.PedidoModelAssembler;
@@ -14,10 +12,8 @@ import com.thefilipov.food.domain.model.Pedido;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.PedidoRepository;
 import com.thefilipov.food.domain.service.EmissaoPedidoService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,6 +38,7 @@ public class PedidoController {
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
 
+/*
     @GetMapping
     public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
         List<Pedido> pedidos = pedidoRepository.findAll();
@@ -60,15 +57,14 @@ public class PedidoController {
 
         return pedidosWrapper;
     }
+*/
 
-/*
     @GetMapping
     public List<PedidoResumoModel> listar() {
         List<Pedido> todosPedidos = pedidoRepository.findAll();
 
         return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
     }
-*/
 
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
