@@ -11,7 +11,9 @@ import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Pedido;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.PedidoRepository;
+import com.thefilipov.food.domain.repository.filter.PedidoFilter;
 import com.thefilipov.food.domain.service.EmissaoPedidoService;
+import com.thefilipov.food.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -60,8 +62,8 @@ public class PedidoController {
 */
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        List<Pedido> todosPedidos = pedidoRepository.findAll();
+    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
 
         return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
     }
