@@ -12,7 +12,7 @@ import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Pedido;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.PedidoRepository;
-import com.thefilipov.food.domain.repository.filter.PedidoFilter;
+import com.thefilipov.food.domain.filter.PedidoFilter;
 import com.thefilipov.food.domain.service.EmissaoPedidoService;
 import com.thefilipov.food.infrastructure.repository.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
