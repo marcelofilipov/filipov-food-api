@@ -1,4 +1,4 @@
-package com.thefilipov.food.domain.repository.filter;
+package com.thefilipov.food.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
