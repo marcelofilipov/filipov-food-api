@@ -92,7 +92,7 @@ public class CozinhaControllerSix2SixTest {
 				.accept(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.*", hasSize(4)));
+			.andExpect(jsonPath("$.content", hasSize(4)));
 
 	}
 
