@@ -1,4 +1,4 @@
-package com.thefilipov.food.infrastructure.service;
+package com.thefilipov.food.infrastructure.service.query;
 
 import com.thefilipov.food.domain.filter.VendaDiariaFilter;
 import com.thefilipov.food.domain.model.Pedido;
