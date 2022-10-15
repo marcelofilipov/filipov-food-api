@@ -15,6 +15,7 @@ truncate usuario;
 truncate usuario_grupo;
 truncate pedido;
 truncate item_pedido;
+truncate foto_produto;
 
 set foreign_key_checks = 1;
 
