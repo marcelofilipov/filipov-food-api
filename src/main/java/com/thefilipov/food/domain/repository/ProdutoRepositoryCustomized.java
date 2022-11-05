@@ -5,4 +5,6 @@ import com.thefilipov.food.domain.model.FotoProduto;
 public interface ProdutoRepositoryCustomized {
 
     FotoProduto save(FotoProduto foto);
+    void delete(FotoProduto foto);
+
 }

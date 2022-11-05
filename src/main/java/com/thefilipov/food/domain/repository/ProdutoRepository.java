@@ -1,5 +1,6 @@
 package com.thefilipov.food.domain.repository;
 
+import com.thefilipov.food.domain.model.FotoProduto;
 import com.thefilipov.food.domain.model.Produto;
 import com.thefilipov.food.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>, Produto
     @Query("from Produto p where p.ativo = true and p.restaurante = :restaurante")
     List<Produto> findAtivosByRestaurante(Restaurante restaurante);
 
+    @Query ("select f from FotoProduto f join f.produto p "
+           +"where p.restaurante.id = :restauranteId and f.produto.id = :produtoId")
+    Optional<FotoProduto> findFotoById(Long restauranteId, Long produtoId);
 }
