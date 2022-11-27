@@ -17,19 +17,19 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>filipov-food-api</name>
-	<description>Elaborar um breve descritivo</description>
+	<description>API de delivery de comida</description>
 
 	<properties>
-		<java.version>13</java.version>
+		<java.version>17</java.version>
 		<modelmapper.version>3.1.0</modelmapper.version>
 		<squiggly.version>1.3.18</squiggly.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<six2six-fixture-factore.version>3.1.0</six2six-fixture-factore.version>
-		<jasperreports.version>6.16.0</jasperreports.version>
+		<jasperreports.version>6.20.0</jasperreports.version>
 
         <jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
-		<jacoco.count.class>50</jacoco.count.class>
+		<jacoco.count.class>70</jacoco.count.class> <!-- Era 50 -->
 		
 		<sonar.exclusions>
 			**/food/jpa/**,
