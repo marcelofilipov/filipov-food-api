@@ -1,5 +1,6 @@
 package com.thefilipov.food.domain.service;
 
+import com.thefilipov.food.domain.exception.FotoProdutoNaoEncontradaException;
 import com.thefilipov.food.domain.model.FotoProduto;
 import com.thefilipov.food.domain.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class CatalogoFotoProdutoService {
         fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
         return foto;
+    }
+
+    public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoById(restauranteId, produtoId)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
     }
 
 }
