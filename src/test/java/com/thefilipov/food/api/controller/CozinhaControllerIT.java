@@ -97,8 +97,8 @@ public class CozinhaControllerIT {
         .when()
             .get()
         .then()
-            .body("", hasSize(quantidadeCozinhasCadastradas))
-            .body("nome", hasItems("Americana", "Brasileira"));
+            .body("content.totalElements", hasSize(quantidadeCozinhasCadastradas))
+            .body("content.nome", hasItems("Americana", "Brasileira"));
     }
 
     @Test

@@ -75,7 +75,7 @@ class CadastroProdutoServiceTest extends ApplicationConfigTest {
     @RepeatedTest(value = 3)
     @DisplayName("Insere um Produto")
     void whenCreateThenReturnSuccess() {
-        when(repository.save(any())).thenReturn(saveProduto);
+        when(repository.save((Produto) any())).thenReturn(saveProduto);
 
         Produto response = service.salvar(saveProduto);
 
@@ -89,6 +89,5 @@ class CadastroProdutoServiceTest extends ApplicationConfigTest {
         saveProduto = Fixture.from(Produto.class).gimme("oneProduto");
         oneProduto = Optional.of(Fixture.from(Produto.class).gimme("oneProduto"));
     }
-
 
 }
