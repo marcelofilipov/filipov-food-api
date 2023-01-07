@@ -26,6 +26,7 @@
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<six2six-fixture-factore.version>3.1.0</six2six-fixture-factore.version>
 		<jasperreports.version>6.20.0</jasperreports.version>
+		<aws-java-sdk-s3.version>1.12.379</aws-java-sdk-s3.version>
 
         <jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
@@ -206,12 +207,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Six2Six -->
 		<dependency>
 			<groupId>br.com.six2six</groupId>
 			<artifactId>fixture-factory</artifactId>
 			<version>${six2six-fixture-factore.version}</version>
 		</dependency>
-		
+
+		<!-- S3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
