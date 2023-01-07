@@ -1,6 +1,10 @@
 package com.thefilipov.food.infrastructure.service.storage;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.thefilipov.food.core.storage.StorageProperties;
 import com.thefilipov.food.domain.service.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,9 @@ public class S3FotoStorageService implements FotoStorageService {
     @Autowired
     private AmazonS3 amazonS3;
 
+    @Autowired
+    private StorageProperties storageProperties;
+
     @Override
     public InputStream recuperar(String nomeArquivo) {
         return null;
@@ -20,6 +27,21 @@ public class S3FotoStorageService implements FotoStorageService {
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
+        try {
+            String caminhoArquivo = getCaminhoArquivo(novaFoto.getNomeArquivo());
+
+            var objectMetaData = new ObjectMetadata();
+            objectMetaData.setContentType(novaFoto.getContentType());
+
+            var putObjectRequest = new PutObjectRequest(
+                    storageProperties.getS3().getBucket(),
+                    caminhoArquivo, novaFoto.getInputStream(), objectMetaData)
+                .withCannedAcl(CannedAccessControlList.PublicRead);
+
+            amazonS3.putObject(putObjectRequest);
+        } catch (Exception e) {
+            throw new StorageException("Não foi possível enviar arquivo para Amazon S3", e);
+        }
 
     }
 
@@ -27,4 +49,9 @@ public class S3FotoStorageService implements FotoStorageService {
     public void remover(String nomeArquivo) {
 
     }
+
+    private String getCaminhoArquivo(String nomeArquivo) {
+        return String.format("%s/%s", storageProperties.getS3().getDiretorioFotos(), nomeArquivo);
+    }
+
 }
