@@ -30,7 +30,7 @@
 
         <jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
-		<jacoco.count.class>75</jacoco.count.class> <!-- Era 70 -->
+		<jacoco.count.class>66</jacoco.count.class> <!-- Era 75 -->
 		
 		<sonar.exclusions>
 			**/food/jpa/**
