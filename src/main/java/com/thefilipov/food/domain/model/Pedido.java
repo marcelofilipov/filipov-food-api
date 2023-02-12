@@ -90,13 +90,13 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
     public void confirmar() {
         setStatus(StatusPedido.CONFIRMADO);
         setDataConfirmacao(OffsetDateTime.now());
+
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
     public void entregar() {
         setStatus(StatusPedido.ENTREGUE);
         setDataEntrega(OffsetDateTime.now());
-
-        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
     public void cancelar() {
