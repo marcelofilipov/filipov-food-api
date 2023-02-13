@@ -29,14 +29,16 @@
 		<aws-java-sdk-s3.version>1.12.379</aws-java-sdk-s3.version>
 
         <jacoco.version>0.8.8</jacoco.version>
-		<jacoco.percentage.instruction>0.08</jacoco.percentage.instruction>
-		<jacoco.count.class>66</jacoco.count.class> <!-- Era 75 -->
+		<jacoco.percentage.instruction>0.18</jacoco.percentage.instruction>
+		<jacoco.count.class>67</jacoco.count.class> <!-- Era 70 -->
 		
 		<sonar.exclusions>
+			**/food/domain/event/**,
 			**/food/jpa/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/food/api/model/**,
+			**/food/domain/event/**,
 			**/food/domain/model/**,
 			**/food/jpa/**
 		</sonar.coverage.exclusions>
@@ -90,6 +92,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
 
 
