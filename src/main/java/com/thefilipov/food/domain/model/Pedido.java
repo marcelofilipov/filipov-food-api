@@ -1,5 +1,6 @@
 package com.thefilipov.food.domain.model;
 
+import com.thefilipov.food.domain.event.PedidoCanceladoEvent;
 import com.thefilipov.food.domain.event.PedidoConfirmadoEvent;
 import com.thefilipov.food.domain.exception.NegocioException;
 import lombok.Data;
@@ -102,6 +103,8 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
     public void cancelar() {
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(OffsetDateTime.now());
+
+        registerEvent(new PedidoCanceladoEvent(this));
     }
 
     private void setStatus(StatusPedido novoStatus) {

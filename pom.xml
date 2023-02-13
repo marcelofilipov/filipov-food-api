@@ -33,10 +33,12 @@
 		<jacoco.count.class>70</jacoco.count.class> <!-- Era 66 -->
 		
 		<sonar.exclusions>
+			**/food/domain/event/**,
 			**/food/jpa/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/food/api/model/**,
+			**/food/domain/event/**,
 			**/food/domain/model/**,
 			**/food/jpa/**
 		</sonar.coverage.exclusions>
