@@ -29,16 +29,22 @@
 		<aws-java-sdk-s3.version>1.12.379</aws-java-sdk-s3.version>
 
         <jacoco.version>0.8.8</jacoco.version>
-		<jacoco.percentage.instruction>0.18</jacoco.percentage.instruction>
-		<jacoco.count.class>67</jacoco.count.class> <!-- Era 70 -->
+		<jacoco.percentage.instruction>0.20</jacoco.percentage.instruction>
+		<jacoco.count.class>63</jacoco.count.class>
 		
 		<sonar.exclusions>
+			**/food/core/validation**,
 			**/food/domain/event/**,
+			**/food/domain/exception/**,
+			**/food/domain/filter/**,
 			**/food/jpa/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/food/api/model/**,
+			**/food/core/validation**,
 			**/food/domain/event/**,
+			**/food/domain/exception/**,
+			**/food/domain/filter/**,
 			**/food/domain/model/**,
 			**/food/jpa/**
 		</sonar.coverage.exclusions>
