@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 public class PageableTranslator {
 
+    private PageableTranslator() {
+        throw new IllegalStateException("Pageable Translator class");
+    }
+
     public static Pageable translate(Pageable pageable, Map<String, String> fieldsMapping) {
         var orders = pageable.getSort().stream()
                 .filter(order -> fieldsMapping.containsKey(order.getProperty()))

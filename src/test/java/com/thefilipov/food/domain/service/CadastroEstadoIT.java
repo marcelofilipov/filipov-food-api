@@ -1,13 +1,12 @@
 package com.thefilipov.food.domain.service;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import javax.validation.ConstraintViolationException;
-
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.model.Estado;
+import com.thefilipov.food.domain.repository.EstadoRepository;
+import com.thefilipov.food.util.DatabaseCleaner;
+import com.thefilipov.food.util.ResourceUtils;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.model.Estado;
-import com.thefilipov.food.domain.repository.EstadoRepository;
-import com.thefilipov.food.util.DatabaseCleaner;
-import com.thefilipov.food.util.ResourceUtils;
+import javax.validation.ConstraintViolationException;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -62,7 +58,8 @@ public class CadastroEstadoIT {
         databaseCleaner.clearTables();
         preparingData();
 
-        jsonCorretoEstadoRioDeJaneiro = ResourceUtils.getContentFromResource("/json/ok/estado-riodejaneiro.json");
+        jsonCorretoEstadoRioDeJaneiro = ResourceUtils
+                .getContentFromResource("/json/ok/estado-riodejaneiro.json");
     }
 
     @Test
@@ -109,8 +106,8 @@ public class CadastroEstadoIT {
         .when()
             .get()
         .then()
-            .body("", hasSize(quantidadeEstadosCadastrados))
-            .body("nome", hasItems("São Paulo", "Amazonas"));
+            .body("content.totalElements", hasSize(quantidadeEstadosCadastrados))
+            .body("content.nome", hasItems("São Paulo", "Amazonas"));
     }
 
     @Test
@@ -155,7 +152,7 @@ public class CadastroEstadoIT {
         });
     }
 
-    /*
+/*
     @Test
     @DisplayName("Falhar quando tentar Excluir um Estado Em Uso")
     public void shouldFail_whenExcluirCozinhaEmUso() {
@@ -163,7 +160,7 @@ public class CadastroEstadoIT {
             estadoService.excluir(1L);
         });
     }
-    */
+*/
 
     @Test
     @DisplayName("Falhar quando tentar Excluir um Estado Inexistente")

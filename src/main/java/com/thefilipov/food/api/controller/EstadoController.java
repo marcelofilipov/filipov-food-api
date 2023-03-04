@@ -1,21 +1,5 @@
 package com.thefilipov.food.api.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.thefilipov.food.api.assembler.EstadoInputDisassembler;
 import com.thefilipov.food.api.assembler.EstadoModelAssembler;
 import com.thefilipov.food.api.model.EstadoModel;
@@ -23,10 +7,22 @@ import com.thefilipov.food.api.model.input.EstadoInput;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
 import com.thefilipov.food.domain.service.CadastroEstadoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/estados")
+@RequestMapping(EstadoController.URI)
 public class EstadoController {
+
+	public static final String URI = "/estados";
 
 	@Autowired
 	private EstadoRepository estadoRepository;
@@ -41,10 +37,12 @@ public class EstadoController {
 	private EstadoInputDisassembler estadoInputDisassembler;
 	
 	@GetMapping
-	public List<EstadoModel> listar() {
-		List<Estado> todosEstados = estadoRepository.findAll();
+	public Page<EstadoModel> listar(@PageableDefault(size = 10) Pageable pageable) {
+		Page<Estado> estadoPage = estadoRepository.findAll(pageable);
+
+		List<EstadoModel> estadosModel = estadoModelAssembler.toCollectionModel(estadoPage.getContent());
 		
-		return estadoModelAssembler.toCollectionModel(todosEstados);
+		return new PageImpl<>(estadosModel, pageable, estadoPage.getTotalElements());
 	}
 
 	@GetMapping("/{estadoId}")
