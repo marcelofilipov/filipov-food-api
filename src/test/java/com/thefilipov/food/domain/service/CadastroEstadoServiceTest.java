@@ -1,6 +1,7 @@
 package com.thefilipov.food.domain.service;
 
 import com.thefilipov.food.ApplicationConfigTest;
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
@@ -15,8 +16,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroEstadoService")
 public class CadastroEstadoServiceTest extends ApplicationConfigTest {
@@ -41,7 +43,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	
 	@Test
 	@DisplayName("Buscar um Estado da Federação do Brasil")
-	void deveBuscarUmEstado() {
+	void whenFindOneEstado() {
 		when(repository.findById(anyLong())).thenReturn(optionalEstado);
 		
 		Estado response = service.buscarOuFalhar(ID);
@@ -53,8 +55,8 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	}
 	
 	@Test
-	@DisplayName("Retorna uma exceção quando não encontrar Estado da Federação do Brasil")
-	void whenFindByIdThenReturnAnObjectNotFoundException() {
+	@DisplayName("Deve lançar EstadoNaoEncontradoException ao tentar excluir um Estado não encontrado")
+	void throwEstadoNaoEncontradoExceptionWhenTryingToDeleteEstadoThatNotExist() {
 		when(repository.findById(anyLong())).thenThrow(new EstadoNaoEncontradoException(ID));
 		try {
 			service.buscarOuFalhar(ID);
@@ -63,7 +65,28 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 			assertEquals("Não existe um Estado cadastrado com o código 1", ex.getMessage());
 		}
 	}
-	
+
+	@Test
+	@DisplayName("Deve lançar EntidadeEmUsoException ao tentar excluir um Estado em uso")
+	void throwEntidadeEmUsoExceptionWhenTryingToDeleteEstadoInUse() {
+		when(repository.findById(anyLong())).thenReturn(optionalEstado);
+		doThrow(EntidadeEmUsoException.class).when(repository).deleteById(1L);
+
+		assertThrows(EntidadeEmUsoException.class, () -> service.excluir(1L));
+
+		verify(repository, times(1)).deleteById(1L);
+	}
+
+	@Test
+	@DisplayName("Deve excluir um Estado com sucesso")
+	void whenDeleteEstadoWithSuccess() {
+		when(repository.findById(1L)).thenReturn(optionalEstado);
+
+		service.excluir(1L);
+
+		verify(repository, times(1)).deleteById(1L);
+	}
+
 	private void startEstado() {
 		estado = new Estado(ID, NAME);
 		optionalEstado = Optional.of(new Estado(ID, NAME));
