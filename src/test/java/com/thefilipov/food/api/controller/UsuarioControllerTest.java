@@ -9,6 +9,7 @@ import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.UsuarioRepository;
 import com.thefilipov.food.domain.service.CadastroUsuarioService;
 import com.thefilipov.food.templates.UsuarioTemplates;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-class UsuarioControllerTest {
+@Slf4j
+public class UsuarioControllerTest {
 
     private static final long ID = 1L;
     private static final String NAME = "Gilmar Lopes Assis";
@@ -35,6 +38,8 @@ class UsuarioControllerTest {
     private UsuarioModel usuarioModel;
 
     private List<Usuario> fourUsuarios;
+
+    private List<UsuarioModel> fourUsuariosModel;
 
     @InjectMocks
     private UsuarioController usuarioController;
@@ -70,11 +75,14 @@ class UsuarioControllerTest {
     }
 
     @Test
-    void listar() {
-    }
+    void whenFindAllThenReturnAListOfUsuarioModel() {
+        when(usuarioRepository.findAll()).thenReturn(fourUsuarios);
 
-    @Test
-    void buscar() {
+        List<UsuarioModel> response = usuarioModelAssembler.toCollectionModel(fourUsuarios);
+
+        assertNotNull(response);
+        assertEquals(LinkedList.class, response.getClass());
+        //assertEquals(UsuarioModel.class, response.get(0).getClass());
     }
 
     @Test
@@ -93,6 +101,7 @@ class UsuarioControllerTest {
         usuario = Fixture.from(Usuario.class).gimme("oneUsuario");
         usuarioModel = Fixture.from(UsuarioModel.class).gimme("oneUsuarioModel");
         fourUsuarios = Fixture.from(Usuario.class).gimme(4, "anyUsuario");
+        fourUsuariosModel = Fixture.from(UsuarioModel.class).gimme(4, "anyUsuarioModel");
     }
 
 }
