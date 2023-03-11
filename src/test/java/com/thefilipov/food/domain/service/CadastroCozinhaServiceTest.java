@@ -48,8 +48,8 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 		FixtureFactoryLoader.loadTemplates(CozinhaTemplates.class.getPackage().getName());
 		startCozinha();
 	}
-	
-	@Test
+
+	@RepeatedTest(value = 3)
 	@DisplayName("Buscar uma Cozinha")
 	void whenFindByIdThenReturnCozinhaInstance() {
 		when(repository.findById(anyLong())).thenReturn(oneCozinha);
@@ -78,7 +78,7 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 		}
 	}
 
-	@RepeatedTest(value = 3)
+	@Test
 	@DisplayName("Insere uma Cozinha")
 	void whenCreateThenReturnSuccess() {
 		when(repository.save(any())).thenReturn(saveCozinha);
