@@ -1,20 +1,5 @@
 package com.thefilipov.food.api.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.thefilipov.food.api.assembler.UsuarioInputDisassembler;
 import com.thefilipov.food.api.assembler.UsuarioModelAssembler;
 import com.thefilipov.food.api.model.UsuarioModel;
@@ -24,6 +9,15 @@ import com.thefilipov.food.api.model.input.UsuarioInput;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.UsuarioRepository;
 import com.thefilipov.food.domain.service.CadastroUsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -42,10 +36,14 @@ public class UsuarioController {
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 
 	@GetMapping
-	public List<UsuarioModel> listar() {
+	public ResponseEntity<List<UsuarioModel>> listar() {
 		List<Usuario> todasUsuarios = usuarioRepository.findAll();
 
-		return usuarioModelAssembler.toCollectionModel(todasUsuarios);
+		List<UsuarioModel> usuariosModel = usuarioModelAssembler.toCollectionModel(todasUsuarios);
+
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePrivate())
+				.body(usuariosModel);
 	}
 
     @GetMapping("/{usuarioId}")
