@@ -27,7 +27,7 @@ class CadastroUsuarioServiceTest extends ApplicationConfigTest {
     private static final long NONEXISTENT = 100L;
     private static final String NAME = "Maria Joaquina";
     private static final String EMAIL = "maria.vnd@filfood.com";
-    private static final String SENHA = "123";
+    private static final String SENHA = "(S2Bq53>";
     private static final String USUARIO_NAO_ENCONTRADO = "Não existe um Usuário cadastrado com o código 1";
 
     @InjectMocks
