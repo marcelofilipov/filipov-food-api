@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping(UsuarioController.URI)
 public class UsuarioController {
+
+	public static final String URI = "/usuarios";
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;

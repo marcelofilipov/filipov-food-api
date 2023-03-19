@@ -1,6 +1,7 @@
 package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.ApplicationConfigTest;
 import com.thefilipov.food.api.model.input.CozinhaInput;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
@@ -11,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -24,10 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestPropertySource("/application-test.properties")
-public class CozinhaControllerTest {
+public class CozinhaControllerTest extends ApplicationConfigTest {
 	
 	private static final long ID = 1L;
 	private static final String NAME = "Tailandesa";
