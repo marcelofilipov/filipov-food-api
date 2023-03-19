@@ -17,6 +17,7 @@ import java.util.List;
 @Repository
 public class VendaQueryServiceImpl implements VendaQueryService {
 
+    public static final String DATA_CRIACAO = "dataCriacao";
     @PersistenceContext
     private EntityManager manager;
 
@@ -28,7 +29,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         var predicates = new ArrayList<Predicate>();
 
         var functionConvertTzDataCriacao = builder.function(
-                "convert_tz", Date.class, root.get("dataCriacao"),
+                "convert_tz", Date.class, root.get(DATA_CRIACAO),
                 builder.literal("+00:00"), builder.literal(timeOffset));
 
         var functionDateDataCriacao = builder.function(
@@ -44,12 +45,12 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         }
 
         if (filtro.getDataCriacaoInicio() != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"),
+            predicates.add(builder.greaterThanOrEqualTo(root.get(DATA_CRIACAO),
                     filtro.getDataCriacaoInicio()));
         }
 
         if (filtro.getDataCriacaoFim() != null) {
-            predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"),
+            predicates.add(builder.lessThanOrEqualTo(root.get(DATA_CRIACAO),
                     filtro.getDataCriacaoFim()));
         }
 
