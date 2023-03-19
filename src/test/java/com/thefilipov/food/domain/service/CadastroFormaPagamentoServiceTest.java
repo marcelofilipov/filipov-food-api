@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +24,7 @@ public class CadastroFormaPagamentoServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
 	private static final String DESCRIPTION = "Dinheiro";
+	private static final OffsetDateTime NOW = OffsetDateTime.now();
 
 	@InjectMocks
 	private CadastroFormaPagamentoService service;
@@ -50,6 +52,7 @@ public class CadastroFormaPagamentoServiceTest extends ApplicationConfigTest {
 		assertEquals(FormaPagamento.class, response.getClass());
 		assertEquals(ID, response.getId());
 		assertEquals(DESCRIPTION, response.getDescricao());
+		assertEquals(NOW, response.getDataAtualizacao());
 	}
 	@Test
 	@DisplayName("Deve lançar FormaPagamentoNaoEncontradaException ao tentar excluir uma Forma Pagto não encontrada")
@@ -86,8 +89,8 @@ public class CadastroFormaPagamentoServiceTest extends ApplicationConfigTest {
 
 
 	private void startFormaPagto() {
-		formaPagto = new FormaPagamento(ID, DESCRIPTION);
-		optionalFormaPagto = Optional.of(new FormaPagamento(ID, DESCRIPTION));
+		formaPagto = new FormaPagamento(ID, DESCRIPTION, NOW);
+		optionalFormaPagto = Optional.of(new FormaPagamento(ID, DESCRIPTION, NOW));
 	}
 
 }
