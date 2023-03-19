@@ -42,6 +42,7 @@ insert into estado (id, nome) values (2, 'São Paulo');
 insert into estado (id, nome) values (3, 'Ceará');
 insert into estado (id, nome) values (4, 'Paraná');
 insert into estado (id, nome) values (5, 'Amazonas');
+insert into estado (id, nome) values (99, 'Estado Sem Cidades');
 
 insert into cidade (id, nome, estado_id) values (1, 'Uberlândia', 1);
 insert into cidade (id, nome, estado_id) values (2, 'Belo Horizonte', 1);
