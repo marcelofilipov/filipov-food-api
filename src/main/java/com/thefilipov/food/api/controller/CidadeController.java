@@ -2,6 +2,7 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.CidadeInputDisassembler;
 import com.thefilipov.food.api.assembler.CidadeModelAssembler;
+import com.thefilipov.food.api.exceptionhandler.Problem;
 import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.api.model.input.CidadeInput;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
@@ -12,6 +13,10 @@ import com.thefilipov.food.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +50,12 @@ public class CidadeController {
 	}
 
 	@ApiOperation("Busca uma cidade por ID")
+	@ApiResponses({
+			@ApiResponse(responseCode = "400", description = "ID da cidade inválido",
+					content = @Content(schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(responseCode = "404", description = "Cidade não encontrada",
+					content = @Content(schema = @Schema(implementation = Problem.class)))
+	})
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(
 			@ApiParam(value = "ID de uma cidade", example = "1")
@@ -55,6 +66,9 @@ public class CidadeController {
 	}
 
 	@ApiOperation("Cadastra uma cidade")
+	@ApiResponses({
+			@ApiResponse(responseCode = "201", description = "Cidade cadastrada"),
+	})
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(
@@ -71,6 +85,11 @@ public class CidadeController {
 	}
 
 	@ApiOperation("Atualiza uma cidade por ID")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Cidade atualizada"),
+			@ApiResponse(responseCode = "404", description = "Cidade não encontrada",
+					content = @Content(schema = @Schema(implementation = Problem.class)))
+	})
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(
 			@ApiParam(value = "ID de uma cidade", example = "1")
@@ -90,6 +109,11 @@ public class CidadeController {
 	}
 
 	@ApiOperation("Exclui uma cidade por ID")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "Cidade excluída"),
+			@ApiResponse(responseCode = "404", description = "Cidade não encontrada",
+					content = @Content(schema = @Schema(implementation = Problem.class)))
+	})
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(
