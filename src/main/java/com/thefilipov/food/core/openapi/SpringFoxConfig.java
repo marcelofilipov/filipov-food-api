@@ -1,5 +1,8 @@
 package com.thefilipov.food.core.openapi;
 
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.thefilipov.food.api.exceptionhandler.Problem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,6 +18,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
@@ -31,6 +35,8 @@ public class SpringFoxConfig {
 
     @Bean
     public Docket apiDocket() {
+        var typeResolver = new TypeResolver();
+
         return new Docket(DocumentationType.OAS_30)
                 .select()
                     .apis(RequestHandlerSelectors.basePackage("com.thefilipov.food"))
@@ -42,8 +48,14 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.POST, globalPostOrPutResponseMessages())
                 .globalResponses(HttpMethod.PUT, globalPostOrPutResponseMessages())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+                .additionalModels(typeResolver.resolve(Problem.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"));
+    }
+
+    @Bean
+    public JacksonModuleRegistrar springFoxJacksonConfig() {
+        return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
     }
 
     private List<Response> globalGetResponseMessages() {
