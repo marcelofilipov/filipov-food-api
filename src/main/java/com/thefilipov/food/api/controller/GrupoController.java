@@ -10,6 +10,7 @@ import com.thefilipov.food.domain.repository.GrupoRepository;
 import com.thefilipov.food.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     private GrupoInputDisassembler grupoInputDisassembler;
     
     @Override
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GrupoModel> listar() {
         List<Grupo> todosGrupos = grupoRepository.findAll();
         
@@ -40,7 +41,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     }
     
     @Override
-    @GetMapping("/{grupoId}")
+    @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoModel buscar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
         
@@ -48,7 +49,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     }
     
     @Override
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
@@ -59,7 +60,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     }
     
     @Override
-    @PutMapping("/{grupoId}")
+    @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoModel atualizar(@PathVariable Long grupoId,
                                 @RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
