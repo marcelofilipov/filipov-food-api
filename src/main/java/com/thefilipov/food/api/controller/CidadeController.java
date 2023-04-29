@@ -2,7 +2,7 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.CidadeInputDisassembler;
 import com.thefilipov.food.api.assembler.CidadeModelAssembler;
-import com.thefilipov.food.api.controller.documentation.CidadeControllerDocumentation;
+import com.thefilipov.food.api.openapi.controller.CidadeControllerDocumentation;
 import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.api.model.input.CidadeInput;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;

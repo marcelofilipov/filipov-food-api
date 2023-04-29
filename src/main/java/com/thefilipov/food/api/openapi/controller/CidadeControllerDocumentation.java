@@ -1,4 +1,4 @@
-package com.thefilipov.food.api.controller.documentation;
+package com.thefilipov.food.api.openapi.controller;
 
 import com.thefilipov.food.api.exceptionhandler.Problem;
 import com.thefilipov.food.api.model.CidadeModel;
