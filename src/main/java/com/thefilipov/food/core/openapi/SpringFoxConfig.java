@@ -59,7 +59,8 @@ public class SpringFoxConfig {
                         typeResolver.resolve(Page.class, CozinhaModel.class),
                         CozinhasModelDocumentation.class))
                 .apiInfo(apiInfo())
-                .tags(new Tag("Cidades", "Gerencia as cidades"),
+                .tags(new Tag("Cozinhas", "Gerencia as cozinhas"),
+                        new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuários"));
     }
 
