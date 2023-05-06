@@ -35,7 +35,7 @@
 
 		<jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.31</jacoco.percentage.instruction>
-		<jacoco.count.class>55</jacoco.count.class>
+		<jacoco.count.class>56</jacoco.count.class>
 
 		<sonar.exclusions>
 			**/food/core/validation**,

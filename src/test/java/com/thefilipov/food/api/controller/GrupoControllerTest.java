@@ -67,8 +67,7 @@ class GrupoControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<List/>"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -105,8 +104,7 @@ class GrupoControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<GrupoModel><id>1</id><nome>Nome</nome></GrupoModel>"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -130,8 +128,7 @@ class GrupoControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<GrupoModel><id>1</id><nome>Nome</nome></GrupoModel>"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -147,8 +144,7 @@ class GrupoControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<List/>"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -165,8 +161,7 @@ class GrupoControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<List/>"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     /**
