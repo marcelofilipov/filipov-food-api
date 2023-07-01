@@ -8,7 +8,7 @@ import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.api.model.view.RestauranteView;
-import com.thefilipov.food.api.openapi.model.RestauranteBasicoModelDocumentation;
+import com.thefilipov.food.api.openapi.controller.RestauranteControllerDocumentation;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
@@ -17,12 +17,10 @@ import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -38,7 +36,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
-public class RestauranteController {
+public class RestauranteController implements RestauranteControllerDocumentation {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -55,20 +53,14 @@ public class RestauranteController {
 	@Autowired
 	private SmartValidator smartValidator;
 
-	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelDocumentation.class)
-	@ApiImplicitParams({
-			@ApiImplicitParam(value = "Nome da projeção de pedidos", name = "projecao",
-				allowableValues = "apenas-nome", paramType = "query", type = "string")
-	})
 	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
-	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params ="projecao=apenas-nome")
+	@GetMapping(params ="projecao=apenas-nome", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<RestauranteModel> listarResumido() {
 		return listar();
 	}
@@ -95,14 +87,14 @@ public class RestauranteController {
 //		return listar();
 //	}
 
-	@GetMapping("/{restauranteId}")
+	@GetMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		return restauranteModelAssembler.toModel(restaurante);
 	}
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
@@ -114,7 +106,7 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{restauranteId}")
+	@PutMapping(path ="/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
@@ -127,19 +119,19 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{restauranteId}/ativo")
+	@PutMapping(path ="/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
 	}
 	
-	@DeleteMapping("/{restauranteId}/ativo")
+	@DeleteMapping(path ="/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
 	}
 
-	@PutMapping("/ativacoes")
+	@PutMapping(path ="/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 		try {
@@ -149,7 +141,7 @@ public class RestauranteController {
 		}
 	}
 
-	@DeleteMapping("/ativacoes")
+	@DeleteMapping(path ="/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 		try {
@@ -159,13 +151,13 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{restauranteId}/abertura")
+	@PutMapping(path ="/{restauranteId}/abertura", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void abrir(@PathVariable Long restauranteId) {
 		cadastroRestaurante.abrir(restauranteId);
 	}
 
-	@PutMapping("/{restauranteId}/fechamento")
+	@PutMapping(path ="/{restauranteId}/fechamento", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fechar(restauranteId);
@@ -214,7 +206,6 @@ public class RestauranteController {
 		} catch (IllegalArgumentException e) {
 			Throwable rootCause = ExceptionUtils.getRootCause(e);
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
-
 		}
 
 	}

@@ -28,7 +28,7 @@ public interface GrupoControllerDocumentation {
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     GrupoModel buscar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
             @PathVariable Long grupoId);
 
     @ApiOperation("Cadastra um grupo")
@@ -36,7 +36,7 @@ public interface GrupoControllerDocumentation {
             @ApiResponse(responseCode = "201", description = "Grupo cadastrado"),
     })
     GrupoModel adicionar(
-            @ApiParam(name = "corpo", value = "Representação de um novo grupo")
+            @ApiParam(name = "corpo", value = "Representação de um novo grupo", required = true)
             GrupoInput grupoInput);
 
     @ApiOperation("Atualiza um grupo por ID")
@@ -49,7 +49,7 @@ public interface GrupoControllerDocumentation {
             @ApiParam(value = "ID de um grupo", example = "1")
             Long grupoId,
 
-            @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados")
+            @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados", required = true)
             GrupoInput grupoInput);
 
     @ApiOperation("Exclui um grupo por ID")
@@ -59,6 +59,6 @@ public interface GrupoControllerDocumentation {
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
     void remover(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
             Long grupoId);
 }
