@@ -8,6 +8,7 @@ import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.api.model.view.RestauranteView;
+import com.thefilipov.food.api.openapi.model.RestauranteBasicoModelDocumentation;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
@@ -16,6 +17,9 @@ import com.thefilipov.food.domain.exception.RestauranteNaoEncontradoException;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,12 +55,18 @@ public class RestauranteController {
 	@Autowired
 	private SmartValidator smartValidator;
 
+	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelDocumentation.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(value = "Nome da projeção de pedidos", name = "projecao",
+				allowableValues = "apenas-nome", paramType = "query", type = "string")
+	})
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
+	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params ="projecao=apenas-nome")
 	public List<RestauranteModel> listarResumido() {
