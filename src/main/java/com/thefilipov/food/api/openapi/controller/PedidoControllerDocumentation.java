@@ -22,13 +22,13 @@ public interface PedidoControllerDocumentation {
                     name = "campos", paramType = "query", type = "string")
     })
     @ApiOperation("Pesquisa os pedidos")
-    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
+    Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
 
     @ApiOperation("Registra um pedido")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Pedido registrado"),
     })
-    public PedidoModel adicionar(
+    PedidoModel adicionar(
             @ApiParam(name = "corpo", value = "Representação de um novo pedido", required = true)
             PedidoInput pedidoInput);
 
@@ -41,7 +41,7 @@ public interface PedidoControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public PedidoModel buscar(
+    PedidoModel buscar(
             @ApiParam(value = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55", required = true)
             String codigoPedido);
 }

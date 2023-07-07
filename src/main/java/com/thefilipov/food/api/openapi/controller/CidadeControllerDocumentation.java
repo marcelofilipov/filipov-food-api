@@ -26,7 +26,7 @@ public interface CidadeControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public CidadeModel buscar(
+    CidadeModel buscar(
             @ApiParam(value = "ID de uma cidade", example = "1", required = true)
             Long cidadeId);
 
@@ -34,7 +34,7 @@ public interface CidadeControllerDocumentation {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Cidade cadastrada"),
     })
-    public CidadeModel adicionar(
+    CidadeModel adicionar(
             @ApiParam(name = "corpo", value = "Representação de uma nova cidade", required = true)
             CidadeInput cidadeInput);
 
@@ -44,7 +44,7 @@ public interface CidadeControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public CidadeModel atualizar(
+    CidadeModel atualizar(
             @ApiParam(value = "ID de uma cidade", example = "1", required = true)
             Long cidadeId,
 
@@ -57,7 +57,7 @@ public interface CidadeControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public void remover(
+    void remover(
             @ApiParam(value = "ID de uma cidade", example = "1", required = true)
             Long cidadeId);
 

@@ -20,7 +20,7 @@ import java.util.List;
 public interface FormaPagamentoControllerDocumentation {
 
     @ApiOperation("Lista as formas de pagamento")
-    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request);
+    ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request);
 
     @ApiOperation("Busca uma forma de pagamento por ID")
     @ApiResponses({
@@ -29,7 +29,7 @@ public interface FormaPagamentoControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public ResponseEntity<FormaPagamentoModel> buscar(
+    ResponseEntity<FormaPagamentoModel> buscar(
             @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)
             Long formaPagamentoId,
 
@@ -39,7 +39,7 @@ public interface FormaPagamentoControllerDocumentation {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Forma de pagamento cadastrada"),
     })
-    public FormaPagamentoModel adicionar(
+    FormaPagamentoModel adicionar(
             @ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento", required = true)
             FormaPagamentoInput formaPagamentoInput);
 
@@ -49,7 +49,7 @@ public interface FormaPagamentoControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public FormaPagamentoModel atualizar(
+    FormaPagamentoModel atualizar(
             @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)
             Long formaPagamentoId,
 
@@ -62,7 +62,7 @@ public interface FormaPagamentoControllerDocumentation {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada",
                     content = @Content(schema = @Schema(implementation = Problem.class)))
     })
-    public void remover(
+    void remover(
             @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)
             @PathVariable Long formaPagamentoId);
 

@@ -35,8 +35,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/restaurantes")
+@RequestMapping(path = RestauranteController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerDocumentation {
+
+	public static final String URI = "/restaurantes";
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -54,13 +56,13 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	private SmartValidator smartValidator;
 
 	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
 	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params ="projecao=apenas-nome", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(params ="projecao=apenas-nome")
 	public List<RestauranteModel> listarResumido() {
 		return listar();
 	}
@@ -87,14 +89,14 @@ public class RestauranteController implements RestauranteControllerDocumentation
 //		return listar();
 //	}
 
-	@GetMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		return restauranteModelAssembler.toModel(restaurante);
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
@@ -106,7 +108,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 		}
 	}
 
-	@PutMapping(path ="/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/{restauranteId}")
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
@@ -119,19 +121,19 @@ public class RestauranteController implements RestauranteControllerDocumentation
 		}
 	}
 
-	@PutMapping(path ="/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
 	}
 	
-	@DeleteMapping(path ="/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
 	}
 
-	@PutMapping(path ="/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 		try {
@@ -141,7 +143,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 		}
 	}
 
-	@DeleteMapping(path ="/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 		try {
@@ -151,13 +153,13 @@ public class RestauranteController implements RestauranteControllerDocumentation
 		}
 	}
 
-	@PutMapping(path ="/{restauranteId}/abertura", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void abrir(@PathVariable Long restauranteId) {
 		cadastroRestaurante.abrir(restauranteId);
 	}
 
-	@PutMapping(path ="/{restauranteId}/fechamento", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fechar(restauranteId);
