@@ -7,13 +7,12 @@ import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = RestauranteFormaPagamentoController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = RestauranteFormaPagamentoController.URI)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerDocumentation {
 
 	public static final String URI = "/restaurantes/{restauranteId}/formas-pagamento";

@@ -7,13 +7,12 @@ import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = RestauranteUsuarioResponsavelController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = RestauranteUsuarioResponsavelController.URI)
 public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerDocumentation {
 
     public static final String URI = "/restaurantes/{restauranteId}/responsaveis";
