@@ -3,6 +3,7 @@ package com.thefilipov.food.api.controller;
 import com.thefilipov.food.api.assembler.FotoProdutoModelAssembler;
 import com.thefilipov.food.api.model.FotoProdutoModel;
 import com.thefilipov.food.api.model.input.FotoProdutoInput;
+import com.thefilipov.food.api.openapi.controller.RestauranteProdutoFotoControllerDocumentation;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.model.FotoProduto;
 import com.thefilipov.food.domain.model.Produto;
@@ -24,8 +25,10 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(path = RestauranteProdutoFotoController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerDocumentation {
+
+    public static final String URI = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto";
 
     @Autowired
     private CadastroProdutoService cadastroProduto;
@@ -58,14 +61,14 @@ public class RestauranteProdutoFotoController {
         return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servir(@PathVariable Long restauranteId,
               @PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
