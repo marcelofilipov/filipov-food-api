@@ -11,14 +11,20 @@ import org.modelmapper.ConfigurationException;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FormaPagamentoModelAssemblerTest {
+
+    private static final long ID = 1L;
+    private static final String DESCRIPTION = "Dinheiro";
+    private static final OffsetDateTime NOW = OffsetDateTime.now();
 
     @Mock
     private ModelMapper mockModelMapper;
@@ -29,26 +35,27 @@ class FormaPagamentoModelAssemblerTest {
     @Test
     void testToModel() {
         // Setup
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
 
         // Configure ModelMapper.map(...).
         final FormaPagamentoModel formaPagamentoModel = new FormaPagamentoModel();
-        formaPagamentoModel.setId(0L);
-        formaPagamentoModel.setDescricao("descricao");
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        formaPagamentoModel.setId(ID);
+        formaPagamentoModel.setDescricao(DESCRIPTION);
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenReturn(formaPagamentoModel);
 
         // Run the test
         final FormaPagamentoModel result = formaPagamentoModelAssemblerUnderTest.toModel(formaPagamento);
 
         // Verify the results
+        assertNotNull(result);
     }
 
     @Test
     void testToModel_ModelMapperThrowsConfigurationException() {
         // Setup
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenThrow(ConfigurationException.class);
 
         // Run the test
@@ -59,8 +66,8 @@ class FormaPagamentoModelAssemblerTest {
     @Test
     void testToModel_ModelMapperThrowsMappingException() {
         // Setup
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenThrow(MappingException.class);
 
         // Run the test
@@ -71,13 +78,13 @@ class FormaPagamentoModelAssemblerTest {
     @Test
     void testToCollectionModel() {
         // Setup
-        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(0L, "descricao"));
+        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(ID, DESCRIPTION, NOW));
 
         // Configure ModelMapper.map(...).
         final FormaPagamentoModel formaPagamentoModel = new FormaPagamentoModel();
-        formaPagamentoModel.setId(0L);
-        formaPagamentoModel.setDescricao("descricao");
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        formaPagamentoModel.setId(ID);
+        formaPagamentoModel.setDescricao(DESCRIPTION);
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenReturn(formaPagamentoModel);
 
         // Run the test
@@ -85,13 +92,14 @@ class FormaPagamentoModelAssemblerTest {
                 formasPagamentos);
 
         // Verify the results
+        assertNotNull(result);
     }
 
     @Test
     void testToCollectionModel_ModelMapperThrowsConfigurationException() {
         // Setup
-        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(0L, "descricao"));
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(ID, DESCRIPTION, NOW));
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenThrow(ConfigurationException.class);
 
         // Run the test
@@ -103,8 +111,8 @@ class FormaPagamentoModelAssemblerTest {
     @Test
     void testToCollectionModel_ModelMapperThrowsMappingException() {
         // Setup
-        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(0L, "descricao"));
-        when(mockModelMapper.map(new FormaPagamento(0L, "descricao"), FormaPagamentoModel.class))
+        final Collection<FormaPagamento> formasPagamentos = List.of(new FormaPagamento(ID, DESCRIPTION, NOW));
+        when(mockModelMapper.map(new FormaPagamento(ID, DESCRIPTION, NOW), FormaPagamentoModel.class))
                 .thenThrow(MappingException.class);
 
         // Run the test

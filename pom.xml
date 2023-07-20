@@ -21,17 +21,22 @@
 
 	<properties>
 		<java.version>17</java.version>
+
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+
 		<modelmapper.version>3.1.0</modelmapper.version>
 		<squiggly.version>1.3.18</squiggly.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<six2six-fixture-factore.version>3.1.0</six2six-fixture-factore.version>
 		<jasperreports.version>6.20.0</jasperreports.version>
 		<aws-java-sdk-s3.version>1.12.379</aws-java-sdk-s3.version>
+		<springfox.version>3.0.0</springfox.version>
 
-        <jacoco.version>0.8.8</jacoco.version>
-		<jacoco.percentage.instruction>0.20</jacoco.percentage.instruction>
-		<jacoco.count.class>63</jacoco.count.class>
-		
+		<jacoco.version>0.8.8</jacoco.version>
+		<jacoco.percentage.instruction>0.31</jacoco.percentage.instruction>
+		<jacoco.count.class>58</jacoco.count.class>
+
 		<sonar.exclusions>
 			**/food/core/validation**,
 			**/food/domain/event/**,
@@ -110,6 +115,25 @@
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-bean-validators</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>

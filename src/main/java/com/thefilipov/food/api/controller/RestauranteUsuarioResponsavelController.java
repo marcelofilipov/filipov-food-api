@@ -2,6 +2,7 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.UsuarioModelAssembler;
 import com.thefilipov.food.api.model.UsuarioModel;
+import com.thefilipov.food.api.openapi.controller.RestauranteUsuarioResponsavelControllerDocumentation;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/responsaveis")
-public class RestauranteUsuarioResponsavelController {
+@RequestMapping(path = RestauranteUsuarioResponsavelController.URI)
+public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerDocumentation {
+
+    public static final String URI = "/restaurantes/{restauranteId}/responsaveis";
 
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;
@@ -38,4 +41,5 @@ public class RestauranteUsuarioResponsavelController {
     public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestaurante.associarResponsavel(restauranteId, usuarioId);
     }
+
 }

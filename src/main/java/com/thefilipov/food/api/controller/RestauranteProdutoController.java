@@ -4,6 +4,7 @@ import com.thefilipov.food.api.assembler.ProdutoInputDisassembler;
 import com.thefilipov.food.api.assembler.ProdutoModelAssembler;
 import com.thefilipov.food.api.model.ProdutoModel;
 import com.thefilipov.food.api.model.input.ProdutoInput;
+import com.thefilipov.food.api.openapi.controller.RestauranteProdutoControllerDocumentation;
 import com.thefilipov.food.domain.model.Produto;
 import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.repository.ProdutoRepository;
@@ -11,14 +12,17 @@ import com.thefilipov.food.domain.service.CadastroProdutoService;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutoController {
+@RequestMapping(path = RestauranteProdutoController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoController implements RestauranteProdutoControllerDocumentation {
+
+    public static final String URI = "/restaurantes/{restauranteId}/produtos";
 
     @Autowired
     private ProdutoRepository produtoRepository;

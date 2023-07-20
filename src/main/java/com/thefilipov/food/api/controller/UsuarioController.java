@@ -6,12 +6,14 @@ import com.thefilipov.food.api.model.UsuarioModel;
 import com.thefilipov.food.api.model.input.SenhaInput;
 import com.thefilipov.food.api.model.input.UsuarioComSenhaInput;
 import com.thefilipov.food.api.model.input.UsuarioInput;
+import com.thefilipov.food.api.openapi.controller.UsuarioControllerDocumentation;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.UsuarioRepository;
 import com.thefilipov.food.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
+@RequestMapping(path =UsuarioController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioController implements UsuarioControllerDocumentation {
+
+	public static final String URI = "/usuarios";
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;

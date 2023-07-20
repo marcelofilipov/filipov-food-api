@@ -8,6 +8,7 @@ import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
 import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.api.model.input.RestauranteInput;
 import com.thefilipov.food.api.model.view.RestauranteView;
+import com.thefilipov.food.api.openapi.controller.RestauranteControllerDocumentation;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.CozinhaNaoEncontradaException;
@@ -19,6 +20,7 @@ import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -33,8 +35,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = RestauranteController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerDocumentation {
+
+	public static final String URI = "/restaurantes";
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -204,7 +208,6 @@ public class RestauranteController {
 		} catch (IllegalArgumentException e) {
 			Throwable rootCause = ExceptionUtils.getRootCause(e);
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
-
 		}
 
 	}
