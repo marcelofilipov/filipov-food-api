@@ -1,5 +1,6 @@
 package com.thefilipov.food.api.controller;
 
+import com.thefilipov.food.api.openapi.controller.EstatisticasControllerDocumentation;
 import com.thefilipov.food.domain.filter.VendaDiariaFilter;
 import com.thefilipov.food.domain.model.dto.VendaDiaria;
 import com.thefilipov.food.domain.service.VendaQueryService;
@@ -17,7 +18,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerDocumentation {
+
+    protected static final String URI = "/estatisticas";
 
     @Autowired
     private VendaQueryService vendaQueryService;
