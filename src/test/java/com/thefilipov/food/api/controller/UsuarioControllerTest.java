@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class UsuarioControllerTest extends ApplicationConfigTest {
 
     private static final long ID = 1L;
-    public static final String NOME = "Nome";
+    public static final String NOME = "Jane Doe";
     public static final String EMAIL = "jane.doe@example.org";
     public static final String SENHA = "Senha";
 
@@ -76,8 +76,8 @@ public class UsuarioControllerTest extends ApplicationConfigTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<List/>"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
     /**
@@ -105,9 +105,9 @@ public class UsuarioControllerTest extends ApplicationConfigTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
-                        .string("<UsuarioModel><id>1</id><nome>Nome</nome><email>jane.doe@example.org</email></UsuarioModel>"));
+                        .string("{\"id\":1,\"nome\":\"Jane Doe\",\"email\":\"jane.doe@example.org\"}"));
     }
 
     /**
@@ -175,9 +175,9 @@ public class UsuarioControllerTest extends ApplicationConfigTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
-                        .string("<UsuarioModel><id>1</id><nome>Nome</nome><email>jane.doe@example.org</email></UsuarioModel>"));
+                        .string("{\"id\":1,\"nome\":\"Jane Doe\",\"email\":\"jane.doe@example.org\"}"));
     }
 
     /**
@@ -194,8 +194,8 @@ public class UsuarioControllerTest extends ApplicationConfigTest {
                 .build()
                 .perform(getResult)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("<List/>"));
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[]"));
     }
 
     /**
