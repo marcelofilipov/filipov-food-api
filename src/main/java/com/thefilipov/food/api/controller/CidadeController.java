@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(path = CidadeController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerDocumentation {
 
-	public static final String URI = "/cidades";
+	protected static final String URI = "/cidades";
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
