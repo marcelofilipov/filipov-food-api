@@ -11,12 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -64,6 +63,17 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 			assertEquals(EstadoNaoEncontradoException.class, ex.getClass());
 			assertEquals("Não existe um Estado cadastrado com o código 1", ex.getMessage());
 		}
+	}
+
+	@Test
+	@DisplayName("Deve lançar EmptyResultDataAccessException ao tentar excluir um Estado não encontrado")
+	void throwEmptyResultDataAccessExceptionWhenTryingToDeleteEstadoThatNotExist() {
+		when(repository.findById(anyLong())).thenReturn(optionalEstado);
+		doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(ID);
+
+		assertThrows(EstadoNaoEncontradoException.class, () -> service.excluir(ID));
+
+		verify(repository, times(1)).deleteById(ID);
 	}
 
 	@Test

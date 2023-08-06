@@ -11,6 +11,8 @@ import org.modelmapper.ConfigurationException;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 
+import java.time.OffsetDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +21,11 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FormaPagamentoInputDisassemblerTest {
+
+    private static final long ID = 1L;
+    private static final String DESCRIPTION = "Dinheiro";
+
+    private static final OffsetDateTime NOW = OffsetDateTime.now();
 
     @Mock
     private ModelMapper mockModelMapper;
@@ -32,9 +39,9 @@ class FormaPagamentoInputDisassemblerTest {
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
         formaPagamentoInput.setDescricao("descricao");
 
-        final FormaPagamento expectedResult = new FormaPagamento(0L, "descricao");
+        final FormaPagamento expectedResult = new FormaPagamento(ID, DESCRIPTION, NOW);
         when(mockModelMapper.map(any(Object.class), eq(FormaPagamento.class)))
-                .thenReturn(new FormaPagamento(0L, "descricao"));
+                .thenReturn(new FormaPagamento(ID, DESCRIPTION, NOW));
 
         // Run the test
         final FormaPagamento result = formaPagamentoInputDisassemblerUnderTest.toDomainObject(formaPagamentoInput);
@@ -47,7 +54,7 @@ class FormaPagamentoInputDisassemblerTest {
     void testToDomainObject_ModelMapperThrowsConfigurationException() {
         // Setup
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
-        formaPagamentoInput.setDescricao("descricao");
+        formaPagamentoInput.setDescricao(DESCRIPTION);
 
         when(mockModelMapper.map(any(Object.class), eq(FormaPagamento.class))).thenThrow(ConfigurationException.class);
 
@@ -61,7 +68,7 @@ class FormaPagamentoInputDisassemblerTest {
     void testToDomainObject_ModelMapperThrowsMappingException() {
         // Setup
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
-        formaPagamentoInput.setDescricao("descricao");
+        formaPagamentoInput.setDescricao(DESCRIPTION);
 
         when(mockModelMapper.map(any(Object.class), eq(FormaPagamento.class))).thenThrow(MappingException.class);
 
@@ -75,26 +82,26 @@ class FormaPagamentoInputDisassemblerTest {
     void testCopyToDomainObject() {
         // Setup
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
-        formaPagamentoInput.setDescricao("descricao");
+        formaPagamentoInput.setDescricao(DESCRIPTION);
 
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
 
         // Run the test
         formaPagamentoInputDisassemblerUnderTest.copyToDomainObject(formaPagamentoInput, formaPagamento);
 
         // Verify the results
-        verify(mockModelMapper).map(any(Object.class), eq(new FormaPagamento(0L, "descricao")));
+        verify(mockModelMapper).map(any(Object.class), eq(new FormaPagamento(ID, DESCRIPTION, NOW)));
     }
 
     @Test
     void testCopyToDomainObject_ModelMapperThrowsConfigurationException() {
         // Setup
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
-        formaPagamentoInput.setDescricao("descricao");
+        formaPagamentoInput.setDescricao(DESCRIPTION);
 
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
         doThrow(ConfigurationException.class).when(mockModelMapper).map(any(Object.class),
-                eq(new FormaPagamento(0L, "descricao")));
+                eq(new FormaPagamento(ID, DESCRIPTION, NOW)));
 
         // Run the test
         assertThatThrownBy(() -> formaPagamentoInputDisassemblerUnderTest.copyToDomainObject(formaPagamentoInput,
@@ -105,11 +112,11 @@ class FormaPagamentoInputDisassemblerTest {
     void testCopyToDomainObject_ModelMapperThrowsMappingException() {
         // Setup
         final FormaPagamentoInput formaPagamentoInput = new FormaPagamentoInput();
-        formaPagamentoInput.setDescricao("descricao");
+        formaPagamentoInput.setDescricao(DESCRIPTION);
 
-        final FormaPagamento formaPagamento = new FormaPagamento(0L, "descricao");
+        final FormaPagamento formaPagamento = new FormaPagamento(ID, DESCRIPTION, NOW);
         doThrow(MappingException.class).when(mockModelMapper).map(any(Object.class),
-                eq(new FormaPagamento(0L, "descricao")));
+                eq(new FormaPagamento(ID, DESCRIPTION, NOW)));
 
         // Run the test
         assertThatThrownBy(() -> formaPagamentoInputDisassemblerUnderTest.copyToDomainObject(formaPagamentoInput,

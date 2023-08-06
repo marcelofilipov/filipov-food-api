@@ -6,6 +6,7 @@ import com.thefilipov.food.api.assembler.PedidoModelAssembler;
 import com.thefilipov.food.api.assembler.PedidoResumoModelAssembler;
 import com.thefilipov.food.api.model.PedidoModel;
 import com.thefilipov.food.api.model.PedidoResumoModel;
+import com.thefilipov.food.api.openapi.controller.PedidoControllerDocumentation;
 import com.thefilipov.food.core.data.PageableTranslator;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
@@ -15,12 +16,15 @@ import com.thefilipov.food.domain.repository.PedidoRepository;
 import com.thefilipov.food.domain.filter.PedidoFilter;
 import com.thefilipov.food.domain.service.EmissaoPedidoService;
 import com.thefilipov.food.infrastructure.repository.spec.PedidoSpecs;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/pedidos")
-public class PedidoController {
+@RequestMapping(value = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerDocumentation {
 
     @Autowired
     private PedidoRepository pedidoRepository;
