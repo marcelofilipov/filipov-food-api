@@ -2,15 +2,16 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.CidadeInputDisassembler;
 import com.thefilipov.food.api.assembler.CidadeModelAssembler;
-import com.thefilipov.food.api.openapi.controller.CidadeControllerDocumentation;
 import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.api.model.input.CidadeInput;
+import com.thefilipov.food.api.openapi.controller.CidadeControllerDocumentation;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,16 @@ public class CidadeController implements CidadeControllerDocumentation {
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
-		return cidadeModelAssembler.toModel(cidade);
+		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+		cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades/4"));
+		//cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades/4", IanaLinkRelations.SELF));
+
+		cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades", "cidades"));
+		//cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades", IanaLinkRelations.COLLECTION));
+
+		cidadeModel.getEstado().add(Link.of("http://api.filipov-food.local:8082/estados/2"));
+
+		return cidadeModel;
 	}
 
 	@PostMapping
