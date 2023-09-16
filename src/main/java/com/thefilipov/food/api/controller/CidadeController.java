@@ -11,13 +11,14 @@ import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping(path = CidadeController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,13 +50,13 @@ public class CidadeController implements CidadeControllerDocumentation {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
 		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-		cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades/4"));
-		//cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades/4", IanaLinkRelations.SELF));
 
-		cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades", "cidades"));
-		//cidadeModel.add(Link.of("http://api.filipov-food.local:8082/cidades", IanaLinkRelations.COLLECTION));
+		cidadeModel.add(linkTo(CidadeController.class).slash(cidadeModel.getId()).withSelfRel());
 
-		cidadeModel.getEstado().add(Link.of("http://api.filipov-food.local:8082/estados/2"));
+		cidadeModel.add(linkTo(CidadeController.class).withRel("cidades"));
+
+		cidadeModel.add(linkTo(EstadoController.class)
+				.slash(cidadeModel.getEstado().getId()).withSelfRel());
 
 		return cidadeModel;
 	}
