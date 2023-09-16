@@ -51,12 +51,12 @@ public class CidadeController implements CidadeControllerDocumentation {
 		
 		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
 
-		cidadeModel.add(linkTo(CidadeController.class).slash(cidadeModel.getId()).withSelfRel());
+		cidadeModel.add(linkTo(methodOn(CidadeController.class).buscar(cidadeModel.getId())).withSelfRel());
 
-		cidadeModel.add(linkTo(CidadeController.class).withRel("cidades"));
+		cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
 
-		cidadeModel.add(linkTo(EstadoController.class)
-				.slash(cidadeModel.getEstado().getId()).withSelfRel());
+		cidadeModel.add(linkTo(methodOn(EstadoController.class)
+				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
 
 		return cidadeModel;
 	}
