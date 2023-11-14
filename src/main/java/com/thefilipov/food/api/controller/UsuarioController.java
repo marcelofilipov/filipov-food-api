@@ -11,15 +11,13 @@ import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.UsuarioRepository;
 import com.thefilipov.food.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path =UsuarioController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,14 +38,10 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 
 	@GetMapping
-	public ResponseEntity<List<UsuarioModel>> listar() {
+	public CollectionModel<UsuarioModel> listar() {
 		List<Usuario> todasUsuarios = usuarioRepository.findAll();
 
-		List<UsuarioModel> usuariosModel = usuarioModelAssembler.toCollectionModel(todasUsuarios);
-
-		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePrivate())
-				.body(usuariosModel);
+		return usuarioModelAssembler.toCollectionModel(todasUsuarios);
 	}
 
     @GetMapping("/{usuarioId}")
