@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,10 @@ public class EstadoController implements EstadoControllerDocumentation {
 	private EstadoInputDisassembler estadoInputDisassembler;
 	
 	@GetMapping
-	public Page<EstadoModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-		Page<Estado> estadoPage = estadoRepository.findAll(pageable);
-
-		List<EstadoModel> estadosModel = estadoModelAssembler.toCollectionModel(estadoPage.getContent());
+	public CollectionModel<EstadoModel> listar() {
+		List<Estado> todosEstados = estadoRepository.findAll();
 		
-		return new PageImpl<>(estadosModel, pageable, estadoPage.getTotalElements());
+		return estadoModelAssembler.toCollectionModel(todosEstados);
 	}
 
 	@GetMapping("/{estadoId}")
