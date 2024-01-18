@@ -3,9 +3,9 @@ package com.thefilipov.food.infrastructure.repository.spec;
 import com.thefilipov.food.domain.model.Restaurante;
 import org.springframework.data.jpa.domain.Specification;
 
-import static com.thefilipov.food.utils.FoodUtils.*;
-
 import java.math.BigDecimal;
+
+import static com.thefilipov.food.utils.FoodUtils.contains;
 
 public class RestauranteSpecs {
 

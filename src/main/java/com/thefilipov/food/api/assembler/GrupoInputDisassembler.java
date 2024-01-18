@@ -1,11 +1,10 @@
 package com.thefilipov.food.api.assembler;
 
+import com.thefilipov.food.api.model.input.GrupoInput;
+import com.thefilipov.food.domain.model.Grupo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.thefilipov.food.api.model.input.GrupoInput;
-import com.thefilipov.food.domain.model.Grupo;
 
 @Component
 public class GrupoInputDisassembler {

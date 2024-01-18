@@ -1,10 +1,9 @@
 package com.thefilipov.food.domain.repository;
 
-import java.util.Optional;
-
+import com.thefilipov.food.domain.model.Usuario;
 import org.springframework.stereotype.Repository;
 
-import com.thefilipov.food.domain.model.Usuario;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends CustomJpaRepository<Usuario, Long> {

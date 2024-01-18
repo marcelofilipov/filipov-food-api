@@ -2,9 +2,9 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.GrupoInputDisassembler;
 import com.thefilipov.food.api.assembler.GrupoModelAssembler;
-import com.thefilipov.food.api.openapi.controller.GrupoControllerDocumentation;
 import com.thefilipov.food.api.model.GrupoModel;
 import com.thefilipov.food.api.model.input.GrupoInput;
+import com.thefilipov.food.api.openapi.controller.GrupoControllerDocumentation;
 import com.thefilipov.food.domain.model.Grupo;
 import com.thefilipov.food.domain.repository.GrupoRepository;
 import com.thefilipov.food.domain.service.CadastroGrupoService;

@@ -1,12 +1,15 @@
 package com.thefilipov.food.domain.service;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.math.BigDecimal;
-
+import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
+import com.thefilipov.food.domain.model.*;
+import com.thefilipov.food.domain.repository.CidadeRepository;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
+import com.thefilipov.food.domain.repository.EstadoRepository;
+import com.thefilipov.food.domain.repository.RestauranteRepository;
+import com.thefilipov.food.util.DatabaseCleaner;
+import com.thefilipov.food.util.ResourceUtils;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,21 +22,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
-import com.thefilipov.food.domain.model.Cidade;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.model.Endereco;
-import com.thefilipov.food.domain.model.Estado;
-import com.thefilipov.food.domain.model.Restaurante;
-import com.thefilipov.food.domain.repository.CidadeRepository;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
-import com.thefilipov.food.domain.repository.EstadoRepository;
-import com.thefilipov.food.domain.repository.RestauranteRepository;
-import com.thefilipov.food.util.DatabaseCleaner;
-import com.thefilipov.food.util.ResourceUtils;
+import java.math.BigDecimal;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

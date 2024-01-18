@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @DisplayName("Teste Unitário da class CadastroCidadeService")
 public class CadastroCidadeServiceTest extends ApplicationConfigTest {

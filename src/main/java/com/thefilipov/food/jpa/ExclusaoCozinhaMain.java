@@ -1,11 +1,10 @@
 package com.thefilipov.food.jpa;
 
+import com.thefilipov.food.FilipovFoodApiApplication;
+import com.thefilipov.food.domain.service.CadastroCozinhaService;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
-
-import com.thefilipov.food.FilipovFoodApiApplication;
-import com.thefilipov.food.domain.service.CadastroCozinhaService;
 
 public class ExclusaoCozinhaMain {
 
