@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class StatusAplicacaoControllerIT {
+class StatusAplicacaoControllerIT {
 
     /**
      * RestAssured - API Test
@@ -33,7 +33,7 @@ public class StatusAplicacaoControllerIT {
 
     @Test
     @DisplayName("Retornar a frase: Aplicação está funcionando corretamente")
-    public void shouldRetornarFraseStatus_whenVerificarStatus() {
+    void shouldRetornarFraseStatus_whenVerificarStatus() {
         Response response = given()
                 .accept(ContentType.TEXT)
             .when()

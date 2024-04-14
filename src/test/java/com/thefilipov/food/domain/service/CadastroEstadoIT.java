@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CadastroEstadoIT {
+class CadastroEstadoIT {
 
     /**
      * RestAssured - API Test
@@ -64,7 +64,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Retornar Status 200 - Quando consultar estados")
-    public void shouldRetornarStatus200_whenConsultarEstados() {
+    void shouldRetornarStatus200_whenConsultarEstados() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -75,7 +75,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar um estado existente")
-    public void shouldRetornarUmaRespostaEStatus200_whenConsultarEstadoExistente() {
+    void shouldRetornarUmaRespostaEStatus200_whenConsultarEstadoExistente() {
         given()
             .pathParam("estadoId", estadoAM.getId())
             .accept(ContentType.JSON)
@@ -88,7 +88,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Retornar Status 404 - Quando consultar um estado inexistente")
-    public void shouldRetornarStatus404_whenConsultarEstadoInexistente() {
+    void shouldRetornarStatus404_whenConsultarEstadoInexistente() {
         given()
             .pathParam("estadoId", ESTADO_ID_INEXISTENTE)
             .accept(ContentType.JSON)
@@ -100,19 +100,19 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Deve retornar quantidade correta de Estados - Quando Consultar Estados")
-    public void shouldRetornarQuantidadeCorretaDeEstados_whenConsultarEstados() {
+    void shouldRetornarQuantidadeCorretaDeEstados_whenConsultarEstados() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("content.totalElements", hasSize(quantidadeEstadosCadastrados))
-            .body("content.nome", hasItems("São Paulo", "Amazonas"));
+            .body("_embedded.estadoModelList.totalElements", hasSize(quantidadeEstadosCadastrados))
+            .body("_embedded.estadoModelList. nome", hasItems("São Paulo", "Amazonas"));
     }
 
     @Test
     @DisplayName("Retornar Status 201 - Quando cadastrar um estado")
-    public void shouldRetornarStatus201_whenCadastrarEstado() {
+    void shouldRetornarStatus201_whenCadastrarEstado() {
         given()
             .body(jsonCorretoEstadoRioDeJaneiro)
             .contentType(ContentType.JSON)
@@ -132,7 +132,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Quando Cadastrar Estado com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroEstadoComDadosCorretos_ThenDeveAtribuirId() {
+    void whenCadastroEstadoComDadosCorretos_ThenDeveAtribuirId() {
         Estado novoEstado = new Estado();
         novoEstado.setNome("Rio Grande do Sul");
 
@@ -144,7 +144,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Deve Falhar - Quando tentar Cadastrar Estado sem nome (NULL)")
-    public void shouldFail_whenCadastrarEstadoSemNome() {
+    void shouldFail_whenCadastrarEstadoSemNome() {
         assertThrows(ConstraintViolationException.class, () -> {
             Estado novoEstado = new Estado();
             novoEstado.setNome(null);
@@ -164,7 +164,7 @@ public class CadastroEstadoIT {
 
     @Test
     @DisplayName("Falhar quando tentar Excluir um Estado Inexistente")
-    public void shouldFail_whenExcluirCozinhaInexistente() {
+    void shouldFail_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
             estadoService.excluir(ESTADO_ID_INEXISTENTE);
         });

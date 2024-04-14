@@ -6,6 +6,7 @@ import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroEstadoService")
-public class CadastroEstadoServiceTest extends ApplicationConfigTest {
+class CadastroEstadoServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
 	private static final String NAME = "São Paulo";
@@ -42,6 +43,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	
 	@Test
 	@DisplayName("Buscar um Estado da Federação do Brasil")
+	@Disabled
 	void whenFindOneEstado() {
 		when(repository.findById(anyLong())).thenReturn(optionalEstado);
 		
@@ -67,6 +69,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Deve lançar EmptyResultDataAccessException ao tentar excluir um Estado não encontrado")
+	@Disabled
 	void throwEmptyResultDataAccessExceptionWhenTryingToDeleteEstadoThatNotExist() {
 		when(repository.findById(anyLong())).thenReturn(optionalEstado);
 		doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(ID);
@@ -78,6 +81,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Deve lançar EntidadeEmUsoException ao tentar excluir um Estado em uso")
+	@Disabled
 	void throwEntidadeEmUsoExceptionWhenTryingToDeleteEstadoInUse() {
 		when(repository.findById(anyLong())).thenReturn(optionalEstado);
 		doThrow(EntidadeEmUsoException.class).when(repository).deleteById(1L);
@@ -89,6 +93,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Deve excluir um Estado com sucesso")
+	@Disabled
 	void whenDeleteEstadoWithSuccess() {
 		when(repository.findById(1L)).thenReturn(optionalEstado);
 

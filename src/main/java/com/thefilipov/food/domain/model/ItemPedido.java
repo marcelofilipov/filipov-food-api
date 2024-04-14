@@ -36,17 +36,17 @@ public class ItemPedido {
     private Produto produto;
 
     public void calcularPrecoTotal() {
-        BigDecimal precoUnitario = this.getPrecoUnitario();
-        Integer quantidade = this.getQuantidade();
+        BigDecimal prcUnit = this.getPrecoUnitario();
+        Integer qtde = this.getQuantidade();
 
-        if (precoUnitario == null) {
-            precoUnitario = BigDecimal.ZERO;
+        if (prcUnit == null) {
+            prcUnit = BigDecimal.ZERO;
         }
 
-        if (quantidade == null) {
-            quantidade = 0;
+        if (qtde == null) {
+            qtde = 0;
         }
 
-        this.setPrecoTotal(precoUnitario.multiply(new BigDecimal(quantidade)));
+        this.setPrecoTotal(prcUnit.multiply(new BigDecimal(qtde)));
     }
 }

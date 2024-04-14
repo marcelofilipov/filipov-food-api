@@ -35,22 +35,14 @@
 
 		<jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.31</jacoco.percentage.instruction>
-		<jacoco.count.class>58</jacoco.count.class>
+		<jacoco.count.class>60</jacoco.count.class>
 
 		<sonar.exclusions>
-			**/food/core/validation**,
-			**/food/domain/event/**,
-			**/food/domain/exception/**,
-			**/food/domain/filter/**,
 			**/food/jpa/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
-			**/food/api/model/**,
 			**/food/core/validation**,
-			**/food/domain/event/**,
 			**/food/domain/exception/**,
-			**/food/domain/filter/**,
-			**/food/domain/model/**,
 			**/food/jpa/**
 		</sonar.coverage.exclusions>
 		<sonar.test.exclusions>

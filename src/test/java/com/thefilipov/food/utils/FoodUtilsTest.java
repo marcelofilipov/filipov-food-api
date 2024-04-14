@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FoodUtilsTest {
 
     @Test
-    public void containsTest() {
+    void containsTest() {
         String expression = "hamburger";
         String expectedExpression = "%hamburger%";
 

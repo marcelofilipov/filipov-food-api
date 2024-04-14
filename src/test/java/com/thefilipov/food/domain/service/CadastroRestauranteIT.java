@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CadastroRestauranteIT {
+class CadastroRestauranteIT {
 
     /**
      * RestAssured - API Test
@@ -91,7 +91,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 200 - Quando consultar Restaurantes")
-    public void shouldRetornarStatus200_whenConsultarRestaurantes() {
+    void shouldRetornarStatus200_whenConsultarRestaurantes() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -102,7 +102,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 201 - Quando cadastrar um Restaurante")
-    public void shouldRetornarStatus201_whenCadastrarRestaurante() {
+    void shouldRetornarStatus201_whenCadastrarRestaurante() {
         given()
             .body(jsonRestauranteCorreto)
             .contentType(ContentType.JSON)
@@ -115,7 +115,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 400 - Quando tenta cadastrar um Restaurante Sem Taxa Frete")
-    public void shouldRetornarStatus400_whenCadastrarRestauranteSemTaxaFrete() {
+    void shouldRetornarStatus400_whenCadastrarRestauranteSemTaxaFrete() {
         given()
             .body(jsonRestauranteSemFrete)
             .contentType(ContentType.JSON)
@@ -129,7 +129,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 400 - Quando tenta cadastrar um Restaurante Sem Cozinha")
-    public void shouldRetornarStatus400_whenCadastrarRestauranteSemCozinha() {
+    void shouldRetornarStatus400_whenCadastrarRestauranteSemCozinha() {
         given()
             .body(jsonRestauranteSemCozinha)
             .contentType(ContentType.JSON)
@@ -143,7 +143,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 400 - Quando tenta cadastrar um Restaurante Com Cozinha Inexistente")
-    public void shouldRetornarStatus400_whenCadastrarRestauranteComCozinhaInexistente() {
+    void shouldRetornarStatus400_whenCadastrarRestauranteComCozinhaInexistente() {
         given()
             .body(jsonRestauranteComCozinhaInexistente)
             .contentType(ContentType.JSON)
@@ -157,7 +157,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar um restaurante existente")
-    public void shouldRetornarRespostaEStatusCorretos_whenConsultarRestauranteExistente() {
+    void shouldRetornarRespostaEStatusCorretos_whenConsultarRestauranteExistente() {
         given()
             .pathParam("restauranteId", burgerTopRestaurante.getId())
             .accept(ContentType.JSON)
@@ -170,7 +170,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 404 - Quando consultar um restaurante inexistente")
-    public void shouldRetornarStatus404_whenConsultarRestauranteInexistente() {
+    void shouldRetornarStatus404_whenConsultarRestauranteInexistente() {
         given()
             .pathParam("restauranteId", RESTAURANTE_ID_INEXISTENTE)
             .accept(ContentType.JSON)
@@ -182,7 +182,7 @@ public class CadastroRestauranteIT {
     
     @Test
     @DisplayName("Retornar Status 204 - Quando ativar um restaurante existente")
-    public void shouldRetornarStatus204_whenAtivarRestauranteExistente() {
+    void shouldRetornarStatus204_whenAtivarRestauranteExistente() {
         given()
             .pathParam("restauranteId", burgerTopRestaurante.getId())
             .accept(ContentType.JSON)
@@ -194,7 +194,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar Status 204 - Quando inativar um restaurante existente")
-    public void shouldRetornarStatus204_whenInativarRestauranteExistente() {
+    void shouldRetornarStatus204_whenInativarRestauranteExistente() {
         given()
             .pathParam("restauranteId", burgerTopRestaurante.getId())
             .accept(ContentType.JSON)
@@ -217,7 +217,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Quando Cadastrar Restaurante com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroRestauranteComDadosCorretos_thenDeveAtribuirId() {
+    void whenCadastroRestauranteComDadosCorretos_thenDeveAtribuirId() {
         // cenário
         Cozinha cozinhaBrasileira = new Cozinha();
         cozinhaBrasileira.setId(1L);
@@ -255,7 +255,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Falhar quando tentar Excluir uma Cozinha Em Uso")
-    public void shouldFail_whenExcluirCozinhaEmUso() {
+    void shouldFail_whenExcluirCozinhaEmUso() {
         assertThrows(EntidadeEmUsoException.class, () -> {
             cozinhaService.excluir(2L);
         });
@@ -263,7 +263,7 @@ public class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Deve Falhar - Quando tentar Cadastrar Restaurante sem nome (NULL)")
-    public void shouldFail_whenCadastrarCozinhaSemNome() {
+    void shouldFail_whenCadastrarCozinhaSemNome() {
         assertThrows(DataIntegrityViolationException.class, () -> {
             Cozinha cozinhaBrasileira = new Cozinha();
             cozinhaBrasileira.setId(1L);

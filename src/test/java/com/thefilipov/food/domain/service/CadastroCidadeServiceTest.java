@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroCidadeService")
-public class CadastroCidadeServiceTest extends ApplicationConfigTest {
+class CadastroCidadeServiceTest extends ApplicationConfigTest {
 
     private static final long ID = 1L;
     private static final String NAME = "Santo André";

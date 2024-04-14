@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CozinhaControllerIT {
+class CozinhaControllerIT {
 
     /**
      * RestAssured - API Test
@@ -55,7 +55,7 @@ public class CozinhaControllerIT {
     
     @Test
     @DisplayName("Retornar Status 200 - Quando consultar cozinhas")
-    public void shouldRetornarStatus200_whenConsultarCozinhas() {
+    void shouldRetornarStatus200_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -66,7 +66,7 @@ public class CozinhaControllerIT {
     
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar uma cozinha existente")
-    public void shouldRetornarUmaRespostaEStatus200_whenConsultarCozinhaExistente() {
+    void shouldRetornarUmaRespostaEStatus200_whenConsultarCozinhaExistente() {
         given()
             .pathParam("cozinhaId", cozinhaAmericana.getId())
             .accept(ContentType.JSON)
@@ -79,7 +79,7 @@ public class CozinhaControllerIT {
 
     @Test
     @DisplayName("Retornar Status 404 - Quando consultar uma cozinha inexistente")
-    public void shouldRetornarStatus404_whenConsultarCozinhaInexistente() {
+    void shouldRetornarStatus404_whenConsultarCozinhaInexistente() {
         given()
             .pathParam("cozinhaId", COZINHA_ID_INEXISTENTE)
             .accept(ContentType.JSON)
@@ -91,7 +91,7 @@ public class CozinhaControllerIT {
 
     @Test
     @DisplayName("Deve retornar quantidade correta de Cozinhas - Quando Consultar Cozinhas")
-    public void shouldRetornarQuantidadeCorretaDeCozinhas_whenConsultarCozinhas() {
+    void shouldRetornarQuantidadeCorretaDeCozinhas_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -103,7 +103,7 @@ public class CozinhaControllerIT {
 
     @Test
     @DisplayName("Retornar Status 201 - Quando cadastrar uma cozinha")
-    public void shouldRetornarStatus201_whenCadastrarCozinha() {
+    void shouldRetornarStatus201_whenCadastrarCozinha() {
         given()
             .body(jsonCorretoCozinhaRussa)
             .contentType(ContentType.JSON)

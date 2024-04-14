@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CozinhaControllerTest extends ApplicationConfigTest {
+class CozinhaControllerTest extends ApplicationConfigTest {
 	
 	private static final long ID = 1L;
 	private static final String NAME = "Tailandesa";
@@ -93,7 +93,7 @@ public class CozinhaControllerTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Retornar noContent(204) - Quando remover cozinha existente")
-	public void deveRetornarStatusNoContentQuandoRemoverCozinhaExistente() throws Exception {
+	void deveRetornarStatusNoContentQuandoRemoverCozinhaExistente() throws Exception {
 		Long cozinhaId = 5L;
 
 		this.mockMvc.perform(delete(CozinhaController.URI + "/{cozinhaId}", cozinhaId))
@@ -102,7 +102,7 @@ public class CozinhaControllerTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Retornar notFound(404) - Quando tentar remover cozinha inexistente")
-	public void deveRetornarStatusNotFoundQuandoRemoverCozinhaInexistente() throws Exception {
+	void deveRetornarStatusNotFoundQuandoRemoverCozinhaInexistente() throws Exception {
 		Long cozinhaId = 100L;
 
 		doThrow(CozinhaNaoEncontradaException.class).when(cozinhaService).excluir(cozinhaId);
@@ -113,7 +113,7 @@ public class CozinhaControllerTest extends ApplicationConfigTest {
 
 	@Test
 	@DisplayName("Retornar conflict(409) - Quando tentar remover cozinha em uso")
-	public void deveRetornarStatusBadRequestQuandoRemoverCozinhaEmUso() throws Exception {
+	void deveRetornarStatusBadRequestQuandoRemoverCozinhaEmUso() throws Exception {
 		Long cozinhaId = 1L;
 
 		doThrow(EntidadeEmUsoException.class).when(cozinhaService).excluir(cozinhaId);

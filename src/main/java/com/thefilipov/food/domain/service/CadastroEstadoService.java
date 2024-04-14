@@ -15,8 +15,12 @@ public class CadastroEstadoService {
 
 	public static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida, pois está em uso";
 
+	private final EstadoRepository estadoRepository;
+
 	@Autowired
-	private EstadoRepository estadoRepository;
+	public CadastroEstadoService(EstadoRepository estadoRepository) {
+		this.estadoRepository = estadoRepository;
+	}
 
 	@Transactional
 	public Estado salvar(Estado estado) {

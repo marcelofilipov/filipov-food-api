@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
-public class CadastroCozinhaServiceIT {
+class CadastroCozinhaServiceIT {
 
     private static final long COZINHA_ID_INEXISTENTE = 100L;
 
@@ -27,7 +27,7 @@ public class CadastroCozinhaServiceIT {
 
     @Test
     @DisplayName("Quando Cadastrar Cozinha com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroCozinhaComDadosCorretos_thenDeveAtribuirId() {
+    void whenCadastroCozinhaComDadosCorretos_thenDeveAtribuirId() {
         // cenário
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome("Romena");
@@ -42,7 +42,7 @@ public class CadastroCozinhaServiceIT {
 
     @Test
     @DisplayName("Deve Falhar - Quando tentar Cadastrar Cozinha sem nome (NULL)")
-    public void shouldFail_whenCadastrarCozinhaSemNome() {
+    void shouldFail_whenCadastrarCozinhaSemNome() {
         assertThrows(DataIntegrityViolationException.class, () -> {
             Cozinha novaCozinha = new Cozinha();
             novaCozinha.setNome(null);
@@ -52,7 +52,7 @@ public class CadastroCozinhaServiceIT {
 
     @Test
     @DisplayName("Falhar quando tentar Excluir uma Cozinha Inexistente")
-    public void shouldFail_whenExcluirCozinhaInexistente() {
+    void shouldFail_whenExcluirCozinhaInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> cozinhaService.excluir(COZINHA_ID_INEXISTENTE));
     }
 
