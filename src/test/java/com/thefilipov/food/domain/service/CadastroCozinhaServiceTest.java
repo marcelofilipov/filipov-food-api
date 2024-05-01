@@ -58,8 +58,8 @@ class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 		assertAll(() -> assertNotNull(response),
 			() -> assertEquals(Cozinha.class, response.getClass()),
-			() -> assertEquals(ID, response.getId()),
-			() -> assertEquals(NAME, response.getNome())
+			() -> assertEquals(oneCozinha.get().getId(), response.getId()),
+			() -> assertEquals(oneCozinha.get().getNome(), response.getNome())
 		);
 	}
 

@@ -7,7 +7,10 @@ import com.thefilipov.food.domain.exception.ProdutoNaoEncontradoException;
 import com.thefilipov.food.domain.model.Produto;
 import com.thefilipov.food.domain.repository.ProdutoRepository;
 import com.thefilipov.food.templates.ProdutoTemplates;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +29,7 @@ class CadastroProdutoServiceTest extends ApplicationConfigTest {
     private static final String NAME = "Porco com molho agridoce";
     private static final String PRODUTO_NAO_ENCONTRADA =
             "Não existe um cadastro de produto com código 1 para o restaurante de código 1";
+
     @InjectMocks
     private CadastroProdutoService service;
 
@@ -42,11 +46,10 @@ class CadastroProdutoServiceTest extends ApplicationConfigTest {
         startProduto();
     }
 
-    @Disabled
     @Test
     @DisplayName("Buscar um Produto")
     void whenFindByIdThenReturnProdutoInstance() {
-        when(repository.findById(anyLong())).thenReturn(oneProduto);
+        when(repository.findById(anyLong(),anyLong())).thenReturn(oneProduto);
 
         Produto response = service.buscarOuFalhar(ID, ID);
 

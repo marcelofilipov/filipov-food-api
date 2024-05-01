@@ -1,13 +1,13 @@
 package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import com.thefilipov.food.ApplicationConfigTest;
 import com.thefilipov.food.api.model.input.EstadoInput;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.service.CadastroEstadoService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Locale;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doThrow;
@@ -27,7 +29,6 @@ class EstadoControllerTest extends ApplicationConfigTest {
 
     private static final long ID = 1L;
     private static final String NAME = "Minas Gerais";
-
 
     private EstadoInput estadoInput;
 
@@ -48,13 +49,12 @@ class EstadoControllerTest extends ApplicationConfigTest {
 
     @Test
     @DisplayName("Retornar success(200) - Quando buscar todos os estados")
-    @Disabled
     void getAllEstadosAPI_RetornarStatus200() throws Exception {
         this.mockMvc.perform(get(EstadoController.URI)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(6)));
+                .andExpect(jsonPath("$._embedded.estadoModelList", hasSize(6)));
     }
 
     @Test
@@ -82,7 +82,7 @@ class EstadoControllerTest extends ApplicationConfigTest {
     @Test
     @DisplayName("Retornar success(200) - Quando alterar estado")
     void putEstadoAPI_RetornarStatus200() throws Exception {
-        Long estadoId = 2L;
+        final Long estadoId = 2L;
 
         this.mockMvc.perform(put(EstadoController.URI + "/{estadoId}", estadoId)
                         .accept(MediaType.APPLICATION_JSON)
@@ -95,7 +95,7 @@ class EstadoControllerTest extends ApplicationConfigTest {
     @Test
     @DisplayName("Retornar noContent(204) - Quando remover estado existente")
     void deveRetornarStatusNoContentQuandoRemoverEstadoExistente() throws Exception {
-        Long estadoId = 99L;
+        final Long estadoId = 99L;
 
         this.mockMvc.perform(delete(EstadoController.URI + "/{estadoId}", estadoId))
                 .andExpect(status().isNoContent());
@@ -104,7 +104,7 @@ class EstadoControllerTest extends ApplicationConfigTest {
     @Test
     @DisplayName("Retornar notFound(404) - Quando tentar remover estado inexistente")
     void deveRetornarStatusNotFoundQuandoRemoverEstadoInexistente() throws Exception {
-        Long estadoId = 100L;
+        final Long estadoId = 100L;
 
         doThrow(EstadoNaoEncontradoException.class).when(estadoService).excluir(estadoId);
 
@@ -115,7 +115,7 @@ class EstadoControllerTest extends ApplicationConfigTest {
     @Test
     @DisplayName("Retornar conflict(409) - Quando tentar remover estado em uso")
     void deveRetornarStatusBadRequestQuandoRemoverEstadoEmUso() throws Exception {
-        Long estadoId = 1L;
+        final Long estadoId = 1L;
 
         doThrow(EntidadeEmUsoException.class).when(estadoService).excluir(estadoId);
 
@@ -124,8 +124,11 @@ class EstadoControllerTest extends ApplicationConfigTest {
     }
 
     private void startEstado() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        final String nome = faker.address().state();
+
         estadoInput = new EstadoInput();
-        estadoInput.setNome("São Paulo");
+        estadoInput.setNome(nome);
     }
 
 }
