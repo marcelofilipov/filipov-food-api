@@ -53,7 +53,7 @@ class CozinhaControllerTest extends ApplicationConfigTest {
 						.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.content", hasSize(5)));
+				.andExpect(jsonPath("$._embedded.cozinhas", hasSize(5)));
 	}
 
 	@Test

@@ -250,11 +250,25 @@
 			<version>${six2six-fixture-factore.version}</version>
 		</dependency>
 
+		<!-- Datafaker -->
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+
 		<!-- S3 -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+
+		<!-- Pitest -->
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.16.0</version>
 		</dependency>
 	</dependencies>
 

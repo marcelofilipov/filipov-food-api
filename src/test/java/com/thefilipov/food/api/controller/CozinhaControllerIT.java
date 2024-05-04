@@ -90,15 +90,16 @@ class CozinhaControllerIT {
     }
 
     @Test
-    @DisplayName("Deve retornar quantidade correta de Cozinhas - Quando Consultar Cozinhas")
+    @DisplayName("Deve retornar status 200 e lista de cozinhas - Quando Consultar Cozinhas")
     void shouldRetornarQuantidadeCorretaDeCozinhas_whenConsultarCozinhas() {
         given()
             .accept(ContentType.JSON)
         .when()
             .get()
         .then()
-            .body("content.totalElements", hasSize(quantidadeCozinhasCadastradas))
-            .body("content.nome", hasItems("Americana", "Brasileira"));
+            .statusCode(HttpStatus.OK.value())
+            .body("page.totalElements", is(quantidadeCozinhasCadastradas))
+            .body("_embedded.cozinhas.nome", hasItems("Americana", "Brasileira"));
     }
 
     @Test

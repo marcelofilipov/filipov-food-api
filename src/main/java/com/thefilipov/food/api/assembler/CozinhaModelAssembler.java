@@ -1,28 +1,35 @@
 package com.thefilipov.food.api.assembler;
 
+import com.thefilipov.food.api.controller.CozinhaController;
 import com.thefilipov.food.api.model.CozinhaModel;
 import com.thefilipov.food.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
-public class CozinhaModelAssembler {
+public class CozinhaModelAssembler
+        extends RepresentationModelAssemblerSupport<Cozinha, CozinhaModel> {
 
 	@Autowired
     private ModelMapper modelMapper;
-    
-    public CozinhaModel toModel(Cozinha cozinha) {
-        return modelMapper.map(cozinha, CozinhaModel.class);
+
+    public CozinhaModelAssembler() {
+        super(CozinhaController.class, CozinhaModel.class);
     }
-    
-    public List<CozinhaModel> toCollectionModel(List<Cozinha> cozinhas) {
-        return cozinhas.stream()
-                .map(cozinha -> toModel(cozinha))
-                .collect(Collectors.toList());
-    }   
+
+    @Override
+    public CozinhaModel toModel(Cozinha cozinha) {
+        CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
+        modelMapper.map(cozinha, cozinhaModel);
+
+        cozinhaModel.add(linkTo(CozinhaController.class).withRel("cozinhas"));
+
+        return cozinhaModel;
+    }
+
 
 }
