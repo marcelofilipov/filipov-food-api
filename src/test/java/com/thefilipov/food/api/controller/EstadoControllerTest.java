@@ -1,12 +1,12 @@
 package com.thefilipov.food.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Faker;
 import com.thefilipov.food.ApplicationConfigTest;
 import com.thefilipov.food.api.model.input.EstadoInput;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.service.CadastroEstadoService;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -31,5 +31,4 @@ public class CozinhaModelAssembler
         return cozinhaModel;
     }
 
-
 }

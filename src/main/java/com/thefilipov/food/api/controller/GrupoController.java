@@ -43,7 +43,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     @Override
     @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoModel buscar(@PathVariable Long grupoId) {
-        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+        var grupo = cadastroGrupo.buscarOuFalhar(grupoId);
         
         return grupoModelAssembler.toModel(grupo);
     }
@@ -52,7 +52,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
-        Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
+        var grupo = grupoInputDisassembler.toDomainObject(grupoInput);
         
         grupo = cadastroGrupo.salvar(grupo);
         
@@ -63,7 +63,7 @@ public class GrupoController implements GrupoControllerDocumentation {
     @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoModel atualizar(@PathVariable Long grupoId,
                                 @RequestBody @Valid GrupoInput grupoInput) {
-        Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
+        var grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
         
         grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
         
