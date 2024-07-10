@@ -7,6 +7,7 @@ import com.thefilipov.food.api.assembler.PedidoResumoModelAssembler;
 import com.thefilipov.food.api.model.PedidoModel;
 import com.thefilipov.food.api.model.PedidoResumoModel;
 import com.thefilipov.food.api.openapi.controller.PedidoControllerDocumentation;
+import com.thefilipov.food.core.data.PageWrapper;
 import com.thefilipov.food.core.data.PageableTranslator;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
@@ -75,10 +76,12 @@ public class PedidoController implements PedidoControllerDocumentation {
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                                    @PageableDefault(size = 10) Pageable pageable) {
-        pageable = traduzirPageable(pageable);
+        Pageable pageableTraduzido = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = pedidoRepository.findAll(
-                PedidoSpecs.usandoFiltro(filtro), pageable);
+                PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
+
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
