@@ -36,9 +36,15 @@ public class PedidoModelAssembler
                 new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
+        TemplateVariables filterVariables = new TemplateVariables(
+                new TemplateVariable("clienteId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM));
+
         String pedidoUrl = linkTo(PedidoController.class).toUri().toString();
 
-        pedidoModel.add(Link.of(UriTemplate.of(pedidoUrl, pageVariables), "pedidos"));
+        pedidoModel.add(Link.of(UriTemplate.of(pedidoUrl, pageVariables.concat(filterVariables)), "pedidos"));
 
         //pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
 
