@@ -1,5 +1,6 @@
 package com.thefilipov.food.api.assembler;
 
+import com.thefilipov.food.api.FoodLinks;
 import com.thefilipov.food.api.controller.EstadoController;
 import com.thefilipov.food.api.model.EstadoModel;
 import com.thefilipov.food.domain.model.Estado;
@@ -17,6 +18,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 	@Autowired
 	private ModelMapper modelMapper;
 
+    @Autowired
+    private FoodLinks foodLinks;
+
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
@@ -26,7 +30,7 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
         var estadoModel = createModelWithId(estado.getId(), estado);
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
+        estadoModel.add(foodLinks.linkToEstados("estados"));
 
         return estadoModel;
     }
