@@ -1,14 +1,11 @@
 package com.thefilipov.food.api.assembler;
 
+import com.thefilipov.food.api.FoodLinks;
 import com.thefilipov.food.api.controller.*;
 import com.thefilipov.food.api.model.PedidoModel;
 import com.thefilipov.food.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.TemplateVariable;
-import org.springframework.hateoas.TemplateVariables;
-import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +19,9 @@ public class PedidoModelAssembler
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private FoodLinks foodLinks;
+
     public PedidoModelAssembler() {
         super(PedidoModelAssembler.class, PedidoModel.class);
     }
@@ -31,22 +31,7 @@ public class PedidoModelAssembler
         var pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
 
-        TemplateVariables pageVariables = new TemplateVariables(
-                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        TemplateVariables filterVariables = new TemplateVariables(
-                new TemplateVariable("clienteId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        String pedidoUrl = linkTo(PedidoController.class).toUri().toString();
-
-        pedidoModel.add(Link.of(UriTemplate.of(pedidoUrl, pageVariables.concat(filterVariables)), "pedidos"));
-
-        //pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
+        pedidoModel.add(foodLinks.linkToPedidos());
 
         pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
                 .buscar(pedido.getRestaurante().getId())).withSelfRel());
