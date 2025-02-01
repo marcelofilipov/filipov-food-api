@@ -1,17 +1,16 @@
 package com.thefilipov.food.api.controller;
 
+import com.thefilipov.food.ApplicationConfigTest;
 import com.thefilipov.food.api.assembler.UsuarioModelAssembler;
 import com.thefilipov.food.domain.model.*;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,8 +29,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {RestauranteUsuarioResponsavelController.class})
-@ExtendWith(SpringExtension.class)
-class RestauranteUsuarioResponsavelControllerTest {
+class RestauranteUsuarioResponsavelControllerTest extends ApplicationConfigTest {
     @MockBean
     private CadastroRestauranteService cadastroRestauranteService;
 
@@ -143,7 +141,7 @@ class RestauranteUsuarioResponsavelControllerTest {
         restaurante.setTaxaFrete(BigDecimal.valueOf(42L));
 
         when(cadastroRestauranteService.buscarOuFalhar(Mockito.<Long>any())).thenReturn(restaurante);
-        //when(usuarioModelAssembler.toCollectionModel(Mockito.<Collection<Usuario>>any())).thenReturn(usuarioModelCollection);
+        //when(usuarioModelAssembler.toCollectionModel(Mockito.<Collection<Usuario>>any())).thenReturn(Collections.singletonList(new UsuarioModel()));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/restaurantes/{restauranteId}/responsaveis", 1L);
