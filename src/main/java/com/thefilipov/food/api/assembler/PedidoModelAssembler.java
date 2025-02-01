@@ -29,6 +29,12 @@ public class PedidoModelAssembler
 
         pedidoModel.add(foodLinks.linkToPedidos());
 
+        pedidoModel.add(foodLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+
+        pedidoModel.add(foodLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+
+        pedidoModel.add(foodLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+
         pedidoModel.getRestaurante().add(foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
         pedidoModel.getCliente().add(foodLinks.linkToUsuario(pedido.getCliente().getId()));
