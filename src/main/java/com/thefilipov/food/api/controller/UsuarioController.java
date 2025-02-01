@@ -46,7 +46,7 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 
     @GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
-    	Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+    	var usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 
     	return usuarioModelAssembler.toModel(usuario);
 	}
@@ -54,7 +54,7 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
-		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
+		var usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		usuario = cadastroUsuario.salvar(usuario);
 		
 		return usuarioModelAssembler.toModel(usuario);
@@ -63,7 +63,7 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	@PutMapping("/{usuarioId}")
 	public UsuarioModel atualizar(@PathVariable Long usuarioId,
 			@RequestBody @Valid UsuarioInput usuarioInput) {
-		Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
+		var usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
 		usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
 		usuarioAtual = cadastroUsuario.salvar(usuarioAtual);
 		

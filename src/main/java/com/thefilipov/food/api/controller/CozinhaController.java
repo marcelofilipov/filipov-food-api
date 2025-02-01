@@ -45,15 +45,12 @@ public class CozinhaController implements CozinhaControllerDocumentation {
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
-		PagedModel<CozinhaModel> cozinhasPagedModel = pagedResourcesAssembler
-				.toModel(cozinhasPage, cozinhaModelAssembler);
-
-		return cozinhasPagedModel;
+		return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
 	}
 
 	@GetMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
-		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		var cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
@@ -61,7 +58,7 @@ public class CozinhaController implements CozinhaControllerDocumentation {
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-		Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
+		var cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
 		cozinha = cadastroCozinha.salvar(cozinha);
 		
 		return cozinhaModelAssembler.toModel(cozinha);
@@ -69,7 +66,7 @@ public class CozinhaController implements CozinhaControllerDocumentation {
 	
 	@PutMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
-		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		var cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
 		cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
 		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
 		

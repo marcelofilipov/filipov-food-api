@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +90,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		return restauranteModelAssembler.toModel(restaurante);
 	}
@@ -100,7 +99,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+			var restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
@@ -112,7 +111,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
+			var restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
@@ -179,7 +178,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	*/
 
 	private void validate(Restaurante restaurante, String objectName) {
-		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+		var bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
 		smartValidator.validate(restaurante, bindingResult);
 
 		if (bindingResult.hasErrors()) {
@@ -188,17 +187,17 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+		var serverHttpRequest = new ServletServerHttpRequest(request);
 
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+			var objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+			var restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
 			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+				var field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
 				field.setAccessible(true);
 
 				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);

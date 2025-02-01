@@ -9,8 +9,6 @@ import com.thefilipov.food.core.storage.StorageProperties;
 import com.thefilipov.food.domain.service.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.net.URL;
-
 public class S3FotoStorageService implements FotoStorageService {
 
     @Autowired

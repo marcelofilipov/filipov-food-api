@@ -44,7 +44,7 @@ public class EstadoController implements EstadoControllerDocumentation {
 
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
-		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+		var estado = cadastroEstado.buscarOuFalhar(estadoId);
 		
 		return estadoModelAssembler.toModel(estado);
 	}
@@ -52,7 +52,7 @@ public class EstadoController implements EstadoControllerDocumentation {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
-		Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
+		var estado = estadoInputDisassembler.toDomainObject(estadoInput);
 		estado = cadastroEstado.salvar(estado);
 		
 		return estadoModelAssembler.toModel(estado);
@@ -60,7 +60,7 @@ public class EstadoController implements EstadoControllerDocumentation {
 
 	@PutMapping("/{estadoId}")
 	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
-		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
+		var estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 		estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
 		estadoAtual = cadastroEstado.salvar(estadoAtual);
 

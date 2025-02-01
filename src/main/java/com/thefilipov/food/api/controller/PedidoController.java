@@ -76,7 +76,7 @@ public class PedidoController implements PedidoControllerDocumentation {
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                                    @PageableDefault(size = 10) Pageable pageable) {
-        Pageable pageableTraduzido = traduzirPageable(pageable);
+        var pageableTraduzido = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = pedidoRepository.findAll(
                 PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
@@ -88,7 +88,7 @@ public class PedidoController implements PedidoControllerDocumentation {
 
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+        var pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
         return pedidoModelAssembler.toModel(pedido);
     }
@@ -108,7 +108,7 @@ public class PedidoController implements PedidoControllerDocumentation {
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
         try {
-            Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
+            var novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
             // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());

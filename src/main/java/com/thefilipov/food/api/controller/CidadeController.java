@@ -46,7 +46,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
+		var cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
 		return cidadeModelAssembler.toModel(cidade);
 	}
@@ -55,7 +55,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
+			var cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 			cidade = cadastroCidade.salvar(cidade);
 			
 			return cidadeModelAssembler.toModel(cidade);
@@ -67,7 +67,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
+			var cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 			cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 			cidadeAtual = cadastroCidade.salvar(cidadeAtual);
 

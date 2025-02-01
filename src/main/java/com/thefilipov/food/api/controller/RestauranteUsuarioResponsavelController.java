@@ -1,16 +1,14 @@
 package com.thefilipov.food.api.controller;
 
+import com.thefilipov.food.api.FoodLinks;
 import com.thefilipov.food.api.assembler.UsuarioModelAssembler;
 import com.thefilipov.food.api.model.UsuarioModel;
 import com.thefilipov.food.api.openapi.controller.RestauranteUsuarioResponsavelControllerDocumentation;
-import com.thefilipov.food.domain.model.Restaurante;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping(path = RestauranteUsuarioResponsavelController.URI)
@@ -24,14 +22,16 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     @Autowired
     private UsuarioModelAssembler usuarioModelAssembler;
 
+    @Autowired
+    private FoodLinks foodLinks;
+
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
-        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+        var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
-                        .listar(restauranteId)).withSelfRel());
+                .add(foodLinks.linkToResponsaveisRestaurante(restauranteId));
     }
 
     @DeleteMapping("/{usuarioId}")
