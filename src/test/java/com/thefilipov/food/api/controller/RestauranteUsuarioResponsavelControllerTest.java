@@ -9,8 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,7 +29,9 @@ import java.util.HashSet;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {RestauranteUsuarioResponsavelController.class})
+//@ContextConfiguration(classes = {RestauranteUsuarioResponsavelController.class})
+@SpringBootTest
+@AutoConfigureMockMvc
 class RestauranteUsuarioResponsavelControllerTest extends ApplicationConfigTest {
     @MockBean
     private CadastroRestauranteService cadastroRestauranteService;

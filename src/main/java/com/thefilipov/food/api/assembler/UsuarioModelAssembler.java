@@ -10,8 +10,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Component
 public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<Usuario, UsuarioModel> {
 
@@ -36,9 +34,14 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 		return usuarioModel;
 	}
 
+	@Override
 	public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
+		if (entities == null || !entities.iterator().hasNext()) {
+			return CollectionModel.empty();
+		}
+
 		return super.toCollectionModel(entities)
-				.add(linkTo(UsuarioController.class).withSelfRel());
-	}        
+				.add(foodLinks.linkToUsuarios());
+	}
 
 }

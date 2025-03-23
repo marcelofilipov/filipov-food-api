@@ -4,11 +4,14 @@ import com.thefilipov.food.api.FoodLinks;
 import com.thefilipov.food.api.assembler.UsuarioModelAssembler;
 import com.thefilipov.food.api.model.UsuarioModel;
 import com.thefilipov.food.api.openapi.controller.RestauranteUsuarioResponsavelControllerDocumentation;
+import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = RestauranteUsuarioResponsavelController.URI)
@@ -28,8 +31,9 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+        var responsaveis = restaurante.getResponsaveis() != null ? restaurante.getResponsaveis() : List.of();
 
-        return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
+        return usuarioModelAssembler.toCollectionModel((Iterable<? extends Usuario>) responsaveis)
                 .removeLinks()
                 .add(foodLinks.linkToResponsaveisRestaurante(restauranteId));
     }

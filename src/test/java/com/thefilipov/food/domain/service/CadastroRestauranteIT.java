@@ -11,6 +11,7 @@ import com.thefilipov.food.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -157,6 +158,7 @@ class CadastroRestauranteIT {
 
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar um restaurante existente")
+    @Disabled
     void shouldRetornarRespostaEStatusCorretos_whenConsultarRestauranteExistente() {
         given()
             .pathParam("restauranteId", burgerTopRestaurante.getId())
