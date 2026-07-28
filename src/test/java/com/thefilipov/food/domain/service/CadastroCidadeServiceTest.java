@@ -4,13 +4,16 @@ import com.thefilipov.food.ApplicationConfigTest;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.model.Cidade;
+import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.CidadeRepository;
+import com.thefilipov.food.domain.repository.EstadoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -28,14 +31,28 @@ class CadastroCidadeServiceTest extends ApplicationConfigTest {
     private CadastroCidadeService service;
 
     @Mock
+    private CadastroEstadoService cadastroEstado;
+
+    @Mock
     private CidadeRepository repository;
 
+    @Mock
+    private EstadoRepository estadoRepository;
+
+    @Mock
     private Cidade cidade;
+
+    @Mock
+    private Estado estado;
+
+    @Captor
+    private ArgumentCaptor<Cidade> cidadeCaptor;
+
     private Optional<Cidade> optionalCidade;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        //MockitoAnnotations.openMocks(this);
         startCidade();
     }
 
@@ -88,6 +105,30 @@ class CadastroCidadeServiceTest extends ApplicationConfigTest {
     private void startCidade() {
         cidade = new Cidade(ID, NAME);
         optionalCidade = Optional.of(new Cidade(ID, NAME));
+    }
+
+    @Test
+    @DisplayName("Deve salvar uma Cidade com sucesso")
+    void whenSaveCidadeWithEstadoExistentWithSuccess() {
+        Estado estado = new Estado();
+        estado.setId(1L);
+
+        Cidade cidade = new Cidade();
+        cidade.setNome("São Paulo");
+        cidade.setEstado(estado);
+
+        when(cadastroEstado.buscarOuFalhar(1L)).thenReturn(estado);
+        when(repository.save(any(Cidade.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Cidade cidadeSalva = service.salvar(cidade);
+
+        assertNotNull(cidadeSalva);
+        assertEquals("São Paulo", cidadeSalva.getNome());
+        assertEquals(estado, cidadeSalva.getEstado());
+
+        ArgumentCaptor<Cidade> captor = ArgumentCaptor.forClass(Cidade.class);
+        verify(repository).save(captor.capture());
+        assertEquals(estado, captor.getValue().getEstado());
     }
 
 }
