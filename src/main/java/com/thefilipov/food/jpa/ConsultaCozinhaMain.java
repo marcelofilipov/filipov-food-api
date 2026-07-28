@@ -1,14 +1,13 @@
 package com.thefilipov.food.jpa;
 
-import java.util.List;
-
+import com.thefilipov.food.FilipovFoodApiApplication;
+import com.thefilipov.food.domain.model.Cozinha;
+import com.thefilipov.food.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-import com.thefilipov.food.FilipovFoodApiApplication;
-import com.thefilipov.food.domain.model.Cozinha;
-import com.thefilipov.food.domain.repository.CozinhaRepository;
+import java.util.List;
 
 public class ConsultaCozinhaMain {
 

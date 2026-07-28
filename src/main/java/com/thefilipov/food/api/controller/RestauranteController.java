@@ -1,13 +1,15 @@
 package com.thefilipov.food.api.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thefilipov.food.api.assembler.RestauranteApenasNomeModelAssembler;
+import com.thefilipov.food.api.assembler.RestauranteBasicoModelAssembler;
 import com.thefilipov.food.api.assembler.RestauranteInputDisassembler;
 import com.thefilipov.food.api.assembler.RestauranteModelAssembler;
+import com.thefilipov.food.api.model.RestauranteApenasNomeModel;
+import com.thefilipov.food.api.model.RestauranteBasicoModel;
 import com.thefilipov.food.api.model.RestauranteModel;
 import com.thefilipov.food.api.model.input.RestauranteInput;
-import com.thefilipov.food.api.model.view.RestauranteView;
 import com.thefilipov.food.api.openapi.controller.RestauranteControllerDocumentation;
 import com.thefilipov.food.core.validation.ValidacaoException;
 import com.thefilipov.food.domain.exception.CidadeNaoEncontradaException;
@@ -19,8 +21,10 @@ import com.thefilipov.food.domain.repository.RestauranteRepository;
 import com.thefilipov.food.domain.service.CadastroRestauranteService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -30,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -53,18 +56,25 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@Autowired
+	private RestauranteBasicoModelAssembler restauranteBasicoModelAssembler;
+
+	@Autowired
+	private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
+
+	@Autowired
 	private SmartValidator smartValidator;
 
-	@JsonView(RestauranteView.Resumo.class)
+//	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public List<RestauranteModel> listar() {
-		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
+	public CollectionModel<RestauranteBasicoModel> listar() {
+		return restauranteBasicoModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
-	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params ="projecao=apenas-nome")
-	public List<RestauranteModel> listarResumido() {
-		return listar();
+//	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=apenas-nome")
+	public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
+		return restauranteApenasNomeModelAssembler
+				.toCollectionModel(restauranteRepository.findAll());
 	}
 
 //	@GetMapping
@@ -91,7 +101,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
-		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		var restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		return restauranteModelAssembler.toModel(restaurante);
 	}
@@ -100,7 +110,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+			var restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
@@ -112,7 +122,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 									@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
+			var restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
@@ -123,14 +133,18 @@ public class RestauranteController implements RestauranteControllerDocumentation
 
 	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
+
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/ativacoes")
@@ -155,14 +169,18 @@ public class RestauranteController implements RestauranteControllerDocumentation
 
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void abrir(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
 		cadastroRestaurante.abrir(restauranteId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void fechar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fechar(restauranteId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	/*
@@ -179,7 +197,7 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	*/
 
 	private void validate(Restaurante restaurante, String objectName) {
-		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+		var bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
 		smartValidator.validate(restaurante, bindingResult);
 
 		if (bindingResult.hasErrors()) {
@@ -188,17 +206,17 @@ public class RestauranteController implements RestauranteControllerDocumentation
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+		var serverHttpRequest = new ServletServerHttpRequest(request);
 
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
+			var objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+			var restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
 			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+				var field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
 				field.setAccessible(true);
 
 				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);

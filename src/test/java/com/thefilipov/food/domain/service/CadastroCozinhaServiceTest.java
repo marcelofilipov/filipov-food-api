@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroCozinhaService")
-public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
+class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
 	private static final long NONEXISTENT = 100L;
@@ -58,8 +58,8 @@ public class CadastroCozinhaServiceTest extends ApplicationConfigTest {
 
 		assertAll(() -> assertNotNull(response),
 			() -> assertEquals(Cozinha.class, response.getClass()),
-			() -> assertEquals(ID, response.getId()),
-			() -> assertEquals(NAME, response.getNome())
+			() -> assertEquals(oneCozinha.get().getId(), response.getId()),
+			() -> assertEquals(oneCozinha.get().getNome(), response.getNome())
 		);
 	}
 

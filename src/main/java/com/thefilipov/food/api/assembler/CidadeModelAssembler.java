@@ -1,29 +1,44 @@
 package com.thefilipov.food.api.assembler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.thefilipov.food.api.FoodLinks;
+import com.thefilipov.food.api.controller.CidadeController;
 import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.domain.model.Cidade;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.stereotype.Component;
 
 @Component
-public class CidadeModelAssembler {
+public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeModel> {
 
 	@Autowired
     private ModelMapper modelMapper;
-    
+
+    @Autowired
+    private FoodLinks foodLinks;
+
+    public CidadeModelAssembler() {
+        super(CidadeController.class, CidadeModel.class);
+    }
+
+    @Override
     public CidadeModel toModel(Cidade cidade) {
-        return modelMapper.map(cidade, CidadeModel.class);
+        var cidadeModel = createModelWithId(cidade.getId(), cidade);
+        modelMapper.map(cidade, cidadeModel);
+
+        cidadeModel.add(foodLinks.linkToCidades("cidades"));
+
+        cidadeModel.getEstado().add(foodLinks.linkToEstado(cidadeModel.getEstado().getId()));
+
+        return cidadeModel;
     }
-    
-    public List<CidadeModel> toCollectionModel(List<Cidade> cidades) {
-        return cidades.stream()
-                .map(cidade -> toModel(cidade))
-                .collect(Collectors.toList());
+
+    @Override
+    public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
+        return super.toCollectionModel(entities)
+                .add(foodLinks.linkToCidades());
     }
-    
+
 }

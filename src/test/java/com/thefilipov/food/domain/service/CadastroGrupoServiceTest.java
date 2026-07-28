@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroGrupoService")
-public class CadastroGrupoServiceTest extends ApplicationConfigTest {
+class CadastroGrupoServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
 	private static final long NONEXISTENT = 100L;

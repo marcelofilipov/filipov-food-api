@@ -9,10 +9,7 @@ import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
 import com.thefilipov.food.domain.service.CadastroEstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -39,17 +36,15 @@ public class EstadoController implements EstadoControllerDocumentation {
 	private EstadoInputDisassembler estadoInputDisassembler;
 	
 	@GetMapping
-	public Page<EstadoModel> listar(@PageableDefault(size = 10) Pageable pageable) {
-		Page<Estado> estadoPage = estadoRepository.findAll(pageable);
-
-		List<EstadoModel> estadosModel = estadoModelAssembler.toCollectionModel(estadoPage.getContent());
+	public CollectionModel<EstadoModel> listar() {
+		List<Estado> todosEstados = estadoRepository.findAll();
 		
-		return new PageImpl<>(estadosModel, pageable, estadoPage.getTotalElements());
+		return estadoModelAssembler.toCollectionModel(todosEstados);
 	}
 
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
-		Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+		var estado = cadastroEstado.buscarOuFalhar(estadoId);
 		
 		return estadoModelAssembler.toModel(estado);
 	}
@@ -57,7 +52,7 @@ public class EstadoController implements EstadoControllerDocumentation {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
-		Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
+		var estado = estadoInputDisassembler.toDomainObject(estadoInput);
 		estado = cadastroEstado.salvar(estado);
 		
 		return estadoModelAssembler.toModel(estado);
@@ -65,7 +60,7 @@ public class EstadoController implements EstadoControllerDocumentation {
 
 	@PutMapping("/{estadoId}")
 	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
-		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
+		var estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 		estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
 		estadoAtual = cadastroEstado.salvar(estadoAtual);
 

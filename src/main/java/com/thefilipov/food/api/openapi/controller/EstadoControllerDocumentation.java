@@ -3,20 +3,20 @@ package com.thefilipov.food.api.openapi.controller;
 import com.thefilipov.food.api.exceptionhandler.Problem;
 import com.thefilipov.food.api.model.EstadoModel;
 import com.thefilipov.food.api.model.input.EstadoInput;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Estados")
 public interface EstadoControllerDocumentation {
 
     @ApiOperation("Lista os estados")
-    Page<EstadoModel> listar(@PageableDefault(size = 10) Pageable pageable);
+    CollectionModel<EstadoModel> listar();
 
     @ApiOperation("Busca um estado por ID")
     @ApiResponses({

@@ -3,7 +3,6 @@ package com.thefilipov.food.api.controller;
 import com.thefilipov.food.api.assembler.PermissaoModelAssembler;
 import com.thefilipov.food.api.model.PermissaoModel;
 import com.thefilipov.food.api.openapi.controller.GrupoPermissaoControllerDocumentation;
-import com.thefilipov.food.domain.model.Grupo;
 import com.thefilipov.food.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerDocumen
 
     @GetMapping
     public List<PermissaoModel> listar(@PathVariable Long grupoId) {
-        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+        var grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
         return permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
     }

@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {GrupoController.class})
 @ExtendWith(SpringExtension.class)
 class GrupoControllerTest {
+
     @MockBean
     private CadastroGrupoService cadastroGrupoService;
 

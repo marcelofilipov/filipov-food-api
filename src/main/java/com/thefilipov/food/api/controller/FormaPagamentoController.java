@@ -42,7 +42,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerDocumen
     public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
-        String eTag = "0";
+        var eTag = "0";
 
         OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
         if (dataUltimaAtualizacao != null) {
@@ -71,7 +71,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerDocumen
     public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
-        String eTag = "0";
+        var eTag = "0";
 
         OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataAtualizacaoById(formaPagamentoId);
         if (dataUltimaAtualizacao != null) {
@@ -82,9 +82,9 @@ public class FormaPagamentoController implements FormaPagamentoControllerDocumen
             return null;
         }
 
-        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+        var formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
 
-        FormaPagamentoModel formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
+        var formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
 
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
@@ -94,7 +94,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerDocumen
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
-        FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
+        var formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
         formaPagamento = cadastroFormaPagamento.salvar(formaPagamento);
 
         return formaPagamentoModelAssembler.toModel(formaPagamento);
@@ -103,7 +103,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerDocumen
     @PutMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FormaPagamentoModel atualizar(@PathVariable Long formaPagamentoId,
             @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
-        FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+        var formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);
         formaPagamentoAtual = cadastroFormaPagamento.salvar(formaPagamentoAtual);
 

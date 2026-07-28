@@ -2,15 +2,16 @@ package com.thefilipov.food.api.controller;
 
 import com.thefilipov.food.api.assembler.CidadeInputDisassembler;
 import com.thefilipov.food.api.assembler.CidadeModelAssembler;
-import com.thefilipov.food.api.openapi.controller.CidadeControllerDocumentation;
 import com.thefilipov.food.api.model.CidadeModel;
 import com.thefilipov.food.api.model.input.CidadeInput;
+import com.thefilipov.food.api.openapi.controller.CidadeControllerDocumentation;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.exception.NegocioException;
 import com.thefilipov.food.domain.model.Cidade;
 import com.thefilipov.food.domain.repository.CidadeRepository;
 import com.thefilipov.food.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 	private CidadeInputDisassembler cidadeInputDisassembler; 
 
 	@GetMapping
-	public List<CidadeModel> listar() {
+	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
 		
 		return cidadeModelAssembler.toCollectionModel(todasCidades);
@@ -45,7 +46,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
+		var cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 		
 		return cidadeModelAssembler.toModel(cidade);
 	}
@@ -54,7 +55,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
+			var cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 			cidade = cadastroCidade.salvar(cidade);
 			
 			return cidadeModelAssembler.toModel(cidade);
@@ -66,7 +67,7 @@ public class CidadeController implements CidadeControllerDocumentation {
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
+			var cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
 			cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 			cidadeAtual = cadastroCidade.salvar(cidadeAtual);
 

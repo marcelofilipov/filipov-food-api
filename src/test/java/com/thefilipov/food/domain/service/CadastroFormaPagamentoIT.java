@@ -1,12 +1,12 @@
 package com.thefilipov.food.domain.service;
 
-import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
+import com.thefilipov.food.domain.model.FormaPagamento;
+import com.thefilipov.food.domain.repository.FormaPagamentoRepository;
+import com.thefilipov.food.util.DatabaseCleaner;
+import com.thefilipov.food.util.ResourceUtils;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,19 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
-import com.thefilipov.food.domain.model.FormaPagamento;
-import com.thefilipov.food.domain.repository.FormaPagamentoRepository;
-import com.thefilipov.food.util.DatabaseCleaner;
-import com.thefilipov.food.util.ResourceUtils;
-
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CadastroFormaPagamentoIT {
+class CadastroFormaPagamentoIT {
 
     /**
      * RestAssured - API Test
@@ -66,7 +62,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Retornar Status 200 - Quando consultar formas de pagamento")
-    public void shouldRetornarStatus200_whenConsultarFormasDePagto() {
+    void shouldRetornarStatus200_whenConsultarFormasDePagto() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -77,7 +73,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Retornar uma resposta e Status 200 - Quando consultar uma forma de pagamento existente")
-    public void shouldRetornarUmaRespostaEStatus200_whenConsultarFormaDePagtoExistente() {
+    void shouldRetornarUmaRespostaEStatus200_whenConsultarFormaDePagtoExistente() {
         given()
             .pathParam("formaPagtoId", formaPagtoPIX.getId())
             .accept(ContentType.JSON)
@@ -90,7 +86,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Retornar Status 404 - Quando consultar uma forma de pagamento inexistente")
-    public void shouldRetornarStatus404_whenConsultarFormaDePagtoInexistente() {
+    void shouldRetornarStatus404_whenConsultarFormaDePagtoInexistente() {
         given()
             .pathParam("formaPagtoId", FORMAPAGAMENTO_ID_INEXISTENTE)
             .accept(ContentType.JSON)
@@ -102,7 +98,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Deve retornar quantidade correta de Formas de Pagamento - Quando Consultar Formas de Pagto")
-    public void shouldRetornarQuantidadeCorretaDeFormasDePagamento_whenConsultarFormasDePagto() {
+    void shouldRetornarQuantidadeCorretaDeFormasDePagamento_whenConsultarFormasDePagto() {
         given()
             .accept(ContentType.JSON)
         .when()
@@ -114,7 +110,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Retornar Status 201 - Quando cadastrar uma forma de pagamento")
-    public void shouldRetornarStatus201_whenCadastrarFormaDePagto() {
+    void shouldRetornarStatus201_whenCadastrarFormaDePagto() {
         given()
             .body(jsonCorretoFormaPagtoCD)
             .contentType(ContentType.JSON)
@@ -135,7 +131,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Quando Cadastrar Forma de Pagamento com dados corretos - Deve ser atribuído um Id")
-    public void whenCadastroFormaDePagamentoComDadosCorretos_thenDeveAtribuirId() {
+    void whenCadastroFormaDePagamentoComDadosCorretos_thenDeveAtribuirId() {
         // cenário
         FormaPagamento novaFormaPagto = new FormaPagamento();
         novaFormaPagto.setDescricao("Cheque Administrativo");
@@ -150,7 +146,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Deve Falhar - Quando tentar Cadastrar Forma de Pagamento sem descrição (NULL)")
-    public void shouldFail_whenCadastrarFormaDePagtoSemDescricao() {
+    void shouldFail_whenCadastrarFormaDePagtoSemDescricao() {
         assertThrows(DataIntegrityViolationException.class, () -> {
             FormaPagamento novaFormaPagto = new FormaPagamento();
             novaFormaPagto.setDescricao(null);
@@ -160,7 +156,7 @@ public class CadastroFormaPagamentoIT {
 
     @Test
     @DisplayName("Falhar quando tentar Excluir uma Forma de Pagamento Inexistente")
-    public void shouldFail_whenExcluirFormaDePagtoInexistente() {
+    void shouldFail_whenExcluirFormaDePagtoInexistente() {
         assertThrows(EntidadeNaoEncontradaException.class, () -> {
         	formaPagtoService.excluir(FORMAPAGAMENTO_ID_INEXISTENTE);
         });

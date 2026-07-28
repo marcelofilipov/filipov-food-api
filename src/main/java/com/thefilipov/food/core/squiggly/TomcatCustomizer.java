@@ -6,8 +6,8 @@ package com.thefilipov.food.core.squiggly;
 // - https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-configure-webserver
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-        import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-        import org.springframework.stereotype.Component;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {

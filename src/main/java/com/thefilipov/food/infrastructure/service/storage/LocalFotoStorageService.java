@@ -16,13 +16,11 @@ public class LocalFotoStorageService implements FotoStorageService {
     @Override
     public FotoRecuperada recuperar(String nomeArquivo) {
         try {
-            Path arquivoPath = getArquivoPath(nomeArquivo);
+            var arquivoPath = getArquivoPath(nomeArquivo);
 
-            FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+            return FotoRecuperada.builder()
                     .inputStream(Files.newInputStream(arquivoPath))
                     .build();
-
-            return fotoRecuperada;
         } catch (Exception e) {
             throw new StorageException("Não foi possível recuperar arquivo.", e);
         }
@@ -31,7 +29,7 @@ public class LocalFotoStorageService implements FotoStorageService {
     @Override
     public void armazenar(NovaFoto novaFoto) {
         try {
-            Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
+            var arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
 
             FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
         } catch (Exception e) {
@@ -42,7 +40,7 @@ public class LocalFotoStorageService implements FotoStorageService {
     @Override
     public void remover(String nomeArquivo) {
         try {
-            Path arquivoPath = getArquivoPath(nomeArquivo);
+            var arquivoPath = getArquivoPath(nomeArquivo);
 
             Files.deleteIfExists(arquivoPath);
         } catch (Exception e) {

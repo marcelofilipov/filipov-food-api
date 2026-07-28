@@ -9,27 +9,18 @@ import org.springframework.hateoas.server.core.Relation;
 import java.math.BigDecimal;
 
 @Relation(collectionRelation = "restaurantes")
-@Getter
 @Setter
-public class RestauranteModel extends RepresentationModel<RestauranteModel> {
+@Getter
+public class RestauranteBasicoModel extends RepresentationModel<RestauranteBasicoModel> {
 
     @ApiModelProperty(example = "1")
-//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private Long id;
 
     @ApiModelProperty(example = "Thai Gourmet")
-//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private String nome;
 
-    @ApiModelProperty(example = "19.00")
-//    @JsonView(RestauranteView.Resumo.class)
+    @ApiModelProperty(example = "12.00")
     private BigDecimal taxaFrete;
 
-//    @JsonView(RestauranteView.Resumo.class)
     private CozinhaModel cozinha;
-
-    private Boolean ativo;
-    private Boolean aberto;
-    private EnderecoModel endereco;
-
 }

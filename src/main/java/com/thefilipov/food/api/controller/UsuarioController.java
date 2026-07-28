@@ -11,15 +11,13 @@ import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.UsuarioRepository;
 import com.thefilipov.food.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path =UsuarioController.URI, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,19 +38,15 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 
 	@GetMapping
-	public ResponseEntity<List<UsuarioModel>> listar() {
+	public CollectionModel<UsuarioModel> listar() {
 		List<Usuario> todasUsuarios = usuarioRepository.findAll();
 
-		List<UsuarioModel> usuariosModel = usuarioModelAssembler.toCollectionModel(todasUsuarios);
-
-		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePrivate())
-				.body(usuariosModel);
+		return usuarioModelAssembler.toCollectionModel(todasUsuarios);
 	}
 
     @GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
-    	Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+    	var usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 
     	return usuarioModelAssembler.toModel(usuario);
 	}
@@ -60,7 +54,7 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
-		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
+		var usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		usuario = cadastroUsuario.salvar(usuario);
 		
 		return usuarioModelAssembler.toModel(usuario);
@@ -69,7 +63,7 @@ public class UsuarioController implements UsuarioControllerDocumentation {
 	@PutMapping("/{usuarioId}")
 	public UsuarioModel atualizar(@PathVariable Long usuarioId,
 			@RequestBody @Valid UsuarioInput usuarioInput) {
-		Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
+		var usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
 		usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
 		usuarioAtual = cadastroUsuario.salvar(usuarioAtual);
 		

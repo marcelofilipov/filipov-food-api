@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-public class CadastroPermissaoServiceTest extends ApplicationConfigTest {
+class CadastroPermissaoServiceTest extends ApplicationConfigTest {
 
     private static final long ID = 1L;
     private static final String NAME = "CONSULTAR_COZINHAS";

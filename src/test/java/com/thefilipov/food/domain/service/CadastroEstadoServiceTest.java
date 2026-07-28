@@ -5,14 +5,16 @@ import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.model.Estado;
 import com.thefilipov.food.domain.repository.EstadoRepository;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,19 +22,18 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroEstadoService")
-public class CadastroEstadoServiceTest extends ApplicationConfigTest {
+class CadastroEstadoServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
-	private static final String NAME = "São Paulo";
 
 	@InjectMocks
 	private CadastroEstadoService service;
 
-	@Mock
+	@Spy
 	private EstadoRepository repository;
 
 	private Estado estado;
-	private Optional<Estado> optionalEstado;
+	private Optional<Estado> oEstado;
 
 	@BeforeEach
 	void setUp() {
@@ -43,14 +44,15 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Buscar um Estado da Federação do Brasil")
 	void whenFindOneEstado() {
-		when(repository.findById(anyLong())).thenReturn(optionalEstado);
+		when(repository.findById(anyLong())).thenReturn(oEstado);
 		
 		Estado response = service.buscarOuFalhar(ID);
-		
-		assertNotNull(response);
-		assertEquals(Estado.class, response.getClass());
-		assertEquals(ID, response.getId());
-		assertEquals(NAME, response.getNome());
+
+		assertAll(() -> assertNotNull(response),
+			() -> assertEquals(Estado.class, response.getClass()),
+			() -> assertEquals(oEstado.get().getId(), response.getId()),
+			() -> assertEquals(oEstado.get().getNome(), response.getNome())
+		);
 	}
 	
 	@Test
@@ -68,7 +70,7 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Deve lançar EmptyResultDataAccessException ao tentar excluir um Estado não encontrado")
 	void throwEmptyResultDataAccessExceptionWhenTryingToDeleteEstadoThatNotExist() {
-		when(repository.findById(anyLong())).thenReturn(optionalEstado);
+		when(repository.findById(anyLong())).thenReturn(oEstado);
 		doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(ID);
 
 		assertThrows(EstadoNaoEncontradoException.class, () -> service.excluir(ID));
@@ -79,27 +81,30 @@ public class CadastroEstadoServiceTest extends ApplicationConfigTest {
 	@Test
 	@DisplayName("Deve lançar EntidadeEmUsoException ao tentar excluir um Estado em uso")
 	void throwEntidadeEmUsoExceptionWhenTryingToDeleteEstadoInUse() {
-		when(repository.findById(anyLong())).thenReturn(optionalEstado);
-		doThrow(EntidadeEmUsoException.class).when(repository).deleteById(1L);
+		when(repository.findById(anyLong())).thenReturn(oEstado);
+		doThrow(EntidadeEmUsoException.class).when(repository).deleteById(ID);
 
-		assertThrows(EntidadeEmUsoException.class, () -> service.excluir(1L));
+		assertThrows(EntidadeEmUsoException.class, () -> service.excluir(ID));
 
-		verify(repository, times(1)).deleteById(1L);
+		verify(repository, times(1)).deleteById(ID);
 	}
 
 	@Test
 	@DisplayName("Deve excluir um Estado com sucesso")
 	void whenDeleteEstadoWithSuccess() {
-		when(repository.findById(1L)).thenReturn(optionalEstado);
+		when(repository.findById(anyLong())).thenReturn(oEstado);
 
-		service.excluir(1L);
+		service.excluir(ID);
 
-		verify(repository, times(1)).deleteById(1L);
+		verify(repository, times(1)).deleteById(ID);
 	}
 
 	private void startEstado() {
-		estado = new Estado(ID, NAME);
-		optionalEstado = Optional.of(new Estado(ID, NAME));
+		Faker faker = new Faker(new Locale("pt-BR"));
+		final String name = faker.address().state();
+
+		estado = new Estado(ID, name);
+		oEstado = Optional.of(new Estado(ID, name));
 	}
 
 }

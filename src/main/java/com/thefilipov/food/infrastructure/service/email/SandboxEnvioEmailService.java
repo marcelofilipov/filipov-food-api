@@ -14,9 +14,9 @@ public class SandboxEnvioEmailService extends SmtpEnvioEmailService {
 
     @Override
     protected MimeMessage criarMimeMessage(Mensagem mensagem) throws MessagingException {
-        MimeMessage mimeMessage = super.criarMimeMessage(mensagem);
+        var mimeMessage = super.criarMimeMessage(mensagem);
 
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        var helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setTo(emailProperties.getSandbox().getDestinatario());
 
         return mimeMessage;

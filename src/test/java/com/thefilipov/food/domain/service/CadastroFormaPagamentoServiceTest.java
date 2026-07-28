@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Teste Unitário da class CadastroFormatPagamentoService")
-public class CadastroFormaPagamentoServiceTest extends ApplicationConfigTest {
+class CadastroFormaPagamentoServiceTest extends ApplicationConfigTest {
 
 	private static final long ID = 1L;
 	private static final String DESCRIPTION = "Dinheiro";

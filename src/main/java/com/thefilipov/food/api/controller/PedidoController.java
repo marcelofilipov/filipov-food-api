@@ -7,28 +7,27 @@ import com.thefilipov.food.api.assembler.PedidoResumoModelAssembler;
 import com.thefilipov.food.api.model.PedidoModel;
 import com.thefilipov.food.api.model.PedidoResumoModel;
 import com.thefilipov.food.api.openapi.controller.PedidoControllerDocumentation;
+import com.thefilipov.food.core.data.PageWrapper;
 import com.thefilipov.food.core.data.PageableTranslator;
 import com.thefilipov.food.domain.exception.EntidadeNaoEncontradaException;
 import com.thefilipov.food.domain.exception.NegocioException;
+import com.thefilipov.food.domain.filter.PedidoFilter;
 import com.thefilipov.food.domain.model.Pedido;
 import com.thefilipov.food.domain.model.Usuario;
 import com.thefilipov.food.domain.repository.PedidoRepository;
-import com.thefilipov.food.domain.filter.PedidoFilter;
 import com.thefilipov.food.domain.service.EmissaoPedidoService;
 import com.thefilipov.food.infrastructure.repository.spec.PedidoSpecs;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,6 +48,9 @@ public class PedidoController implements PedidoControllerDocumentation {
 
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
+
+    @Autowired
+    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
 /*
     @GetMapping
@@ -72,19 +74,21 @@ public class PedidoController implements PedidoControllerDocumentation {
 */
 
     @GetMapping
-    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
-        pageable = traduzirPageable(pageable);
+    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
+                                                   @PageableDefault(size = 10) Pageable pageable) {
+        var pageableTraduzido = traduzirPageable(pageable);
 
-        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(
+                PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
 
-        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler.toCollectionModel(pedidosPage.getContent());
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
-        return new PageImpl<>(pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+        var pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
         return pedidoModelAssembler.toModel(pedido);
     }
@@ -104,7 +108,7 @@ public class PedidoController implements PedidoControllerDocumentation {
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
         try {
-            Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
+            var novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
             // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());

@@ -35,22 +35,14 @@
 
 		<jacoco.version>0.8.8</jacoco.version>
 		<jacoco.percentage.instruction>0.31</jacoco.percentage.instruction>
-		<jacoco.count.class>58</jacoco.count.class>
+		<jacoco.count.class>61</jacoco.count.class>
 
 		<sonar.exclusions>
-			**/food/core/validation**,
-			**/food/domain/event/**,
-			**/food/domain/exception/**,
-			**/food/domain/filter/**,
 			**/food/jpa/**
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
-			**/food/api/model/**,
 			**/food/core/validation**,
-			**/food/domain/event/**,
 			**/food/domain/exception/**,
-			**/food/domain/filter/**,
-			**/food/domain/model/**,
 			**/food/jpa/**
 		</sonar.coverage.exclusions>
 		<sonar.test.exclusions>
@@ -129,6 +121,10 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-bean-validators</artifactId>
 			<version>${springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -254,11 +250,25 @@
 			<version>${six2six-fixture-factore.version}</version>
 		</dependency>
 
+		<!-- Datafaker -->
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+
 		<!-- S3 -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+
+		<!-- Pitest -->
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.16.0</version>
 		</dependency>
 	</dependencies>
 

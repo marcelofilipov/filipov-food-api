@@ -1,28 +1,39 @@
 package com.thefilipov.food.api.assembler;
 
+import com.thefilipov.food.api.FoodLinks;
 import com.thefilipov.food.api.model.PedidoResumoModel;
 import com.thefilipov.food.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
-public class PedidoResumoModelAssembler {
+public class PedidoResumoModelAssembler
+        extends RepresentationModelAssemblerSupport<Pedido, PedidoResumoModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public PedidoResumoModel toModel(Pedido pedido) {
-        return modelMapper.map(pedido, PedidoResumoModel.class);
+    @Autowired
+    private FoodLinks foodLinks;
+
+    public PedidoResumoModelAssembler() {
+        super(PedidoResumoModelAssembler.class, PedidoResumoModel.class);
     }
 
-    public List<PedidoResumoModel> toCollectionModel(List<Pedido> pedidos) {
-        return pedidos.stream()
-                .map(pedido -> toModel(pedido))
-                .collect(Collectors.toList());
+    @Override
+    public PedidoResumoModel toModel(Pedido pedido) {
+        var pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+        modelMapper.map(pedido, pedidoModel);
+
+        pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
+
+        pedidoModel.getRestaurante().add(foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+
+        pedidoModel.getCliente().add(foodLinks.linkToUsuario(pedido.getCliente().getId()));
+
+        return pedidoModel;
     }
 
 }

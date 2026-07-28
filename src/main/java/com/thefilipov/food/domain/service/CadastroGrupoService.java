@@ -3,7 +3,6 @@ package com.thefilipov.food.domain.service;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.GrupoNaoEncontradoException;
 import com.thefilipov.food.domain.model.Grupo;
-import com.thefilipov.food.domain.model.Permissao;
 import com.thefilipov.food.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,16 +43,16 @@ public class CadastroGrupoService {
 
 	@Transactional
 	public void desassociarPermissao(Long grupoId, Long permissaoId) {
-		Grupo grupo = buscarOuFalhar(grupoId);
-		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+		var grupo = buscarOuFalhar(grupoId);
+		var permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
 
 		grupo.removerPermissao(permissao);
 	}
 
 	@Transactional
 	public void associarPermissao(Long grupoId, Long permissaoId) {
-		Grupo grupo = buscarOuFalhar(grupoId);
-		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+		var grupo = buscarOuFalhar(grupoId);
+		var permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
 
 		grupo.adicionarPermissao(permissao);
 	}

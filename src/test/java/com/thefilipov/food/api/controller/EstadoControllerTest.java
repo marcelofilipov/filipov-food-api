@@ -6,6 +6,7 @@ import com.thefilipov.food.api.model.input.EstadoInput;
 import com.thefilipov.food.domain.exception.EntidadeEmUsoException;
 import com.thefilipov.food.domain.exception.EstadoNaoEncontradoException;
 import com.thefilipov.food.domain.service.CadastroEstadoService;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Locale;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -22,11 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class EstadoControllerTest extends ApplicationConfigTest {
+class EstadoControllerTest extends ApplicationConfigTest {
 
     private static final long ID = 1L;
     private static final String NAME = "Minas Gerais";
-
 
     private EstadoInput estadoInput;
 
@@ -52,7 +54,7 @@ public class EstadoControllerTest extends ApplicationConfigTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(6)));
+                .andExpect(jsonPath("$._embedded.estadoModelList", hasSize(6)));
     }
 
     @Test
@@ -80,7 +82,7 @@ public class EstadoControllerTest extends ApplicationConfigTest {
     @Test
     @DisplayName("Retornar success(200) - Quando alterar estado")
     void putEstadoAPI_RetornarStatus200() throws Exception {
-        Long estadoId = 2L;
+        final Long estadoId = 2L;
 
         this.mockMvc.perform(put(EstadoController.URI + "/{estadoId}", estadoId)
                         .accept(MediaType.APPLICATION_JSON)
@@ -92,8 +94,8 @@ public class EstadoControllerTest extends ApplicationConfigTest {
 
     @Test
     @DisplayName("Retornar noContent(204) - Quando remover estado existente")
-    public void deveRetornarStatusNoContentQuandoRemoverEstadoExistente() throws Exception {
-        Long estadoId = 99L;
+    void deveRetornarStatusNoContentQuandoRemoverEstadoExistente() throws Exception {
+        final Long estadoId = 99L;
 
         this.mockMvc.perform(delete(EstadoController.URI + "/{estadoId}", estadoId))
                 .andExpect(status().isNoContent());
@@ -101,8 +103,8 @@ public class EstadoControllerTest extends ApplicationConfigTest {
 
     @Test
     @DisplayName("Retornar notFound(404) - Quando tentar remover estado inexistente")
-    public void deveRetornarStatusNotFoundQuandoRemoverEstadoInexistente() throws Exception {
-        Long estadoId = 100L;
+    void deveRetornarStatusNotFoundQuandoRemoverEstadoInexistente() throws Exception {
+        final Long estadoId = 100L;
 
         doThrow(EstadoNaoEncontradoException.class).when(estadoService).excluir(estadoId);
 
@@ -112,8 +114,8 @@ public class EstadoControllerTest extends ApplicationConfigTest {
 
     @Test
     @DisplayName("Retornar conflict(409) - Quando tentar remover estado em uso")
-    public void deveRetornarStatusBadRequestQuandoRemoverEstadoEmUso() throws Exception {
-        Long estadoId = 1L;
+    void deveRetornarStatusBadRequestQuandoRemoverEstadoEmUso() throws Exception {
+        final Long estadoId = 1L;
 
         doThrow(EntidadeEmUsoException.class).when(estadoService).excluir(estadoId);
 
@@ -122,8 +124,11 @@ public class EstadoControllerTest extends ApplicationConfigTest {
     }
 
     private void startEstado() {
+        Faker faker = new Faker(new Locale("pt-BR"));
+        final String nome = faker.address().state();
+
         estadoInput = new EstadoInput();
-        estadoInput.setNome("São Paulo");
+        estadoInput.setNome(nome);
     }
 
 }

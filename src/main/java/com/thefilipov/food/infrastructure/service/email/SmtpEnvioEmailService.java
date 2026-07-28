@@ -3,7 +3,6 @@ package com.thefilipov.food.infrastructure.service.email;
 import com.thefilipov.food.core.email.EmailProperties;
 import com.thefilipov.food.domain.service.EnvioEmailService;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,7 +25,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
     @Override
     public void enviar(Mensagem mensagem) {
         try {
-            MimeMessage mimeMessage = criarMimeMessage(mensagem);
+            var mimeMessage = criarMimeMessage(mensagem);
 
             mailSender.send(mimeMessage);
         } catch (Exception e) {
@@ -37,9 +36,9 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
     protected MimeMessage criarMimeMessage(Mensagem mensagem) throws MessagingException {
         String corpo = processarTemplate(mensagem);
 
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        var mimeMessage = mailSender.createMimeMessage();
 
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        var helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setFrom(emailProperties.getRemetente());
         helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
         helper.setSubject(mensagem.getAssunto());
@@ -50,7 +49,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 
     protected String processarTemplate(Mensagem mensagem) {
         try {
-            Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
+            var template = freemarkerConfig.getTemplate(mensagem.getCorpo());
 
             return FreeMarkerTemplateUtils.processTemplateIntoString(template, mensagem.getVariaveis());
         } catch (Exception e) {
